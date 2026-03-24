@@ -1,0 +1,1516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PageDashboard</class>
+ <widget class="QWidget" name="PageDashboard">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1050</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string>
+    QWidget { background-color: #F2F7F5; font-family: &quot;Segoe UI&quot;, &quot;SF Pro Display&quot;, sans-serif; }
+    QLabel { background: transparent; }
+    QFrame#card { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }
+    QFrame#reminderBanner { background: #FEF3DC; border: 1px solid #FBDF9E; border-radius: 14px; }
+    QFrame#statCard { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }
+   </string>
+  </property>
+  <layout class="QVBoxLayout" name="dashLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="topbar">
+     <property name="styleSheet">
+      <string>QFrame#topbar { background: #FFFFFF; border-bottom: 1px solid #DDE8E3; border-radius: 0px; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="topbarLayout">
+      <property name="leftMargin">
+       <number>28</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>28</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout">
+        <property name="spacing">
+         <number>1</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="topTitle">
+          <property name="styleSheet">
+           <string>QLabel { font-size: 18px; font-weight: bold; color: #1C2B25; }</string>
+          </property>
+          <property name="text">
+           <string>Dashboard</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="topSub">
+          <property name="styleSheet">
+           <string>QLabel { font-size: 11px; color: #8FA89F; }</string>
+          </property>
+          <property name="text">
+           <string>Good morning, Shae — here's your health at a glance</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnAddRecord">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string>QPushButton { background: #1A9E78; color: #FFFFFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string>
+        </property>
+        <property name="text">
+         <string>＋  Add Record</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="styleSheet">
+      <string>QScrollArea { background: #F2F7F5; border: none; }</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollContent">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1050</width>
+        <height>738</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="contentLayout">
+       <property name="spacing">
+        <number>16</number>
+       </property>
+       <property name="leftMargin">
+        <number>28</number>
+       </property>
+       <property name="topMargin">
+        <number>24</number>
+       </property>
+       <property name="rightMargin">
+        <number>28</number>
+       </property>
+       <property name="bottomMargin">
+        <number>28</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="reminderBanner">
+         <property name="styleSheet">
+          <string>
+           QFrame#reminderBanner { background: #FEF3DC; border: 1.5px solid #FBDF9E; border-radius: 14px; }
+          </string>
+         </property>
+         <layout class="QHBoxLayout" name="bannerLayout">
+          <property name="spacing">
+           <number>14</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>16</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>16</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="bannerIcon">
+            <property name="minimumSize">
+             <size>
+              <width>42</width>
+              <height>42</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>42</width>
+              <height>42</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string>QLabel { background: #FBDF9E; border-radius: 11px; font-size: 18px; }</string>
+            </property>
+            <property name="text">
+             <string>🔔</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="bannerEyebrow">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 9px; font-weight: bold; color: #C47B12; letter-spacing: 1px; }</string>
+              </property>
+              <property name="text">
+               <string>APPOINTMENT REMINDER — FLAGGED TODAY</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="bannerTitle">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 14px; font-weight: bold; color: #3D2800; }</string>
+              </property>
+              <property name="text">
+               <string>Your follow-up with Dr. Ramon Santos is in 2 days</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="bannerSub">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 11px; color: #7A4D0A; }</string>
+              </property>
+              <property name="text">
+               <string>April 18, 2024  ·  10:00 AM  ·  City Health Clinic — URTI Follow-up</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout">
+              <property name="spacing">
+               <number>8</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="btnViewAppt">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="styleSheet">
+                 <string>QPushButton { background: #C47B12; color: #FFF; font-size: 11px; font-weight: 600; border: none; border-radius: 6px; padding: 6px 14px; } QPushButton:hover { background: #7A4D0A; }</string>
+                </property>
+                <property name="text">
+                 <string>View Appointment</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnDismissReminder">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="styleSheet">
+                 <string>QPushButton { background: rgba(196,123,18,0.12); color: #7A4D0A; font-size: 11px; font-weight: 600; border: none; border-radius: 6px; padding: 6px 14px; } QPushButton:hover { background: rgba(196,123,18,0.22); }</string>
+                </property>
+                <property name="text">
+                 <string>Mark as Prepared</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnCloseBanner">
+            <property name="minimumSize">
+             <size>
+              <width>26</width>
+              <height>26</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>26</width>
+              <height>26</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string>QPushButton { background: rgba(196,123,18,0.12); color: #C47B12; border: none; border-radius: 13px; font-size: 13px; font-weight: bold; } QPushButton:hover { background: rgba(196,123,18,0.25); }</string>
+            </property>
+            <property name="text">
+             <string>✕</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="statsRow">
+         <property name="spacing">
+          <number>14</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="statCard1">
+           <property name="styleSheet">
+            <string>QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>18</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>18</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="stat1Icon">
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string>QLabel { background: #E3F5EE; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+              </property>
+              <property name="text">
+               <string>📄</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignLeading</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat1Label">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 9px; font-weight: bold; color: #8FA89F; letter-spacing: 0.5px; }</string>
+              </property>
+              <property name="text">
+               <string>HEALTH RECORDS</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat1Value">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 28px; font-weight: bold; color: #1C2B25; }</string>
+              </property>
+              <property name="text">
+               <string>3</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat1Sub">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
+              </property>
+              <property name="text">
+               <string>Last: Mar 15, 2024</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="statCard2">
+           <property name="styleSheet">
+            <string>QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>18</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>18</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="stat2Icon">
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string>QLabel { background: #EAF3FC; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+              </property>
+              <property name="text">
+               <string>💉</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat2Label">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 9px; font-weight: bold; color: #8FA89F; letter-spacing: 0.5px; }</string>
+              </property>
+              <property name="text">
+               <string>VACCINATIONS</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat2Value">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 28px; font-weight: bold; color: #1C2B25; }</string>
+              </property>
+              <property name="text">
+               <string>2</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat2Sub">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
+              </property>
+              <property name="text">
+               <string>1 dose pending</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="statCard3">
+           <property name="styleSheet">
+            <string>QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>18</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>18</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="stat3Icon">
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string>QLabel { background: #FEF3DC; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+              </property>
+              <property name="text">
+               <string>📅</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat3Label">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 9px; font-weight: bold; color: #8FA89F; letter-spacing: 0.5px; }</string>
+              </property>
+              <property name="text">
+               <string>APPOINTMENTS</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat3Value">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 28px; font-weight: bold; color: #1C2B25; }</string>
+              </property>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat3Sub">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
+              </property>
+              <property name="text">
+               <string>Next: Apr 18, 2024</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="statCard4">
+           <property name="styleSheet">
+            <string>QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>18</number>
+            </property>
+            <property name="topMargin">
+             <number>16</number>
+            </property>
+            <property name="rightMargin">
+             <number>18</number>
+            </property>
+            <property name="bottomMargin">
+             <number>16</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="stat4Icon">
+              <property name="minimumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>36</width>
+                <height>36</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string>QLabel { background: #EEEAFC; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+              </property>
+              <property name="text">
+               <string>📁</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat4Label">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 9px; font-weight: bold; color: #8FA89F; letter-spacing: 0.5px; }</string>
+              </property>
+              <property name="text">
+               <string>DOCUMENTS</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat4Value">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 28px; font-weight: bold; color: #1C2B25; }</string>
+              </property>
+              <property name="text">
+               <string>4</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="stat4Sub">
+              <property name="styleSheet">
+               <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
+              </property>
+              <property name="text">
+               <string>2 linked this month</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="midRow">
+         <property name="spacing">
+          <number>16</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="cardActivity">
+           <property name="styleSheet">
+            <string>QFrame#cardActivity { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
+              <property name="topMargin">
+               <number>16</number>
+              </property>
+              <property name="rightMargin">
+               <number>20</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="actTitle">
+                <property name="styleSheet">
+                 <string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string>
+                </property>
+                <property name="text">
+                 <string>Recent Activity</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnViewAllActivity">
+                <property name="styleSheet">
+                 <string>QPushButton { background: transparent; color: #1A9E78; font-size: 11px; font-weight: 600; border: none; }</string>
+                </property>
+                <property name="text">
+                 <string>View all</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QFrame" name="actDivider">
+              <property name="styleSheet">
+               <string>QFrame { color: #DDE8E3; }</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::HLine</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QListWidget" name="activityList">
+              <property name="styleSheet">
+               <string>
+                QListWidget { background: transparent; border: none; outline: none; }
+                QListWidget::item { padding: 10px 20px; border-bottom: 1px solid #DDE8E3; color: #1C2B25; font-size: 12px; }
+                QListWidget::item:hover { background: #F8FBFA; }
+                QListWidget::item:selected { background: #E3F5EE; color: #1C2B25; }
+               </string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::NoFrame</enum>
+              </property>
+              <item>
+               <property name="text">
+                <string>📋  General Checkup — URTI  ·  Mar 15, 2024</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>💉  Hepatitis B Dose 1 administered  ·  Feb 28, 2024</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>📅  Follow-up appointment created  ·  Apr 18, 2024</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>🔔  Reminder auto-generated  ·  Remind: Apr 16, 2024</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="cardVitals">
+           <property name="styleSheet">
+            <string>QFrame#cardVitals { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
+              <property name="topMargin">
+               <number>16</number>
+              </property>
+              <property name="rightMargin">
+               <number>20</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="vitalsTitle">
+                <property name="styleSheet">
+                 <string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string>
+                </property>
+                <property name="text">
+                 <string>Latest Vitals</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="vitalsDate">
+                <property name="styleSheet">
+                 <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
+                </property>
+                <property name="text">
+                 <string>Mar 15, 2024</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QFrame" name="vitalsDivider">
+              <property name="styleSheet">
+               <string>QFrame { color: #DDE8E3; }</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::HLine</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTableWidget" name="vitalsTable">
+              <property name="styleSheet">
+               <string>
+                QTableWidget { background: transparent; border: none; font-size: 12px; gridline-color: #DDE8E3; }
+                QTableWidget::item { padding: 8px 20px; border-bottom: 1px solid #DDE8E3; color: #1C2B25; }
+                QHeaderView { display: none; }
+                QHeaderView::section { background: transparent; border: none; font-size: 10px; color: #8FA89F; padding: 6px 20px; }
+               </string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::NoFrame</enum>
+              </property>
+              <property name="verticalScrollBarPolicy">
+               <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="showGrid">
+               <bool>false</bool>
+              </property>
+              <property name="rowCount">
+               <number>5</number>
+              </property>
+              <property name="columnCount">
+               <number>3</number>
+              </property>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <row/>
+              <column>
+               <property name="text">
+                <string>Vital</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Value</string>
+               </property>
+              </column>
+              <column>
+               <property name="text">
+                <string>Status</string>
+               </property>
+              </column>
+              <item row="0" column="0">
+               <property name="text">
+                <string>Blood Pressure</string>
+               </property>
+              </item>
+              <item row="0" column="1">
+               <property name="text">
+                <string>130 / 85 mmHg</string>
+               </property>
+              </item>
+              <item row="0" column="2">
+               <property name="text">
+                <string>⚠ Watch</string>
+               </property>
+              </item>
+              <item row="1" column="0">
+               <property name="text">
+                <string>Weight</string>
+               </property>
+              </item>
+              <item row="1" column="1">
+               <property name="text">
+                <string>58 kg</string>
+               </property>
+              </item>
+              <item row="1" column="2">
+               <property name="text">
+                <string>✔ Normal</string>
+               </property>
+              </item>
+              <item row="2" column="0">
+               <property name="text">
+                <string>Temperature</string>
+               </property>
+              </item>
+              <item row="2" column="1">
+               <property name="text">
+                <string>37.2 °C</string>
+               </property>
+              </item>
+              <item row="2" column="2">
+               <property name="text">
+                <string>✔ Normal</string>
+               </property>
+              </item>
+              <item row="3" column="0">
+               <property name="text">
+                <string>Diagnosis</string>
+               </property>
+              </item>
+              <item row="3" column="1">
+               <property name="text">
+                <string>URTI</string>
+               </property>
+              </item>
+              <item row="3" column="2">
+               <property name="text">
+                <string/>
+               </property>
+              </item>
+              <item row="4" column="0">
+               <property name="text">
+                <string>Prescription</string>
+               </property>
+              </item>
+              <item row="4" column="1">
+               <property name="text">
+                <string>Amoxicillin 500mg</string>
+               </property>
+              </item>
+              <item row="4" column="2">
+               <property name="text">
+                <string/>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="bottomRow">
+         <property name="spacing">
+          <number>16</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="cardAppt">
+           <property name="styleSheet">
+            <string>QFrame#cardAppt { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
+              <property name="topMargin">
+               <number>16</number>
+              </property>
+              <property name="rightMargin">
+               <number>20</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="apptTitle">
+                <property name="styleSheet">
+                 <string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string>
+                </property>
+                <property name="text">
+                 <string>Upcoming Appointment</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnAddAppt">
+                <property name="styleSheet">
+                 <string>QPushButton { background: transparent; color: #546860; font-size: 11px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 7px; padding: 4px 12px; } QPushButton:hover { background: #E3F5EE; border-color: #9FE1CB; }</string>
+                </property>
+                <property name="text">
+                 <string>+ Add</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QFrame" name="frame">
+              <property name="styleSheet">
+               <string>QFrame { color: #DDE8E3; }</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::HLine</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout">
+              <property name="spacing">
+               <number>14</number>
+              </property>
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
+              <property name="topMargin">
+               <number>14</number>
+              </property>
+              <property name="rightMargin">
+               <number>20</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <layout class="QVBoxLayout">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="apptDay">
+                  <property name="styleSheet">
+                   <string>QLabel { font-size: 26px; font-weight: 800; color: #1A9E78; }</string>
+                  </property>
+                  <property name="text">
+                   <string>18</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="apptMonth">
+                  <property name="styleSheet">
+                   <string>QLabel { font-size: 9px; color: #8FA89F; letter-spacing: 0.5px; font-weight: 600; }</string>
+                  </property>
+                  <property name="text">
+                   <string>APR 2024</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QVBoxLayout">
+                <property name="spacing">
+                 <number>3</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="apptDoctor">
+                  <property name="styleSheet">
+                   <string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string>
+                  </property>
+                  <property name="text">
+                   <string>Dr. Ramon Santos</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="apptNote">
+                  <property name="styleSheet">
+                   <string>QLabel { font-size: 11px; color: #546860; }</string>
+                  </property>
+                  <property name="text">
+                   <string>General Follow-up · City Health Clinic</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="apptRemind">
+                  <property name="styleSheet">
+                   <string>QLabel { font-size: 10px; color: #C47B12; font-weight: 600; }</string>
+                  </property>
+                  <property name="text">
+                   <string>🔔  Reminder set: Apr 16</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="apptTime">
+                <property name="styleSheet">
+                 <string>QLabel { font-size: 11px; color: #8FA89F; }</string>
+                </property>
+                <property name="text">
+                 <string>10:00 AM</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="cardVaccine">
+           <property name="styleSheet">
+            <string>QFrame#cardVaccine { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout">
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
+              <property name="topMargin">
+               <number>16</number>
+              </property>
+              <property name="rightMargin">
+               <number>20</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="vaccTitle">
+                <property name="styleSheet">
+                 <string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string>
+                </property>
+                <property name="text">
+                 <string>Vaccine Progress</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnViewVacc">
+                <property name="styleSheet">
+                 <string>QPushButton { background: transparent; color: #1A9E78; font-size: 11px; font-weight: 600; border: none; }</string>
+                </property>
+                <property name="text">
+                 <string>View all</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QFrame" name="frame">
+              <property name="styleSheet">
+               <string>QFrame { color: #DDE8E3; }</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::HLine</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout">
+              <property name="spacing">
+               <number>12</number>
+              </property>
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
+              <property name="topMargin">
+               <number>14</number>
+              </property>
+              <property name="rightMargin">
+               <number>20</number>
+              </property>
+              <property name="bottomMargin">
+               <number>10</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="v1Icon">
+                <property name="minimumSize">
+                 <size>
+                  <width>36</width>
+                  <height>36</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>36</width>
+                  <height>36</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string>QLabel { background: #E3F5EE; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+                </property>
+                <property name="text">
+                 <string>💉</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="v1Name">
+                  <property name="styleSheet">
+                   <string>QLabel { font-size: 12px; font-weight: bold; color: #1C2B25; }</string>
+                  </property>
+                  <property name="text">
+                   <string>Hepatitis B</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="v1Meta">
+                  <property name="styleSheet">
+                   <string>QLabel { font-size: 10px; color: #546860; }</string>
+                  </property>
+                  <property name="text">
+                   <string>3-dose series · Dose 1 done</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout">
+                  <property name="spacing">
+                   <number>3</number>
+                  </property>
+                  <item>
+                   <widget class="QFrame" name="pip1a">
+                    <property name="minimumSize">
+                     <size>
+                      <width>20</width>
+                      <height>6</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>20</width>
+                      <height>6</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string>QFrame { background: #1A9E78; border-radius: 3px; }</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QFrame" name="pip1b">
+                    <property name="minimumSize">
+                     <size>
+                      <width>20</width>
+                      <height>6</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>20</width>
+                      <height>6</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string>QFrame { background: #C8D9D2; border-radius: 3px; }</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QFrame" name="pip1c">
+                    <property name="minimumSize">
+                     <size>
+                      <width>20</width>
+                      <height>6</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>20</width>
+                      <height>6</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string>QFrame { background: #C8D9D2; border-radius: 3px; }</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer>
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QFrame" name="frame">
+              <property name="styleSheet">
+               <string>QFrame { color: #DDE8E3; margin: 0 20px; }</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::HLine</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout">
+              <property name="spacing">
+               <number>12</number>
+              </property>
+              <property name="leftMargin">
+               <number>20</number>
+              </property>
+              <property name="topMargin">
+               <number>10</number>
+              </property>
+              <property name="rightMargin">
+               <number>20</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="v2Icon">
+                <property name="minimumSize">
+                 <size>
+                  <width>36</width>
+                  <height>36</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>36</width>
+                  <height>36</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string>QLabel { background: #E8F5EB; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+                </property>
+                <property name="text">
+                 <string>💉</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout">
+                <property name="spacing">
+                 <number>2</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="v2Name">
+                  <property name="styleSheet">
+                   <string>QLabel { font-size: 12px; font-weight: bold; color: #1C2B25; }</string>
+                  </property>
+                  <property name="text">
+                   <string>Influenza (Flu)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="v2Meta">
+                  <property name="styleSheet">
+                   <string>QLabel { font-size: 10px; color: #546860; }</string>
+                  </property>
+                  <property name="text">
+                   <string>Single dose · Complete</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout">
+                  <property name="spacing">
+                   <number>3</number>
+                  </property>
+                  <item>
+                   <widget class="QFrame" name="pip2a">
+                    <property name="minimumSize">
+                     <size>
+                      <width>20</width>
+                      <height>6</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>20</width>
+                      <height>6</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string>QFrame { background: #1A9E78; border-radius: 3px; }</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer>
+                    <property name="orientation">
+                     <enum>Qt::Orientation::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

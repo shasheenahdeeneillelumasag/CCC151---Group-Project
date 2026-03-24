@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogAddAppointment</class>
+ <widget class="QDialog" name="DialogAddAppointment">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>500</width><height>480</height></rect></property>
+  <property name="windowTitle"><string>Add Appointment</string></property>
+  <property name="styleSheet">
+   <string>
+    QDialog { background: #FFFFFF; font-family: "Segoe UI", sans-serif; }
+    QLabel { background: transparent; color: #1C2B25; }
+    QLineEdit, QComboBox, QTextEdit, QDateEdit, QTimeEdit {
+     border: 1px solid #C8D9D2; border-radius: 9px;
+     padding: 9px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF;
+    }
+    QLineEdit:focus, QDateEdit:focus, QTimeEdit:focus, QTextEdit:focus { border-color: #1A9E78; }
+    QComboBox::drop-down { border: none; width: 24px; }
+    QFrame#reminderBox { background: #E3F5EE; border: 1px solid #9FE1CB; border-radius: 9px; }
+   </string>
+  </property>
+  <layout class="QVBoxLayout" name="apptDialogLayout">
+   <property name="spacing"><number>0</number></property>
+   <property name="leftMargin"><number>0</number></property>
+   <property name="topMargin"><number>0</number></property>
+   <property name="rightMargin"><number>0</number></property>
+   <property name="bottomMargin"><number>0</number></property>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable"><bool>true</bool></property>
+     <property name="frameShape"><enum>QFrame::NoFrame</enum></property>
+     <widget class="QWidget" name="scrollContent">
+      <layout class="QVBoxLayout" name="contentLayout">
+       <property name="spacing"><number>18</number></property>
+       <property name="leftMargin"><number>24</number></property>
+       <property name="topMargin"><number>24</number></property>
+       <property name="rightMargin"><number>24</number></property>
+       <property name="bottomMargin"><number>24</number></property>
+       <item>
+        <layout class="QVBoxLayout" name="formGroup1">
+         <property name="spacing"><number>6</number></property>
+         <item><widget class="QLabel" name="labelDoctor"><property name="text"><string>DOCTOR / CLINIC NAME</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; }</string></property></widget></item>
+         <item><widget class="QLineEdit" name="inputDoctor"><property name="placeholderText"><string>e.g. Dr. Santos / City General Hospital</string></property></widget></item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="formGroupRow">
+         <property name="spacing"><number>12</number></property>
+         <item>
+          <layout class="QVBoxLayout" name="colDate">
+           <property name="spacing"><number>6</number></property>
+           <item><widget class="QLabel" name="labelDate"><property name="text"><string>DATE</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; }</string></property></widget></item>
+           <item><widget class="QDateEdit" name="inputDate"><property name="calendarPopup"><bool>true</bool></property></widget></item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="colTime">
+           <property name="spacing"><number>6</number></property>
+           <item><widget class="QLabel" name="labelTime"><property name="text"><string>TIME</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; }</string></property></widget></item>
+           <item><widget class="QTimeEdit" name="inputTime"/></item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="formGroupType">
+         <property name="spacing"><number>6</number></property>
+         <item><widget class="QLabel" name="labelType"><property name="text"><string>APPOINTMENT TYPE</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; }</string></property></widget></item>
+         <item>
+          <widget class="QComboBox" name="inputType">
+           <item><property name="text"><string>General Checkup</string></property></item>
+           <item><property name="text"><string>Specialist Consultation</string></property></item>
+           <item><property name="text"><string>Diagnostic / Lab Test</string></property></item>
+           <item><property name="text"><string>Dental</string></property></item>
+           <item><property name="text"><string>Follow-up</string></property></item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QFrame" name="reminderBox">
+         <layout class="QHBoxLayout" name="reminderLayout">
+          <property name="leftMargin"><number>12</number></property>
+          <property name="topMargin"><number>12</number></property>
+          <property name="rightMargin"><number>12</number></property>
+          <property name="bottomMargin"><number>12</number></property>
+          <item><widget class="QLabel" name="remIcon"><property name="text"><string>🔔</string></property><property name="styleSheet"><string>QLabel { font-size: 16px; }</string></property></widget></item>
+          <item>
+           <widget class="QLabel" name="remText">
+            <property name="text"><string>A reminder will be automatically set for 2 days before this appointment.</string></property>
+            <property name="wordWrap"><bool>true</bool></property>
+            <property name="styleSheet"><string>QLabel { font-size: 12px; color: #0D6B52; }</string></property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="dialogFoot">
+     <property name="styleSheet"><string>QFrame { border-top: 1px solid #DDE8E3; }</string></property>
+     <layout class="QHBoxLayout" name="footLayout">
+      <property name="leftMargin"><number>24</number></property>
+      <property name="topMargin"><number>14</number></property>
+      <property name="rightMargin"><number>24</number></property>
+      <property name="bottomMargin"><number>14</number></property>
+      <item><spacer name="spacerFoot"><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+      <item><widget class="QPushButton" name="btnCancel"><property name="text"><string>Cancel</string></property><property name="styleSheet"><string>QPushButton { background: transparent; color: #546860; font-size: 12px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 9px; padding: 8px 18px; }</string></property></widget></item>
+      <item><widget class="QPushButton" name="btnSave"><property name="text"><string>Save Appointment</string></property><property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; }</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogAddRecord</class>
+ <widget class="QDialog" name="DialogAddRecord">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>540</width>
+    <height>640</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>New Health Record</string>
+  </property>
+  <property name="styleSheet">
+   <string>
+    QDialog { background: #FFFFFF; font-family: &quot;Segoe UI&quot;, sans-serif; }
+    QLabel { background: transparent; color: #1C2B25; }
+    QLineEdit, QComboBox, QTextEdit, QDateEdit {
+     border: 1px solid #C8D9D2; border-radius: 9px;
+     padding: 9px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF;
+    }
+    QLineEdit:focus, QTextEdit:focus, QDateEdit:focus { border-color: #1A9E78; }
+    QComboBox::drop-down { border: none; width: 24px; }
+    QFrame#uploadZone { border: 2px dashed #C8D9D2; border-radius: 9px; background: #F8FBFA; }
+    QFrame#uploadZone:hover { border-color: #1A9E78; background: #E3F5EE; }
+   </string>
+  </property>
+  <layout class="QVBoxLayout" name="recordDialogLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="dialogHead">
+     <property name="styleSheet">
+      <string>QFrame { border-bottom: 1px solid #DDE8E3; }</string>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="topMargin">
+       <number>18</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <property name="bottomMargin">
+       <number>18</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="styleSheet">
+         <string>QLabel { font-size: 16px; font-weight: bold; color: #1C2B25; }</string>
+        </property>
+        <property name="text">
+         <string>New Health Record</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnClose">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string>QPushButton { background: #F1EFE8; color: #546860; border: none; border-radius: 15px; font-size: 13px; } QPushButton:hover { background: #DDE8E3; }</string>
+        </property>
+        <property name="text">
+         <string>✕</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="bodyScroll">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="bodyContent">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>-281</y>
+        <width>528</width>
+        <height>792</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout">
+       <property name="spacing">
+        <number>14</number>
+       </property>
+       <property name="leftMargin">
+        <number>24</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>24</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <layout class="QGridLayout">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <item row="0" column="0" colspan="2">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>VISIT DATE</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QDateEdit" name="inputVisitDate">
+             <property name="locale">
+              <locale language="English" country="AmericanSamoa"/>
+             </property>
+             <property name="displayFormat">
+              <string>MMMM d, yyyy</string>
+             </property>
+             <property name="calendarPopup">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>FACILITY / CLINIC</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="inputFacility">
+             <property name="placeholderText">
+              <string>e.g. City Health Clinic</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>DOCTOR NAME</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="inputDoctor">
+             <property name="placeholderText">
+              <string>e.g. Dr. Dela Cruz</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="0">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>BLOOD PRESSURE</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="inputBP">
+             <property name="placeholderText">
+              <string>e.g. 120/80 mmHg</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="1">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>WEIGHT (kg)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="inputWeight">
+             <property name="placeholderText">
+              <string>e.g. 58</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="4" column="0">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>TEMPERATURE (°C)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="inputTemp">
+             <property name="placeholderText">
+              <string>e.g. 37.2</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="4" column="1">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>HEIGHT (cm)</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="inputHeight">
+             <property name="placeholderText">
+              <string>e.g. 160</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>DIAGNOSIS</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="inputDiagnosis">
+             <property name="placeholderText">
+              <string>Doctor's diagnosis</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="6" column="0" colspan="2">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>PRESCRIPTIONS</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="inputRx">
+             <property name="placeholderText">
+              <string>List medications e.g. Amoxicillin 500mg, Cetirizine 10mg</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="7" column="0" colspan="2">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>NOTES</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextEdit" name="inputNotes">
+             <property name="placeholderText">
+              <string>Additional notes or observations</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="styleSheet">
+          <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+         </property>
+         <property name="text">
+          <string>ATTACH DOCUMENT</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="uploadZone">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <layout class="QVBoxLayout">
+          <property name="spacing">
+           <number>5</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="styleSheet">
+             <string>QLabel { font-size: 20px; color: #1A9E78; }</string>
+            </property>
+            <property name="text">
+             <string>⬆</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="styleSheet">
+             <string>QLabel { font-size: 12px; color: #546860; }</string>
+            </property>
+            <property name="text">
+             <string>Upload receipt, prescription or lab result</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="dialogFoot">
+     <property name="styleSheet">
+      <string>QFrame { border-top: 1px solid #DDE8E3; }</string>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="topMargin">
+       <number>14</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <property name="bottomMargin">
+       <number>14</number>
+      </property>
+      <item>
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnCancel">
+        <property name="styleSheet">
+         <string>QPushButton { background: transparent; color: #546860; font-size: 12px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #F2F7F5; }</string>
+        </property>
+        <property name="text">
+         <string>Cancel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnSave">
+        <property name="styleSheet">
+         <string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string>
+        </property>
+        <property name="text">
+         <string>Save Record</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
