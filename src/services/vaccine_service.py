@@ -1,8 +1,4 @@
-from datetime import date
-
-from models.vaccination_shot import (
-    VaccinationShot
-)
+from models.vaccination_shot import VaccinationShot
 
 from repositories.patient_repository import (
     PatientRepository
@@ -17,7 +13,9 @@ class VaccinationService:
 
     def __init__(self):
 
-        self.patient_repo = PatientRepository()
+        self.patient_repo = (
+            PatientRepository()
+        )
 
         self.vaccine_repo = (
             VaccinationRepository()
@@ -26,20 +24,18 @@ class VaccinationService:
     def add_vaccination(
         self,
         vaccination: VaccinationShot
-    ):
+    ) -> None:
 
         patient = self.patient_repo.get_by_id(
             vaccination.patient_id
         )
 
         if not patient:
-
             raise ValueError(
                 "Patient does not exist"
             )
 
         if vaccination.dose_number < 1:
-
             raise ValueError(
                 "Dose number must be positive"
             )
@@ -48,10 +44,10 @@ class VaccinationService:
             vaccination
         )
 
-    def mark_completed(
+    def complete_vaccination(
         self,
         vaccine_id: str
-    ):
+    ) -> None:
 
         vaccine = (
             self.vaccine_repo.get_by_id(
@@ -60,37 +56,52 @@ class VaccinationService:
         )
 
         if not vaccine:
-
             raise ValueError(
                 "Vaccination not found"
             )
 
-        vaccine.status = "Completed"
+        if vaccine.status == "Completed":
+            return
 
-        self.vaccine_repo.update(
-            vaccine
+        self.vaccine_repo.update_status(
+            vaccine_id,
+            "Completed"
         )
 
-    def get_pending_vaccines(self):
+    def get_patient_vaccinations(
+        self,
+        patient_id: str
+    ) -> list[VaccinationShot]:
+
+        return (
+            self.vaccine_repo
+            .get_by_patient(patient_id)
+        )
+
+    def get_pending_vaccinations(
+        self
+    ) -> list[VaccinationShot]:
 
         return (
             self.vaccine_repo
             .get_by_status("Pending")
         )
 
-    def get_overdue_vaccines(self):
+    def get_overdue_vaccinations(
+        self
+    ) -> list[VaccinationShot]:
 
-        vaccines = (
+        return (
             self.vaccine_repo
-            .get_by_status("Pending")
+            .get_overdue()
         )
 
-        overdue = []
+    def get_patient_vaccinations(
+        self,
+        patient_id: str
+    ):
 
-        for vaccine in vaccines:
-
-            if vaccine.schedule_date < date.today():
-
-                overdue.append(vaccine)
-
-        return overdue
+        return (
+            self.vaccine_repo
+            .get_by_patient(patient_id)
+        )

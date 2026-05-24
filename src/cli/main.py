@@ -1,6 +1,7 @@
 import typer
 from cli.patient_commands import patient_app
 from cli.appointment_commands import appointment_app
+from cli.vaccine_commands import vaccine_app
 from database.init_db import init_db
 
 app = typer.Typer()
@@ -15,6 +16,10 @@ app.add_typer(
     name="appointment"
 )
 
+app.add_typer(
+    vaccine_app,
+    name="vaccine"
+)
 
 
 if __name__ == "__main__":
