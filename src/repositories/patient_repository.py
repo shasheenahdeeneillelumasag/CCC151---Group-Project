@@ -1,14 +1,13 @@
-from models.patient import Patient
 from repositories.base_repository import BaseRepository
-
+from models.patient import Patient
 
 class PatientRepository(BaseRepository):
 
-    def create(self, patient: Patient):
+    def create(self, patient: Patient) -> Patient:
 
-        self.execute("""
+        patient_id = self.execute_returning_id("""
             INSERT INTO patient (
-                patient_id,
+                patient_code,
                 first_name,
                 last_name,
                 birthdate,
@@ -16,16 +15,32 @@ class PatientRepository(BaseRepository):
             )
             VALUES (?, ?, ?, ?, ?)
         """, (
-            patient.patient_id,
+            "",
             patient.first_name,
             patient.last_name,
             patient.birthdate,
             patient.sex
         ))
 
+        patient_code = f"P{patient_id:03d}"
+
+        self.execute("""
+            UPDATE patient
+            SET patient_code = ?
+            WHERE patient_id = ?
+        """, (
+            patient_code,
+            patient_id
+        ))
+
+        patient.patient_id = patient_id
+        patient.patient_code = patient_code
+
+        return patient
+
     def get_by_id(
         self,
-        patient_id: str
+        patient_id: int
     ) -> Patient | None:
 
         row = self.fetch_one("""
@@ -34,10 +49,10 @@ class PatientRepository(BaseRepository):
             WHERE patient_id = ?
         """, (patient_id,))
 
-        if row:
-            return Patient(**row)
+        if not row:
+            return None
 
-        return None
+        return self._map_row(row)
 
     def get_all(self) -> list[Patient]:
 
@@ -47,12 +62,53 @@ class PatientRepository(BaseRepository):
             ORDER BY last_name
         """)
 
-        return [
-            Patient(**row)
-            for row in rows
-        ]
+        return [self._map_row(row) for row in rows]
 
-    def update(self, patient: Patient):
+    def search(
+        self,
+        keyword: str
+    ) -> list[Patient]:
+
+        keyword = f"%{keyword}%"
+
+        rows = self.fetch_all("""
+            SELECT *
+            FROM patient
+            WHERE
+                patient_code LIKE ?
+                OR first_name LIKE ?
+                OR last_name LIKE ?
+        """, (
+            keyword,
+            keyword,
+            keyword
+        ))
+
+        return [self._map_row(row) for row in rows]
+
+    def delete(self, patient_id: int):
+
+        self.execute("""
+            DELETE FROM patient
+            WHERE patient_id = ?
+        """, (patient_id,))
+
+    @staticmethod
+    def _map_row(row) -> Patient:
+
+        return Patient(
+            patient_id=row["patient_id"],
+            patient_code=row["patient_code"],
+            first_name=row["first_name"],
+            last_name=row["last_name"],
+            birthdate=row["birthdate"],
+            sex=row["sex"]
+        )
+    
+    def update(self, patient: Patient) -> Patient:
+
+        if patient.patient_id is None:
+            raise ValueError("patient_id cannot be None for update")
 
         self.execute("""
             UPDATE patient
@@ -70,9 +126,4 @@ class PatientRepository(BaseRepository):
             patient.patient_id
         ))
 
-    def delete(self, patient_id: str):
-
-        self.execute("""
-            DELETE FROM patient
-            WHERE patient_id = ?
-        """, (patient_id,))
+        return self.get_by_id(patient.patient_id)

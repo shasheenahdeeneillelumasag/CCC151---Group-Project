@@ -4,11 +4,12 @@ from datetime import date
 
 @dataclass
 class VaccinationShot:
-    vaccine_id: str
+    vaccine_id: int
     vaccination_name: str
+
     date_administered: date
     facility: str
     dose_number: int
     schedule_date: date
     status: str
-    patient_id: str
+    patient_id: int

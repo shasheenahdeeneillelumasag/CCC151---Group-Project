@@ -1,6 +1,5 @@
 from database.connection import get_connection
 
-
 class BaseRepository:
 
     def execute(
@@ -8,29 +7,65 @@ class BaseRepository:
         query: str,
         params: tuple = ()
     ):
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query, params)
-            conn.commit()
+
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(query, params)
+
+        conn.commit()
+
+        conn.close()
+
+    def execute_returning_id(
+        self,
+        query: str,
+        params: tuple = ()
+    ) -> int:
+
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(query, params)
+
+        last_id = cursor.lastrowid
+
+        conn.commit()
+
+        conn.close()
+
+        return last_id
 
     def fetch_one(
         self,
         query: str,
         params: tuple = ()
     ):
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query, params)
 
-            return cursor.fetchone()
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(query, params)
+
+        row = cursor.fetchone()
+
+        conn.close()
+
+        return row
 
     def fetch_all(
         self,
         query: str,
         params: tuple = ()
     ):
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(query, params)
 
-            return cursor.fetchall()
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute(query, params)
+
+        rows = cursor.fetchall()
+
+        conn.close()
+
+        return rows

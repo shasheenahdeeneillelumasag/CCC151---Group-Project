@@ -4,7 +4,9 @@ from datetime import date, time
 
 @dataclass
 class Appointment:
-    appointment_id: str
+    appointment_id: int
+    appointment_code: str
+
     appt_date: date
     appt_time: time
     purpose: str

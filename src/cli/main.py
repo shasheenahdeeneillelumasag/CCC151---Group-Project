@@ -1,7 +1,6 @@
 import typer
 from cli.patient_commands import patient_app
-from cli.appointment_commands import appointment_app
-from cli.vaccine_commands import vaccine_app
+from cli.visit_record_commands import visit_record_app
 from database.init_db import init_db
 
 app = typer.Typer()
@@ -12,15 +11,9 @@ app.add_typer(
 )
 
 app.add_typer(
-    appointment_app,
-    name="appointment"
+    visit_record_app,
+    name="visit"
 )
-
-app.add_typer(
-    vaccine_app,
-    name="vaccine"
-)
-
 
 if __name__ == "__main__":
     init_db()
