@@ -54,6 +54,22 @@ class PatientRepository(BaseRepository):
 
         return self._map_row(row)
 
+    def get_by_code(
+        self,
+        patient_code: str
+    ) -> Patient | None:
+
+        row = self.fetch_one("""
+            SELECT *
+            FROM patient
+            WHERE patient_code = ?
+        """, (patient_code,))
+
+        if not row:
+            return None
+
+        return self._map_row(row)
+
     def get_all(self) -> list[Patient]:
 
         rows = self.fetch_all("""

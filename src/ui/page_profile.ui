@@ -438,7 +438,7 @@
            <item>
             <widget class="QLineEdit" name="inputEmail">
              <property name="text">
-              <string>shae.delacruz@gmail.com</string>
+              <string>thisisadummyemail@gmail.com</string>
              </property>
             </widget>
            </item>

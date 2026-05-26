@@ -3,13 +3,17 @@ from models.patient import Patient
 
 
 class PatientService:
-    def get_patient_by_code(self, code: str):
-        results = self.repo.search(code)
-        return results[0] if results else None
-
-
     def __init__(self):
         self.repo = PatientRepository()
+
+    def get_patient_by_code(
+        self,
+        patient_code: str
+    ) -> Patient | None:
+
+        return self.repo.get_by_code(
+            patient_code
+        )
 
     def register_patient(
         self,
