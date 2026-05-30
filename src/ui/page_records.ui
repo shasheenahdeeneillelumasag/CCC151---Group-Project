@@ -26,7 +26,19 @@
        <item><widget class="QLabel"><property name="text"><string>Health Records</string></property><property name="styleSheet"><string>QLabel { font-size: 18px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
        <item><widget class="QLabel"><property name="text"><string>Your complete medical visit history</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #8FA89F; }</string></property></widget></item>
       </layout></item>
-      <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+      <item>
+ <spacer name="horizontalSpacer">
+  <property name="orientation">
+   <enum>Qt::Horizontal</enum>
+  </property>
+  <property name="sizeHint" stdset="0">
+   <size>
+    <width>40</width>
+    <height>20</height>
+   </size>
+  </property>
+ </spacer>
+</item>
       <item><widget class="QLineEdit" name="searchInput"><property name="placeholderText"><string>🔍  Search records...</string></property><property name="minimumWidth"><number>200</number></property><property name="maximumWidth"><number>240</number></property></widget></item>
       <item><widget class="QPushButton" name="btnNewRecord"><property name="text"><string>＋  New Record</string></property><property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property></widget></item>
      </layout>
@@ -77,7 +89,19 @@
                <item><widget class="QLabel"><property name="text"><string>March 15, 2024  ·  City Health Clinic  ·  Dr. Dela Cruz  ·  📎 clinic_receipt.jpg</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; }</string></property></widget></item>
               </layout>
              </item>
-             <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+             <item>
+ <spacer name="horizontalSpacer">
+  <property name="orientation">
+   <enum>Qt::Horizontal</enum>
+  </property>
+  <property name="sizeHint" stdset="0">
+   <size>
+    <width>40</width>
+    <height>20</height>
+   </size>
+  </property>
+ </spacer>
+</item>
              <item><widget class="QLabel"><property name="text"><string>Checkup</string></property><property name="styleSheet"><string>QLabel { background: #EAF3FC; color: #1A4F8A; font-size: 10px; font-weight: bold; border-radius: 20px; padding: 2px 10px; }</string></property></widget></item>
             </layout>
            </widget>
@@ -97,7 +121,19 @@
                <item><widget class="QLabel"><property name="text"><string>January 10, 2024  ·  PhilHealth Clinic  ·  Dr. Santos  ·  📎 lab_results.pdf  📎 receipt_jan.jpg</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; }</string></property></widget></item>
               </layout>
              </item>
-             <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+             <item>
+ <spacer name="horizontalSpacer">
+  <property name="orientation">
+   <enum>Qt::Horizontal</enum>
+  </property>
+  <property name="sizeHint" stdset="0">
+   <size>
+    <width>40</width>
+    <height>20</height>
+   </size>
+  </property>
+ </spacer>
+</item>
              <item><widget class="QLabel"><property name="text"><string>Annual PE</string></property><property name="styleSheet"><string>QLabel { background: #E3F5EE; color: #0D6B52; font-size: 10px; font-weight: bold; border-radius: 20px; padding: 2px 10px; }</string></property></widget></item>
             </layout>
            </widget>
@@ -117,7 +153,19 @@
                <item><widget class="QLabel"><property name="text"><string>November 3, 2023  ·  QC General Hospital  ·  Dr. Mendoza</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; }</string></property></widget></item>
               </layout>
              </item>
-             <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+             <item>
+ <spacer name="horizontalSpacer">
+  <property name="orientation">
+   <enum>Qt::Horizontal</enum>
+  </property>
+  <property name="sizeHint" stdset="0">
+   <size>
+    <width>40</width>
+    <height>20</height>
+   </size>
+  </property>
+ </spacer>
+</item>
              <item><widget class="QLabel"><property name="text"><string>ER Visit</string></property><property name="styleSheet"><string>QLabel { background: #FCEAEA; color: #8C2828; font-size: 10px; font-weight: bold; border-radius: 20px; padding: 2px 10px; }</string></property></widget></item>
             </layout>
            </widget>
@@ -127,7 +175,19 @@
         </widget>
        </item>
 
-       <item><spacer><property name="orientation"><enum>Qt::Vertical</enum></property></spacer></item>
+       <item>
+ <spacer name="verticalSpacer">
+  <property name="orientation">
+   <enum>Qt::Vertical</enum>
+  </property>
+  <property name="sizeHint" stdset="0">
+   <size>
+    <width>20</width>
+    <height>40</height>
+   </size>
+  </property>
+ </spacer>
+</item>
       </layout>
      </widget>
     </widget>

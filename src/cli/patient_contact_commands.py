@@ -40,8 +40,8 @@ def list_by_patient(patient_code: str):
         typer.echo("Patient not found.")
         return
 
-    records = service.get_contacts_by_patient_code(
-        patient_code
+    records = service.get_contacts_by_patient_id(
+            patient.patient_id
     )
 
     if not records:
