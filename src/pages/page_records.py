@@ -1,113 +1,188 @@
 from PyQt6.QtWidgets import (
     QWidget,
-    QLabel,
     QFrame,
+    QLabel,
     QHBoxLayout,
-    QVBoxLayout,
-    QMessageBox
+    QVBoxLayout
 )
 
 from PyQt6 import uic
-from PyQt6.QtCore import Qt
 
-from services.visit_record_service import VisitRecordService
-
+from services.medical_history_service import (
+    MedicalHistoryService
+)
 
 class PageRecords(QWidget):
 
-    def __init__(self, patient_id: int):
+    def __init__(self, patient_id):
         super().__init__()
 
-        uic.loadUi("ui/page_records.ui", self)
+        uic.loadUi(
+            "ui/page_records.ui",
+            self
+        )
 
         self.patient_id = patient_id
-        self.service = VisitRecordService()
 
-        self.setup_tabs()
+        self.history_service = (MedicalHistoryService())
+
         self.load_records()
 
-        self.searchInput.textChanged.connect(self.on_search)
-        self.tabBar.currentChanged.connect(self.on_tab_changed)
-        self.btnNewRecord.clicked.connect(self.on_new_record)
+        self.searchInput.textChanged.connect(
+            self.search_records
+        )
 
-    # =========================================================
-    # UI SETUP
-    # =========================================================
+    def load_records(self):
 
-    def setup_tabs(self):
+        history = (
+            self.history_service
+            .get_patient_history(
+            self.patient_id
+        )
+        )
 
-        self.tabBar.addTab("All")
-        self.tabBar.addTab("Checkup")
-        self.tabBar.addTab("Annual PE")
-        self.tabBar.addTab("ER Visit")
+        self.populate_records(history)
 
-    # =========================================================
-    # LOAD RECORDS
-    # =========================================================
+    def search_records(self):
 
-    def load_records(self, keyword: str = "", category: str = "All"):
+        keyword = self.searchInput.text().strip().lower()
 
-        # remove old widgets
-        self.clear_record_widgets()
-
-        # fetch records
-        records = self.service.get_visit_records_by_patient_id(
+        history = self.history_service.get_patient_history(
             self.patient_id
         )
 
-        # search filter
-        if keyword:
-            keyword = keyword.lower()
+        if not keyword:
+            self.populate_records(history)
+            return
 
-            records = [
-                r for r in records
-                if keyword in (r.record_code or "").lower()
-            ]
+        filtered = []
 
-        # category filter
-        if category != "All":
-            records = [
-                r for r in records
-                if getattr(r, "category", "") == category
-            ]
+        for item in history:
 
-        # render
-        for record in records:
-            card = self.create_record_card(record)
-            self.recordsContainer.layout().addWidget(card)
+            record = item.record
 
-        self.recordsContainer.layout().addStretch()
+            diagnoses = " ".join(
+                d.diagnosis_name.lower()
+                for d in item.diagnoses
+            )
 
-    # =========================================================
-    # RECORD CARD
-    # =========================================================
+            prescriptions = " ".join(
+                p.medication_name.lower()
+                for p in item.prescriptions
+            )
 
-    def create_record_card(self, record):
+            haystack = (
+                f"{record.record_code} "
+                f"{record.visit_date} "
+                f"{diagnoses} "
+                f"{prescriptions}"
+            ).lower()
 
+            if keyword in haystack:
+                filtered.append(item)
+
+        self.populate_records(filtered)
+
+
+    def clear_records(self):
+
+        while self.recordsLayout.count():
+
+            item = self.recordsLayout.takeAt(0)
+
+            widget = item.widget()
+
+            if widget:
+                widget.deleteLater()
+
+    def populate_records(
+        self,
+        history
+    ):
+
+        self.clear_records()
+
+        for item in history:
+
+            card = self.create_history_card(
+                item
+            )
+
+            self.recordsLayout.addWidget(card)
+
+        self.recordsLayout.addStretch()
+
+    def create_history_card(self, item):
+
+        record = item.record
+
+        # =========================
+        # DIAGNOSES
+        # =========================
+        if item.diagnoses:
+            diagnosis_text = "\n".join(
+                f"• {d.diagnosis_name}"
+                for d in item.diagnoses
+            )
+        else:
+            diagnosis_text = "• None recorded"
+
+        # =========================
+        # PRESCRIPTIONS
+        # =========================
+        if item.prescriptions:
+            prescription_text = "\n".join(
+                f"• {p.medication_name} — {p.dosage}"
+                for p in item.prescriptions
+            )
+        else:
+            prescription_text = "• None prescribed"
+
+        # =========================
+        # ROOT CARD
+        # =========================
         frame = QFrame()
-        frame.setObjectName("recordCard")
 
-        layout = QHBoxLayout(frame)
-        layout.setContentsMargins(20, 14, 20, 14)
+        frame.setStyleSheet("""
+            QFrame {
+                border-bottom: 1px solid #DDE8E3;
+                background: white;
+            }
 
-        # icon
-        icon = QLabel("📋")
-        icon.setFixedSize(42, 42)
-        icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-
-        icon.setStyleSheet("""
-            background: #EAF3FC;
-            border-radius: 10px;
-            font-size: 18px;
+            QFrame:hover {
+                background: #F8FBFA;
+            }
         """)
 
-        layout.addWidget(icon)
+        root = QHBoxLayout(frame)
+        root.setContentsMargins(20, 14, 20, 14)
+        root.setSpacing(14)
 
-        # content
-        content_layout = QVBoxLayout()
+        # =========================
+        # ICON
+        # =========================
+        icon = QLabel("📋")
+        icon.setFixedSize(42, 42)
+
+        icon.setStyleSheet("""
+            QLabel {
+                background: #EAF3FC;
+                border-radius: 10px;
+                font-size: 18px;
+                padding: 4px;
+            }
+        """)
+
+        root.addWidget(icon)
+
+        # =========================
+        # CONTENT AREA
+        # =========================
+        info_layout = QVBoxLayout()
+        info_layout.setSpacing(4)
 
         title = QLabel(
-            f"{record.visit_date} — {record.record_code}"
+            f"{record.visit_date}  ·  {record.record_code}"
         )
 
         title.setStyleSheet("""
@@ -115,8 +190,6 @@ class PageRecords(QWidget):
             font-weight: bold;
             color: #1C2B25;
         """)
-
-        content_layout.addWidget(title)
 
         vitals = QLabel(
             f"BP: {record.blood_pressure or '-'}  ·  "
@@ -128,86 +201,62 @@ class PageRecords(QWidget):
             color: #546860;
         """)
 
-        content_layout.addWidget(vitals)
-
-        patient = QLabel(
-            f"Patient ID: {record.patient_id}"
-        )
-
-        patient.setStyleSheet("""
-            font-size: 10px;
-            color: #8FA89F;
-        """)
-
-        content_layout.addWidget(patient)
-
-        layout.addLayout(content_layout)
-
-        layout.addStretch()
-
-        # tag
-        tag = QLabel(
-            getattr(record, "category", "Record")
-        )
-
-        tag.setStyleSheet("""
-            background: #EAF3FC;
-            color: #1A4F8A;
-            font-size: 10px;
+        diagnosis_label = QLabel("Diagnoses")
+        diagnosis_label.setStyleSheet("""
+            font-size: 11px;
             font-weight: bold;
-            border-radius: 20px;
-            padding: 4px 10px;
+            color: #1C2B25;
+            margin-top: 6px;
         """)
 
-        layout.addWidget(tag)
+        diagnosis_value = QLabel(diagnosis_text)
+        diagnosis_value.setWordWrap(True)
+        diagnosis_value.setStyleSheet("""
+            font-size: 11px;
+            color: #546860;
+        """)
+
+        prescription_label = QLabel("Prescriptions")
+        prescription_label.setStyleSheet("""
+            font-size: 11px;
+            font-weight: bold;
+            color: #1C2B25;
+            margin-top: 6px;
+        """)
+
+        prescription_value = QLabel(prescription_text)
+        prescription_value.setWordWrap(True)
+        prescription_value.setStyleSheet("""
+            font-size: 11px;
+            color: #546860;
+        """)
+
+        info_layout.addWidget(title)
+        info_layout.addWidget(vitals)
+        info_layout.addWidget(diagnosis_label)
+        info_layout.addWidget(diagnosis_value)
+        info_layout.addWidget(prescription_label)
+        info_layout.addWidget(prescription_value)
+
+        root.addLayout(info_layout)
+        root.addStretch()
+
+        # =========================
+        # BADGE
+        # =========================
+        badge = QLabel("VISIT")
+
+        badge.setStyleSheet("""
+            QLabel {
+                background: #E3F5EE;
+                color: #0D6B52;
+                border-radius: 12px;
+                padding: 4px 10px;
+                font-size: 10px;
+                font-weight: bold;
+            }
+        """)
+
+        root.addWidget(badge)
 
         return frame
-
-    # =========================================================
-    # HELPERS
-    # =========================================================
-
-    def clear_record_widgets(self):
-
-        layout = self.recordsContainer.layout()
-
-        while layout.count():
-
-            item = layout.takeAt(0)
-
-            widget = item.widget()
-
-            if widget:
-                widget.deleteLater()
-
-    # =========================================================
-    # EVENTS
-    # =========================================================
-
-    def on_search(self):
-
-        keyword = self.searchInput.text()
-
-        category = self.tabBar.tabText(
-            self.tabBar.currentIndex()
-        )
-
-        self.load_records(keyword, category)
-
-    def on_tab_changed(self):
-
-        keyword = self.searchInput.text()
-
-        category = self.tabBar.tabText(
-            self.tabBar.currentIndex()
-        )
-
-        self.load_records(keyword, category)
-
-    def on_new_record(self):
-
-        QMessageBox.information(
-            self,
-            "New Record",
-            "Open create record dialog here."
-        )

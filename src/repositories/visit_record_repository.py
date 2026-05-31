@@ -136,3 +136,19 @@ class VisitRecordRepository(BaseRepository):
         """, (keyword,))
 
         return [self._map_row(row) for row in rows]
+
+    def get_by_code(
+        self,
+        record_code: str
+    ) -> VisitRecord | None:
+
+        row = self.fetch_one("""
+            SELECT *
+            FROM visit_record
+            WHERE record_code = ?
+        """, (record_code,))
+
+        if not row:
+            return None
+
+        return self._map_row(row)

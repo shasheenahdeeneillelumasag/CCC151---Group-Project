@@ -7,10 +7,12 @@ class VisitRecordService:
     def __init__(self):
         self.repo = VisitRecordRepository()
 
-    def get_record_by_code(self, code: str):
+    def get_record_by_code(
+        self,
+        code: str
+    ) -> VisitRecord | None:
 
-        results = self.repo.search(code)
-        return results[0] if results else None
+        return self.repo.get_by_code(code)
 
     def create_visit_record(
         self,
