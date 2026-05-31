@@ -1,7 +1,6 @@
 from repositories.diagnosis_repository import DiagnosisRepository
 from models.diagnosis import Diagnosis
 
-
 class DiagnosisService:
 
     def __init__(self):

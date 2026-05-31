@@ -12,6 +12,8 @@ from services.medical_history_service import (
     MedicalHistoryService
 )
 
+from dialogs.dialog_add_record import DialogAddRecord
+
 class PageRecords(QWidget):
 
     def __init__(self, patient_id):
@@ -30,6 +32,10 @@ class PageRecords(QWidget):
 
         self.searchInput.textChanged.connect(
             self.search_records
+        )
+
+        self.btnNewRecord.clicked.connect(
+            self.open_add_record_dialog
         )
 
     def load_records(self):
@@ -260,3 +266,15 @@ class PageRecords(QWidget):
         root.addWidget(badge)
 
         return frame
+
+    def open_add_record_dialog(self):
+
+        dialog = DialogAddRecord(
+            self.patient_id
+        )
+
+        result = dialog.exec()
+
+        if result:
+            self.load_records()
+
