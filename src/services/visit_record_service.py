@@ -1,7 +1,6 @@
 from repositories.visit_record_repository import VisitRecordRepository
 from models.visit_record import VisitRecord
 
-
 class VisitRecordService:
 
     def __init__(self):

@@ -3,20 +3,57 @@ from PyQt6.QtWidgets import (
     QFrame,
     QLabel,
     QHBoxLayout,
-    QVBoxLayout
+    QVBoxLayout,
+    QMessageBox
 )
 
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import QFrame
 from PyQt6 import uic
 
 from services.medical_history_service import (
     MedicalHistoryService
 )
 
+from services.patient_service import PatientService
+from services.visit_record_service import VisitRecordService
+from core.app_settings import AppSettings
 from dialogs.dialog_add_record import DialogAddRecord
+
+
+class HistoryCard(QFrame):
+    clicked = pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+
+        self.selected = False
+
+    def enterEvent(self, event):
+
+        if not self.selected:
+            self.content.setStyleSheet("""
+                background: #F8FBFA;
+            """)
+
+        super().enterEvent(event)
+
+    def leaveEvent(self, event):
+
+        if not self.selected:
+            self.content.setStyleSheet("""
+                background: white;
+            """)
+
+        super().leaveEvent(event)
+
+    def mousePressEvent(self, event):
+        self.clicked.emit()
+        super().mousePressEvent(event)
 
 class PageRecords(QWidget):
 
-    def __init__(self, patient_id):
+    def __init__(self):
         super().__init__()
 
         uic.loadUi(
@@ -24,7 +61,15 @@ class PageRecords(QWidget):
             self
         )
 
-        self.patient_id = patient_id
+        self.selected_record = None
+        self.selected_card = None
+
+        self.patient_service = PatientService()
+        self.visit_record_service = VisitRecordService()
+        self.settings = AppSettings()
+
+        self.active_patient = self.patient_service.get_patient_by_code(self.settings.get_active_patient_code())
+        self.patient_id = self.active_patient.patient_id
 
         self.history_service = (MedicalHistoryService())
 
@@ -36,6 +81,10 @@ class PageRecords(QWidget):
 
         self.btnNewRecord.clicked.connect(
             self.open_add_record_dialog
+        )
+
+        self.btnDeleteRecord.clicked.connect(
+            self.delete_record
         )
 
     def load_records(self):
@@ -101,19 +150,14 @@ class PageRecords(QWidget):
             if widget:
                 widget.deleteLater()
 
-    def populate_records(
-        self,
-        history
-    ):
+    def populate_records(self, history):
+        self.selected_card = None
+        self.selected_record = None
 
         self.clear_records()
 
         for item in history:
-
-            card = self.create_history_card(
-                item
-            )
-
+            card = self.create_history_card(item)
             self.recordsLayout.addWidget(card)
 
         self.recordsLayout.addStretch()
@@ -147,39 +191,58 @@ class PageRecords(QWidget):
         # =========================
         # ROOT CARD
         # =========================
-        frame = QFrame()
+        frame = HistoryCard()
 
         frame.setStyleSheet("""
             QFrame {
                 border-bottom: 1px solid #DDE8E3;
-                background: white;
-            }
-
-            QFrame:hover {
-                background: #F8FBFA;
             }
         """)
 
+        indicator = QWidget()
+        indicator.setFixedWidth(4)
+        indicator.setStyleSheet("""
+            background: transparent;
+        """)
+
+        content = QWidget()
+        content.setStyleSheet("""
+            background: white;
+        """)
+
+        frame.indicator = indicator
+        frame.content = content
+
         root = QHBoxLayout(frame)
-        root.setContentsMargins(20, 14, 20, 14)
-        root.setSpacing(14)
+        root.setContentsMargins(0, 0, 0, 0)
+        root.setSpacing(0)
+
+        root.addWidget(indicator)
+        root.addWidget(content)
+
+        content_layout = QHBoxLayout(content)
+        content_layout.setContentsMargins(20, 14, 20, 14)
+        content_layout.setSpacing(14)
+
+        root.addWidget(indicator)
+        root.addWidget(content)
 
         # =========================
         # ICON
         # =========================
         icon = QLabel("📋")
-        icon.setFixedSize(42, 42)
+        icon.setFixedSize(84, 84)
 
         icon.setStyleSheet("""
             QLabel {
                 background: #EAF3FC;
                 border-radius: 10px;
-                font-size: 18px;
+                font-size: 36px;
                 padding: 4px;
             }
         """)
 
-        root.addWidget(icon)
+        content_layout.addWidget(icon)
 
         # =========================
         # CONTENT AREA
@@ -244,8 +307,8 @@ class PageRecords(QWidget):
         info_layout.addWidget(prescription_label)
         info_layout.addWidget(prescription_value)
 
-        root.addLayout(info_layout)
-        root.addStretch()
+        content_layout.addLayout(info_layout)
+        content_layout.addStretch()
 
         # =========================
         # BADGE
@@ -263,7 +326,12 @@ class PageRecords(QWidget):
             }
         """)
 
-        root.addWidget(badge)
+        content_layout.addWidget(badge)
+
+        frame.clicked.connect(
+            lambda card=frame, data=item:
+            self.select_record(card, data)
+        )
 
         return frame
 
@@ -278,3 +346,62 @@ class PageRecords(QWidget):
         if result:
             self.load_records()
 
+    def delete_record(self):
+
+        if not self.selected_record:
+
+            QMessageBox.warning(
+                self,
+                "No Record Selected",
+                "Please select a medical record first."
+            )
+
+            return
+
+        reply = QMessageBox.question(
+            self,
+            "Delete Record",
+            "Are you sure you want to delete this record?",
+            QMessageBox.StandardButton.Yes |
+            QMessageBox.StandardButton.No
+        )
+
+        if reply != QMessageBox.StandardButton.Yes:
+            return
+
+        record_id = self.selected_record.record.record_id
+
+        self.visit_record_service.delete_visit_record(
+            record_id
+        )
+
+        self.selected_record = None
+        self.selected_card = None
+
+        self.load_records()
+
+    def select_record(self, card, item):
+
+        # reset previous selection
+        if self.selected_card:
+            self.selected_card.selected = False
+            self.selected_card.content.setStyleSheet("""
+                background: white;
+            """)
+
+            self.selected_card.indicator.setStyleSheet("""
+                background: transparent;
+            """)
+
+        # apply new selection
+        card.selected = True
+        card.content.setStyleSheet("""
+            background: #EAF7F3;
+        """)
+
+        card.indicator.setStyleSheet("""
+            background: #1A9E78;
+        """)
+
+        self.selected_card = card
+        self.selected_record = item

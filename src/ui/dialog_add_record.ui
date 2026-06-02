@@ -147,6 +147,8 @@
          <property name="spacing">
           <number>12</number>
          </property>
+
+         <!-- VISIT DATE -->
          <item row="0" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -177,6 +179,8 @@
            </item>
           </layout>
          </item>
+
+         <!-- FACILITY / CLINIC -->
          <item row="1" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -201,6 +205,8 @@
            </item>
           </layout>
          </item>
+
+         <!-- DOCTOR NAME -->
          <item row="2" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -225,6 +231,8 @@
            </item>
           </layout>
          </item>
+
+         <!-- BLOOD PRESSURE -->
          <item row="3" column="0">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -249,6 +257,8 @@
            </item>
           </layout>
          </item>
+
+         <!-- WEIGHT -->
          <item row="3" column="1">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -273,6 +283,8 @@
            </item>
           </layout>
          </item>
+
+         <!-- TEMPERATURE -->
          <item row="4" column="0">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -297,6 +309,8 @@
            </item>
           </layout>
          </item>
+
+         <!-- HEIGHT -->
          <item row="4" column="1">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -321,6 +335,8 @@
            </item>
           </layout>
          </item>
+
+         <!-- DIAGNOSIS (list-based) -->
          <item row="5" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -337,14 +353,50 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="inputDiagnosis">
-             <property name="placeholderText">
-              <string>Doctor's diagnosis</string>
+            <layout class="QHBoxLayout">
+             <property name="spacing">
+              <number>6</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="inputDiagnosisEntry">
+               <property name="placeholderText">
+                <string>Type a diagnosis and press Add</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnAddDiagnosis">
+               <property name="text">
+                <string>Add</string>
+               </property>
+               <property name="styleSheet">
+                <string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 14px; } QPushButton:hover { background: #0D6B52; }</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QListWidget" name="listDiagnosis">
+             <property name="styleSheet">
+              <string>QListWidget { border: 1px solid #C8D9D2; border-radius: 9px; padding: 4px; font-size: 13px; color: #1C2B25; background: #FFFFFF; min-height: 60px; } QListWidget::item { padding: 4px 6px; border-radius: 5px; } QListWidget::item:selected { background: #E3F5EE; color: #1C2B25; }</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelDiagnosisHint">
+             <property name="text">
+              <string>Select an item and press Delete to remove it.</string>
+             </property>
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; color: #8FA89E; }</string>
              </property>
             </widget>
            </item>
           </layout>
          </item>
+
+         <!-- PRESCRIPTIONS (list-based) -->
          <item row="6" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -361,14 +413,50 @@
             </widget>
            </item>
            <item>
-            <widget class="QTextEdit" name="inputRx">
-             <property name="placeholderText">
-              <string>List medications e.g. Amoxicillin 500mg, Cetirizine 10mg</string>
+            <layout class="QHBoxLayout">
+             <property name="spacing">
+              <number>6</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="inputRxEntry">
+               <property name="placeholderText">
+                <string>e.g. Amoxicillin 500mg — type and press Add</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnAddRx">
+               <property name="text">
+                <string>Add</string>
+               </property>
+               <property name="styleSheet">
+                <string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 14px; } QPushButton:hover { background: #0D6B52; }</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QListWidget" name="listRx">
+             <property name="styleSheet">
+              <string>QListWidget { border: 1px solid #C8D9D2; border-radius: 9px; padding: 4px; font-size: 13px; color: #1C2B25; background: #FFFFFF; min-height: 60px; } QListWidget::item { padding: 4px 6px; border-radius: 5px; } QListWidget::item:selected { background: #E3F5EE; color: #1C2B25; }</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelRxHint">
+             <property name="text">
+              <string>Select an item and press Delete to remove it.</string>
+             </property>
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; color: #8FA89E; }</string>
              </property>
             </widget>
            </item>
           </layout>
          </item>
+
+         <!-- NOTES -->
          <item row="7" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -393,6 +481,7 @@
            </item>
           </layout>
          </item>
+
         </layout>
        </item>
        <item>

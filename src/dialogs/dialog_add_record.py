@@ -27,6 +27,8 @@ class DialogAddRecord(QDialog):
         self.btnSave.clicked.connect(
             self.save_record
         )
+        self.btnAddDiagnosis.clicked.connect(self.add_diagnosis)
+        self.btnAddRx.clicked.connect(self.add_rx)
 
     def save_record(self):
 
@@ -41,9 +43,8 @@ class DialogAddRecord(QDialog):
         )
 
         # Optional diagnosis
-        diagnosis_name = self.inputDiagnosis.text().strip()
-
-        if diagnosis_name:
+        for i in range(self.listDiagnosis.count()):
+            diagnosis_name = self.listDiagnosis.item(i).text().strip()
 
             self.diagnosis_service.create_diagnosis(
                 diagnosis_name=diagnosis_name,
@@ -53,12 +54,11 @@ class DialogAddRecord(QDialog):
             )
 
         # Optional prescription
-        rx_text = self.inputRx.toPlainText().strip()
-
-        if rx_text:
+        for i in range(self.listRx.count()):
+            medication_name = self.listRx.item(i).text().strip()
 
             self.prescription_service.create_prescription(
-                medication_name=rx_text,
+                medication_name=medication_name,
                 dosage="",
                 prescribed_date=record.visit_date,
                 prescribed_by=self.inputDoctor.text(),
@@ -66,3 +66,21 @@ class DialogAddRecord(QDialog):
             )
 
         self.accept()
+
+    def add_diagnosis(self):
+        text = self.inputDiagnosisEntry.text().strip()
+
+        if not text:
+            return
+
+        self.listDiagnosis.addItem(text)
+        self.inputDiagnosisEntry.clear()
+
+    def add_rx(self):
+        text = self.inputRxEntry.text().strip()
+
+        if not text:
+            return
+
+        self.listRx.addItem(text)
+        self.inputRxEntry.clear()

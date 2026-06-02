@@ -147,7 +147,4 @@ class DiagnosisRepository(BaseRepository):
             WHERE diagnosis_code = ?
         """, (diagnosis_code,))
 
-        if not row:
-            return None
-
-        return self._map_row(row)
+        return Diagnosis(**row) if row else None

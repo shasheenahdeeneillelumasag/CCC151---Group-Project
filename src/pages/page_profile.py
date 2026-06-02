@@ -4,19 +4,22 @@ from PyQt6.QtCore import QDate
 
 from services.patient_service import PatientService
 from services.patient_contact_service import PatientContactService
-
+from core.app_settings import AppSettings
 
 class PageProfile(QWidget):
 
-    def __init__(self, patient_id):
+    def __init__(self):
         super().__init__()
 
         uic.loadUi("ui/page_profile.ui", self)
 
         self.patient_service = PatientService()
         self.contact_service = PatientContactService()
+        self.settings = AppSettings()
 
-        self.patient_id = patient_id
+        self.active_patient = self.patient_service.get_patient_by_code(self.settings.get_active_patient_code())
+
+        self.patient_id = self.active_patient.patient_id
 
         # keep track of current contact row
         self.contact_id = None

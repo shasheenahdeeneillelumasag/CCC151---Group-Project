@@ -87,9 +87,6 @@
       </item>
       <item>
        <spacer>
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
         <property name="sizeHint" stdset="0">
          <size>
           <width>0</width>
@@ -127,7 +124,7 @@
       <string>QScrollArea { background: #F2F7F5; border: none; }</string>
      </property>
      <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
+      <enum>QFrame::NoFrame</enum>
      </property>
      <property name="widgetResizable">
       <bool>true</bool>
@@ -137,8 +134,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>1038</width>
-        <height>867</height>
+        <width>1050</width>
+        <height>759</height>
        </rect>
       </property>
       <layout class="QVBoxLayout">
@@ -179,31 +176,6 @@
            <number>20</number>
           </property>
           <item>
-           <widget class="QLabel" name="heroAvatar">
-            <property name="minimumSize">
-             <size>
-              <width>68</width>
-              <height>68</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>68</width>
-              <height>68</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string>QLabel { background: #1A9E78; color: #FFF; font-size: 24px; font-weight: 800; border-radius: 34px; border: 3px solid #FFFFFF; }</string>
-            </property>
-            <property name="text">
-             <string>MR</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignmentFlag::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
            <layout class="QVBoxLayout">
             <property name="spacing">
              <number>3</number>
@@ -239,29 +211,6 @@
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <spacer>
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnChangePhoto">
-            <property name="styleSheet">
-             <string>QPushButton { background: transparent; color: #546860; font-size: 11px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 8px; padding: 6px 14px; } QPushButton:hover { background: #FFFFFF; }</string>
-            </property>
-            <property name="text">
-             <string>Change Photo</string>
-            </property>
-           </widget>
           </item>
          </layout>
         </widget>
@@ -299,7 +248,7 @@
            <item>
             <widget class="QLineEdit" name="inputFirstName">
              <property name="text">
-              <string>Shae</string>
+              <string>Juan</string>
              </property>
             </widget>
            </item>
@@ -431,39 +380,55 @@
               <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
              </property>
              <property name="text">
-              <string>EMAIL ADDRESS</string>
+              <string>BLOOD TYPE</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="inputEmail">
-             <property name="text">
-              <string>thisisadummyemail@gmail.com</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="0" colspan="2">
-          <layout class="QVBoxLayout">
-           <property name="spacing">
-            <number>5</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="label">
+            <widget class="QComboBox" name="inputBloodType">
              <property name="styleSheet">
-              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+              <string>QComboBox { border: 1px solid #C8D9D2; border-radius: 9px; padding: 9px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF; } QComboBox:focus { border-color: #1A9E78; } QComboBox::drop-down { border: none; width: 24px; }</string>
              </property>
-             <property name="text">
-              <string>HOME ADDRESS</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="inputAddress">
-             <property name="text">
-              <string>123 Mabini St., Iligan City, Lanao del Norte </string>
-             </property>
+             <item>
+              <property name="text">
+               <string>O+</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>O-</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>A+</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>A-</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>B+</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>B-</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>AB+</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>AB-</string>
+              </property>
+             </item>
             </widget>
            </item>
           </layout>
@@ -560,139 +525,7 @@
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="secMedical">
-         <property name="styleSheet">
-          <string>QLabel { font-size: 11px; font-weight: bold; color: #0D6B52; letter-spacing: 0.6px; border-bottom: 1.5px solid #9FE1CB; padding: 22px 0 8px 0; }</string>
-         </property>
-         <property name="text">
-          <string>MEDICAL BACKGROUND</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QGridLayout" name="medicalGrid">
-         <property name="spacing">
-          <number>14</number>
-         </property>
-         <item row="0" column="0">
-          <layout class="QVBoxLayout">
-           <property name="spacing">
-            <number>5</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="styleSheet">
-              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
-             </property>
-             <property name="text">
-              <string>BLOOD TYPE</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="inputBloodType">
-             <property name="styleSheet">
-              <string>QComboBox { border: 1px solid #C8D9D2; border-radius: 9px; padding: 9px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF; } QComboBox:focus { border-color: #1A9E78; } QComboBox::drop-down { border: none; width: 24px; }</string>
-             </property>
-             <item>
-              <property name="text">
-               <string>O+</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>O-</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>A+</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>A-</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>B+</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>B-</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>AB+</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>AB-</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="0" column="1">
-          <layout class="QVBoxLayout">
-           <property name="spacing">
-            <number>5</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="styleSheet">
-              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
-             </property>
-             <property name="text">
-              <string>ALLERGIES</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="inputAllergies">
-             <property name="text">
-              <string>None known</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0" colspan="2">
-          <layout class="QVBoxLayout">
-           <property name="spacing">
-            <number>5</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="styleSheet">
-              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
-             </property>
-             <property name="text">
-              <string>EXISTING CONDITIONS</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="inputConditions">
-             <property name="text">
-              <string>None</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
         <spacer>
-         <property name="orientation">
-          <enum>Qt::Orientation::Vertical</enum>
-         </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>0</width>
