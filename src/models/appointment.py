@@ -12,4 +12,4 @@ class Appointment:
     purpose: str
     clinic_name: str
     status: str
-    patient_id: str
+    patient_id: int
