@@ -1,7 +1,7 @@
 import sys
 from datetime import date
 
-from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QApplication
+from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget
 from PyQt6 import uic
 
 from database.init_db import init_db
@@ -29,11 +29,18 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/main_window.ui", self)
-        self.centralWidget.setStyleSheet("""
-            QWidget#centralWidget > QVBoxLayout > QWidget {
-                background-color: #1A9E78;
-            }
-        """)
+
+        self.centralWidget.setStyleSheet("background-color: #1A9E78;")
+        self.stackedWidget.setStyleSheet("background-color: #F2F7F5;")
+
+        pages = [
+            self.pageDashboard, self.pageAppointments, self.pageVaccinations,
+            self.pageRecords, self.pageProfile, self.pageDocuments, self.pageReminders
+        ]
+        
+        for page in pages:
+            page.setStyleSheet("background-color: #F2F7F5;")
+
         layout = self.centralWidget.layout()
  
         layout.setStretch(0, 0)
