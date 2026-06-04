@@ -3,6 +3,9 @@ from PyQt6.QtWidgets import QApplication
 
 from pages.page_profile import PageProfile
 from pages.page_records import PageRecords
+from pages.page_documents import PageDocuments
+from pages.page_vaccination import PageVaccinations
+
 from core.app_settings import AppSettings
 
 settings = AppSettings()
@@ -17,7 +20,7 @@ if not patient_code:
     )
 
 
-window = PageRecords()
+window = PageVaccinations()
 
 window.show()
 
