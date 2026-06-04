@@ -1,8 +1,11 @@
+import os
+from PyQt6.QtGui import QIcon
 import sys
 from datetime import date
 
 from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget
 from PyQt6 import uic
+from PyQt6.QtCore import QSize
 
 from database.init_db import init_db
 from core.app_settings import AppSettings
@@ -25,10 +28,11 @@ from widgets.reminder_card import reminder_status, _parse_date
 
 
 class MainWindow(QMainWindow):
-
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/main_window.ui", self)
+
+        self.apply_navigation_icons()
 
         self.centralWidget.setStyleSheet("background-color: #1A9E78;")
         self.stackedWidget.setStyleSheet("background-color: #F2F7F5;")
@@ -45,6 +49,32 @@ class MainWindow(QMainWindow):
  
         layout.setStretch(0, 0)
         layout.setStretch(1, 1) 
+    
+    def load_icon(self, button, icon_name):
+        icon_path = os.path.join(os.path.dirname(__file__), '..', 'assets', icon_name)
+        
+        if os.path.exists(icon_path):
+            button.setIcon(QIcon(icon_path))
+            button.setIconSize(QSize(20, 20))
+        
+        else:
+            print(f"Warning: Icon not found at {icon_path}")
+      
+    def apply_navigation_icons(self):
+        self.load_icon(self.navDashboard, "dashboard.svg")
+        self.load_icon(self.navProfile, "account_circle.svg")
+        self.load_icon(self.navRecords, "description.svg")
+        self.load_icon(self.navVaccinations, "vaccines.svg")
+        self.load_icon(self.navAppointments, "calendar_month.svg")
+        self.load_icon(self.navReminders, "notifications.svg")
+        self.load_icon(self.navDocuments, "draft.svg")
+
+        self.setStyleSheet("""
+            QPushButton {
+                padding: 8px;
+                text-align: left;
+            }
+        """)
 
         self.settings        = AppSettings()
         self.patient_service = PatientService()
@@ -117,20 +147,26 @@ class MainWindow(QMainWindow):
     #  Embed helper 
 
     def _embed(self, slot_widget, page_widget):
-        """Embed a page widget into its stacked widget slot."""
-        layout = QVBoxLayout(slot_widget)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
+        layout = slot_widget.layout()
+        if layout is None:
+            layout = QVBoxLayout(slot_widget)
+            layout.setContentsMargins(0, 0, 0, 0)
+            layout.setSpacing(0)
+        
+        while layout.count():
+            item = layout.takeAt(0)
+            if item.widget():
+                item.widget().setParent(None)
+        
         layout.addWidget(page_widget)
+        page_widget.show()
 
     #  Navigation 
 
     def _navigate(self, index: int):
-        self.stackedWidget.setCurrentWidget(self._pages[index])
-
+        self.stackedWidget.setCurrentIndex(index) 
         for i, btn in enumerate(self._nav_buttons):
             btn.setChecked(i == index)
-
         self._update_badges()
 
     #  Patient chip 
