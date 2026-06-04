@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <ui version="4.0">
  <class>DialogAddRecord</class>
  <widget class="QDialog" name="DialogAddRecord">
@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string>
-    QDialog { background: #FFFFFF; font-family: &quot;Segoe UI&quot;, sans-serif; }
+    QDialog { background: #FFFFFF; font-family: "Segoe UI", sans-serif; }
     QLabel { background: transparent; color: #1C2B25; }
     QLineEdit, QComboBox, QTextEdit, QDateEdit {
      border: 1px solid #C8D9D2; border-radius: 9px;
@@ -74,7 +74,7 @@
       <item>
        <spacer>
         <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -148,7 +148,7 @@
           <number>12</number>
          </property>
 
-         <!-- VISIT DATE -->
+         
          <item row="0" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -167,7 +167,7 @@
            <item>
             <widget class="QDateEdit" name="inputVisitDate">
              <property name="locale">
-              <locale language="English" country="AmericanSamoa"/>
+              <locale language="English" country="AmericanSamoa" />
              </property>
              <property name="displayFormat">
               <string>MMMM d, yyyy</string>
@@ -180,7 +180,7 @@
           </layout>
          </item>
 
-         <!-- FACILITY / CLINIC -->
+         
          <item row="1" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -206,7 +206,7 @@
           </layout>
          </item>
 
-         <!-- DOCTOR NAME -->
+         
          <item row="2" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -232,7 +232,7 @@
           </layout>
          </item>
 
-         <!-- BLOOD PRESSURE -->
+         
          <item row="3" column="0">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -258,7 +258,7 @@
           </layout>
          </item>
 
-         <!-- WEIGHT -->
+         
          <item row="3" column="1">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -284,7 +284,7 @@
           </layout>
          </item>
 
-         <!-- TEMPERATURE -->
+         
          <item row="4" column="0">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -310,7 +310,7 @@
           </layout>
          </item>
 
-         <!-- HEIGHT -->
+         
          <item row="4" column="1">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -336,7 +336,7 @@
           </layout>
          </item>
 
-         <!-- DIAGNOSIS (list-based) -->
+         
          <item row="5" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -396,7 +396,7 @@
           </layout>
          </item>
 
-         <!-- PRESCRIPTIONS (list-based) -->
+         
          <item row="6" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -456,7 +456,7 @@
           </layout>
          </item>
 
-         <!-- NOTES -->
+         
          <item row="7" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
@@ -557,7 +557,7 @@
       <item>
        <spacer>
         <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -592,6 +592,6 @@
    </item>
   </layout>
  </widget>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

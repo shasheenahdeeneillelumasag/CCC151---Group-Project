@@ -1,0 +1,197 @@
+from datetime import date, datetime, timedelta
+
+from PyQt6.QtWidgets import (
+    QFrame, QLabel, QHBoxLayout, QVBoxLayout,
+    QPushButton, QSizePolicy
+)
+from PyQt6.QtCore import Qt, pyqtSignal
+
+from models.appointment import Appointment
+
+
+def _parse_date(value) -> date | None:
+    if isinstance(value, date):
+        return value
+    if isinstance(value, str):
+        try:
+            return datetime.strptime(value, "%Y-%m-%d").date()
+        except ValueError:
+            return None
+    return None
+
+
+def _fmt_date(value) -> str:
+    d = _parse_date(value)
+    return d.strftime("%B %d, %Y") if d else "—"
+
+
+def compute_remind_on(appt_date) -> date | None:
+    """Returns the date 2 days before the appointment."""
+    d = _parse_date(appt_date)
+    return (d - timedelta(days=2)) if d else None
+
+
+def reminder_status(appt: Appointment) -> str:
+    """
+    Returns one of: 'flagged', 'upcoming', 'completed', 'dismissed'
+    based on today's date vs the appointment.
+    """
+    appt_date   = _parse_date(appt.appt_date)
+    remind_on   = compute_remind_on(appt_date)
+    today       = date.today()
+
+    if appt.status == "Cancelled":
+        return "dismissed"
+    if appt_date and today > appt_date:
+        return "completed"
+    if remind_on and today >= remind_on:
+        return "flagged"
+    return "upcoming"
+
+
+class ReminderCard(QFrame):
+    """
+    A single reminder row for use inside the remList card.
+    Emits view_clicked(appointment) when the › button is pressed.
+    """
+
+    view_clicked = pyqtSignal(object) 
+
+    def __init__(self, appt: Appointment, show_divider: bool = True):
+        super().__init__()
+        self.appt = appt
+
+        status      = reminder_status(appt)
+        appt_date   = _parse_date(appt.appt_date)
+        remind_on   = compute_remind_on(appt_date)
+        today       = date.today()
+
+        days_away   = (appt_date - today).days if appt_date else None
+
+        #  Row background 
+        obj_name = f"remCard_{id(self)}"
+        self.setObjectName(obj_name)
+
+        if status == "flagged":
+            row_bg = "#FFFBF0"
+        else:
+            row_bg = "transparent"
+
+        border = "border-bottom: 1px solid #DDE8E3;" if show_divider else ""
+        self.setStyleSheet(f"""
+            QFrame#{obj_name} {{
+                background: {row_bg};
+                {border}
+            }}
+            QFrame#{obj_name}:hover {{
+                background: #F8FBFA;
+            }}
+        """)
+
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(20, 15, 20, 15)
+        layout.setSpacing(14)
+
+        # Icon 
+        if status == "flagged":
+            icon_text, icon_bg = "🔔", "#FEF3DC"
+        elif status == "completed":
+            icon_text, icon_bg = "✔", "#E8F5EB"
+        elif status == "dismissed":
+            icon_text, icon_bg = "✕", "#FAE8E8"
+        else:
+            icon_text, icon_bg = "🗓", "#EAF3FC"
+
+        icon = QLabel(icon_text)
+        icon.setFixedSize(40, 40)
+        icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        icon.setStyleSheet(f"""
+            QLabel {{
+                background: {icon_bg};
+                border-radius: 10px;
+                font-size: 17px;
+                padding: 4px;
+            }}
+        """)
+        layout.addWidget(icon)
+
+        # Info 
+        info = QVBoxLayout()
+        info.setSpacing(3)
+
+        lbl_title = QLabel(appt.purpose)
+        lbl_title.setStyleSheet("font-size: 13px; font-weight: bold; color: #1C2B25;")
+        info.addWidget(lbl_title)
+
+        lbl_meta = QLabel(f"{appt.clinic_name}  ·  {appt.appt_time}")
+        lbl_meta.setStyleSheet("font-size: 11px; color: #546860;")
+        info.addWidget(lbl_meta)
+
+        if status == "flagged" and days_away is not None:
+            flag_text = (
+                f"🔔  Flagged today — appointment is "
+                f"{'today' if days_away == 0 else f'{days_away} day(s) away'}"
+                f" ({_fmt_date(appt_date)})"
+            )
+            lbl_flag = QLabel(flag_text)
+            lbl_flag.setStyleSheet("font-size: 10px; color: #C47B12; font-weight: 600;")
+            info.addWidget(lbl_flag)
+        elif status == "upcoming" and remind_on:
+            lbl_flag = QLabel(f"Reminder will flag on {_fmt_date(remind_on)}")
+            lbl_flag.setStyleSheet("font-size: 10px; color: #8FA89F;")
+            info.addWidget(lbl_flag)
+
+        lbl_dates = QLabel(
+            f"remind_on: {_fmt_date(remind_on)}   ·   "
+            f"appointment_date: {_fmt_date(appt_date)}"
+        )
+        lbl_dates.setStyleSheet("font-size: 10px; color: #8FA89F; font-style: italic;")
+        info.addWidget(lbl_dates)
+
+        layout.addLayout(info)
+        layout.addStretch()
+
+        # Right: badge + view button 
+        right = QVBoxLayout()
+        right.setSpacing(8)
+        right.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
+
+        badge_styles = {
+            "flagged":   ("#FBDF9E", "#7A4D0A", "Flagged"),
+            "completed": ("#E8F5EB", "#1F5C2E", "Completed"),
+            "dismissed": ("#FAE8E8", "#8A1F1F", "Dismissed"),
+            "upcoming":  ("#EAF3FC", "#1A4F8A", "Upcoming"),
+        }
+        bg, fg, label = badge_styles.get(status, ("#F0F0F0", "#555", status.title()))
+
+        badge = QLabel(f"  {label}  ")
+        badge.setAlignment(Qt.AlignmentFlag.AlignRight)
+        badge.setStyleSheet(f"""
+            QLabel {{
+                background: {bg};
+                color: {fg};
+                font-size: 10px;
+                font-weight: bold;
+                border-radius: 20px;
+                padding: 2px 4px;
+            }}
+        """)
+        badge.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        right.addWidget(badge)
+
+        view_btn = QPushButton("›")
+        view_btn.setFixedSize(30, 30)
+        view_btn.setStyleSheet("""
+            QPushButton {
+                background: transparent;
+                color: #546860;
+                font-size: 18px;
+                border: 1px solid #DDE8E3;
+                border-radius: 7px;
+            }
+            QPushButton:hover { background: #E3F5EE; }
+        """)
+        view_btn.clicked.connect(lambda: self.view_clicked.emit(self.appt))
+        right.addWidget(view_btn)
+
+        layout.addLayout(right)

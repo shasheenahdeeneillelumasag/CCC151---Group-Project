@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <ui version="4.0">
  <class>DialogAddVaccination</class>
  <widget class="QDialog" name="DialogAddVaccination">
@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string>
-    QDialog { background: #FFFFFF; font-family: &quot;Segoe UI&quot;, sans-serif; }
+    QDialog { background: #FFFFFF; font-family: "Segoe UI", sans-serif; }
     QLabel { background: transparent; color: #1C2B25; }
     QLineEdit, QComboBox, QDateEdit { border: 1px solid #C8D9D2; border-radius: 9px; padding: 9px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF; }
     QLineEdit:focus, QDateEdit:focus { border-color: #1A9E78; }
@@ -71,7 +71,7 @@
       <item>
        <spacer>
         <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -210,7 +210,7 @@
            <item>
             <widget class="QDateEdit" name="inputDateAdmin">
              <property name="locale">
-              <locale language="English" country="AmericanSamoa"/>
+              <locale language="English" country="AmericanSamoa" />
              </property>
              <property name="displayFormat">
               <string>MMMM d, yyyy</string>
@@ -465,7 +465,7 @@
       <item>
        <spacer>
         <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -500,6 +500,6 @@
    </item>
   </layout>
  </widget>
- <resources/>
- <connections/>
+ <resources />
+ <connections />
 </ui>

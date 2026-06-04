@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <ui version="4.0">
  <class>PageReminders</class>
  <widget class="QWidget" name="PageReminders">
@@ -10,7 +10,7 @@
    <property name="spacing"><number>0</number></property>
    <property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property>
 
-   <!-- Topbar -->
+   
    <item>
     <widget class="QFrame" name="topbar">
      <property name="styleSheet"><string>QFrame { background: #FFFFFF; border-bottom: 1px solid #DDE8E3; }</string></property>
@@ -20,7 +20,7 @@
        <item><widget class="QLabel"><property name="text"><string>Reminders</string></property><property name="styleSheet"><string>QLabel { font-size: 18px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
        <item><widget class="QLabel"><property name="text"><string>Auto-generated appointment reminders</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #8FA89F; }</string></property></widget></item>
       </layout></item>
-      <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+      <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
       <item><widget class="QLabel"><property name="text"><string>  1 Active Reminder  </string></property><property name="styleSheet"><string>QLabel { background: #FEF3DC; color: #7A4D0A; font-size: 11px; font-weight: bold; border-radius: 20px; padding: 5px 6px; }</string></property></widget></item>
      </layout>
     </widget>
@@ -36,7 +36,7 @@
        <property name="spacing"><number>16</number></property>
        <property name="leftMargin"><number>28</number></property><property name="topMargin"><number>24</number></property><property name="rightMargin"><number>28</number></property><property name="bottomMargin"><number>28</number></property>
 
-       <!-- Active reminder banner -->
+       
        <item>
         <widget class="QFrame" name="activeBanner">
          <property name="styleSheet"><string>QFrame#activeBanner { background: #FEF3DC; border: 1.5px solid #FBDF9E; border-radius: 14px; }</string></property>
@@ -51,7 +51,7 @@
              <layout class="QHBoxLayout"><property name="spacing"><number>8</number></property>
               <item><widget class="QPushButton" name="btnViewDetails"><property name="text"><string>View Details</string></property><property name="styleSheet"><string>QPushButton { background: #C47B12; color: #FFF; font-size: 11px; font-weight: 600; border: none; border-radius: 6px; padding: 6px 14px; } QPushButton:hover { background: #7A4D0A; }</string></property></widget></item>
               <item><widget class="QPushButton" name="btnDismiss"><property name="text"><string>Dismiss</string></property><property name="styleSheet"><string>QPushButton { background: rgba(196,123,18,0.12); color: #7A4D0A; font-size: 11px; font-weight: 600; border: none; border-radius: 6px; padding: 6px 14px; } QPushButton:hover { background: rgba(196,123,18,0.22); }</string></property></widget></item>
-              <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+              <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
              </layout>
             </item>
            </layout>
@@ -60,7 +60,7 @@
         </widget>
        </item>
 
-       <!-- All reminders list -->
+       
        <item><widget class="QLabel"><property name="text"><string>ALL REMINDERS</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #8FA89F; letter-spacing: 0.6px; }</string></property></widget></item>
 
        <item>
@@ -68,7 +68,7 @@
          <property name="styleSheet"><string>QFrame#remList { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string></property>
          <layout class="QVBoxLayout"><property name="spacing"><number>0</number></property><property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property>
 
-          <!-- Reminder 1: Active / Flagged -->
+          
           <item>
            <widget class="QFrame" name="rem1">
             <property name="styleSheet"><string>QFrame#rem1 { background: #FFFBF0; border-bottom: 1px solid #DDE8E3; }</string></property>
@@ -82,7 +82,7 @@
                <item><widget class="QLabel"><property name="text"><string>remind_on: April 16, 2024   ·   appointment_date: April 18, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; font-style: italic; }</string></property></widget></item>
               </layout>
              </item>
-             <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+             <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
              <item>
               <layout class="QVBoxLayout"><property name="spacing"><number>8</number></property>
                <item><widget class="QLabel"><property name="text"><string>  Flagged  </string></property><property name="alignment"><set>AlignRight</set></property><property name="styleSheet"><string>QLabel { background: #FBDF9E; color: #7A4D0A; font-size: 10px; font-weight: bold; border-radius: 20px; padding: 2px 4px; }</string></property></widget></item>
@@ -93,7 +93,7 @@
            </widget>
           </item>
 
-          <!-- Reminder 2: Completed -->
+          
           <item>
            <widget class="QFrame" name="rem2">
             <property name="styleSheet"><string>QFrame#rem2 { border-bottom: 1px solid #DDE8E3; } QFrame#rem2:hover { background: #F8FBFA; }</string></property>
@@ -106,13 +106,13 @@
                <item><widget class="QLabel"><property name="text"><string>remind_on: January 8, 2024   ·   appointment_date: January 10, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; font-style: italic; }</string></property></widget></item>
               </layout>
              </item>
-             <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+             <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
              <item><widget class="QLabel"><property name="text"><string>  Completed  </string></property><property name="styleSheet"><string>QLabel { background: #E8F5EB; color: #1F5C2E; font-size: 10px; font-weight: bold; border-radius: 20px; padding: 2px 4px; }</string></property></widget></item>
             </layout>
            </widget>
           </item>
 
-          <!-- Reminder 3: Completed -->
+          
           <item>
            <widget class="QFrame" name="rem3">
             <property name="styleSheet"><string>QFrame#rem3:hover { background: #F8FBFA; }</string></property>
@@ -125,7 +125,7 @@
                <item><widget class="QLabel"><property name="text"><string>remind_on: November 1, 2023   ·   appointment_date: November 3, 2023</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; font-style: italic; }</string></property></widget></item>
               </layout>
              </item>
-             <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+             <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
              <item><widget class="QLabel"><property name="text"><string>  Completed  </string></property><property name="styleSheet"><string>QLabel { background: #E8F5EB; color: #1F5C2E; font-size: 10px; font-weight: bold; border-radius: 20px; padding: 2px 4px; }</string></property></widget></item>
             </layout>
            </widget>
@@ -135,7 +135,7 @@
         </widget>
        </item>
 
-       <!-- Info box: How reminders work -->
+       
        <item>
         <widget class="QFrame" name="infoBox">
          <property name="styleSheet"><string>QFrame#infoBox { background: #E3F5EE; border: 1px solid #9FE1CB; border-radius: 14px; }</string></property>
@@ -157,12 +157,12 @@
         </widget>
        </item>
 
-       <item><spacer><property name="orientation"><enum>Qt::Vertical</enum></property></spacer></item>
+       <item><spacer><property name="orientation"><enum>Qt::Vertical</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
       </layout>
      </widget>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/><connections/>
+ <resources /><connections />
 </ui>

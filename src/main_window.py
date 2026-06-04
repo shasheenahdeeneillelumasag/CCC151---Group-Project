@@ -1,0 +1,211 @@
+import sys
+from datetime import date
+
+from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QApplication
+from PyQt6 import uic
+
+from database.init_db import init_db
+from core.app_settings import AppSettings
+from services.patient_service import PatientService
+from services.visit_record_service import VisitRecordService
+from services.appointment_service import AppointmentService
+from services.vaccination_shot_service import VaccinationShotService
+from services.document_service import DocumentService
+from services.diagnosis_service import DiagnosisService
+
+from pages.page_dashboard import PageDashboard
+from pages.page_profile import PageProfile
+from pages.page_records import PageRecords
+from pages.page_vaccination import PageVaccinations
+from pages.page_appointments import PageAppointments
+from pages.page_reminder import PageReminders
+from pages.page_documents import PageDocuments
+
+from widgets.reminder_card import reminder_status, _parse_date
+
+
+class MainWindow(QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+        uic.loadUi("ui/main_window.ui", self)
+        self.centralWidget.setStyleSheet("""
+            QWidget#centralWidget > QVBoxLayout > QWidget {
+                background-color: #1A9E78;
+            }
+        """)
+        layout = self.centralWidget.layout()
+ 
+        layout.setStretch(0, 0)
+        layout.setStretch(1, 1) 
+
+        self.settings        = AppSettings()
+        self.patient_service = PatientService()
+
+        if not self.settings.get_active_patient_code():
+            self.settings.set_active_patient_code("P001")
+
+        self.active_patient = self.patient_service.get_patient_by_code(
+            self.settings.get_active_patient_code()
+        )
+
+        self.page_dashboard   = PageDashboard()
+        self.page_profile     = PageProfile()
+        self.page_records     = PageRecords()
+        self.page_vaccinations = PageVaccinations()
+        self.page_appointments = PageAppointments()
+        self.page_reminders   = PageReminders()
+        self.page_documents   = PageDocuments()
+
+        self._embed(self.pageDashboard,    self.page_dashboard)
+        self._embed(self.pageProfile,      self.page_profile)
+        self._embed(self.pageRecords,      self.page_records)
+        self._embed(self.pageVaccinations, self.page_vaccinations)
+        self._embed(self.pageAppointments, self.page_appointments)
+        self._embed(self.pageReminders,    self.page_reminders)
+        self._embed(self.pageDocuments,    self.page_documents)
+
+        self._nav_buttons = [
+            self.navDashboard,
+            self.navProfile,
+            self.navRecords,
+            self.navVaccinations,
+            self.navAppointments,
+            self.navReminders,
+            self.navDocuments,
+        ]
+
+        self._pages = [
+            self.pageDashboard,
+            self.pageProfile,
+            self.pageRecords,
+            self.pageVaccinations,
+            self.pageAppointments,
+            self.pageReminders,
+            self.pageDocuments,
+        ]
+
+        self.navDashboard.clicked.connect(
+            lambda: self._navigate(0))
+        self.navProfile.clicked.connect(
+            lambda: self._navigate(1))
+        self.navRecords.clicked.connect(
+            lambda: self._navigate(2))
+        self.navVaccinations.clicked.connect(
+            lambda: self._navigate(3))
+        self.navAppointments.clicked.connect(
+            lambda: self._navigate(4))
+        self.navReminders.clicked.connect(
+            lambda: self._navigate(5))
+        self.navDocuments.clicked.connect(
+            lambda: self._navigate(6))
+
+        self.btnBell.clicked.connect(lambda: self._navigate(5))
+
+        self._load_patient_chip()
+
+        self._update_badges()
+        self._navigate(0)
+
+    #  Embed helper 
+
+    def _embed(self, slot_widget, page_widget):
+        """Embed a page widget into its stacked widget slot."""
+        layout = QVBoxLayout(slot_widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+        layout.addWidget(page_widget)
+
+    #  Navigation 
+
+    def _navigate(self, index: int):
+        self.stackedWidget.setCurrentWidget(self._pages[index])
+
+        for i, btn in enumerate(self._nav_buttons):
+            btn.setChecked(i == index)
+
+        self._update_badges()
+
+    #  Patient chip 
+
+    def _load_patient_chip(self):
+        p = self.active_patient
+        if not p:
+            return
+
+        full_name = f"{p.first_name} {p.last_name}"
+        initials  = f"{p.first_name[0]}{p.last_name[0]}".upper()
+
+        self.patientName.setText(full_name)
+        self.patientId.setText(p.patient_code)
+        self.patientAvatar.setText(initials)
+
+    #  Sidebar badges 
+
+    def _update_badges(self):
+        patient_id = self.active_patient.patient_id
+        today      = date.today()
+
+        # Records badge
+        records = VisitRecordService().get_visit_records_by_patient_id(patient_id)
+        self._set_badge(self.badgeRecords, len(records))
+
+        # Vaccinations badge
+        shots = VaccinationShotService().get_vaccinations_by_patient_id(patient_id)
+        self._set_badge(self.badgeVaccinations, len(shots))
+
+        # Appointments badge
+        appointments = AppointmentService().get_appointments_by_patient_id(patient_id)
+        upcoming = [
+            a for a in appointments
+            if a.status == "Scheduled" and _parse_date(a.appt_date) and _parse_date(a.appt_date) >= today
+        ]
+        self._set_badge(self.badgeAppointments, len(upcoming))
+
+        # Reminders badge
+        flagged = [a for a in appointments if reminder_status(a) == "flagged"]
+        self._set_badge(self.badgeReminders, len(flagged), amber=bool(flagged))
+
+        # Documents badge
+        record_ids = {r.record_id for r in records}
+        shot_ids   = {s.vaccine_id for s in shots}
+        doc_svc    = DocumentService()
+        seen       = set()
+        for rid in record_ids:
+            for d in doc_svc.get_documents_by_record_id(rid):
+                seen.add(d.doc_id)
+        for vid in shot_ids:
+            for d in doc_svc.get_documents_by_vaccine_id(vid):
+                seen.add(d.doc_id)
+        self._set_badge(self.badgeDocuments, len(seen))
+
+    def _set_badge(self, badge_label, count: int, amber: bool = False):
+        if count == 0:
+            badge_label.hide()
+            return
+        badge_label.setText(str(count))
+        badge_label.show()
+        color = "#E8830A" if amber else "#1A9E78"
+        badge_label.setStyleSheet(f"""
+            QLabel {{
+                background: {color};
+                color: #FFF;
+                font-size: 10px;
+                font-weight: bold;
+                border-radius: 10px;
+            }}
+        """)
+
+
+# Entry point 
+
+def main():
+    init_db()
+    app = QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

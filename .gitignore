@@ -1,0 +1,15 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Database
+*.db
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+
+# Temporary UI fix file (if you are done with it)
+src/fix_ui.py
