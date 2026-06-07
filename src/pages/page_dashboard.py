@@ -17,6 +17,8 @@ from services.medical_history_service import MedicalHistoryService
 from services.diagnosis_service import DiagnosisService
 from services.prescription_service import PrescriptionService
 from core.app_settings import AppSettings
+
+from models.patient import Patient
 from models.appointment import Appointment
 from widgets.reminder_card import reminder_status, compute_remind_on, _parse_date, _fmt_date
 from dialogs.dialog_add_record import DialogAddRecord

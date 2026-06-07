@@ -72,18 +72,9 @@
 
        <!-- Records list -->
 <item>
- <widget class="QFrame" name="card">
-  <property name="styleSheet">
-   <string>
-    QFrame#card {
-      background: #FFFFFF;
-      border: 1px solid #DDE8E3;
-      border-radius: 14px;
-    }
-   </string>
-  </property>
-
+<widget class="QWidget" name="scrollContent">
   <layout class="QVBoxLayout" name="recordsLayout">
+
 
    <property name="spacing">
     <number>0</number>
@@ -105,7 +96,7 @@
     <number>0</number>
    </property>
 
-  </layout>
+   </layout>
  </widget>
 </item>
 

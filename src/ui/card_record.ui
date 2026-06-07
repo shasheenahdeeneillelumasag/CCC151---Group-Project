@@ -1,141 +1,238 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <ui version="4.0">
  <class>Form</class>
- <widget class="QWidget" name="Form">
+
+ <widget class="QFrame" name="HistoryCard">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1297</width>
-    <height>300</height>
+    <width>992</width>
+    <height>101</height>
    </rect>
   </property>
+
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QFrame" name="rec1">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>100</y>
-     <width>992</width>
-     <height>101</height>
-    </rect>
+
+  <property name="styleSheet">
+   <string>
+QFrame#HistoryCard {
+    border-bottom: 1px solid #DDE8E3;
+}
+QFrame#HistoryCard:hover {
+    background: #F8FBFA;
+}
+
+
+   </string>
+  </property>
+
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>14</number>
    </property>
-   <property name="styleSheet">
-    <string>QFrame#rec1 { border-bottom: 1px solid #DDE8E3; } QFrame#rec1:hover { background: #F8FBFA; }</string>
+   <property name="leftMargin">
+    <number>20</number>
    </property>
-   <layout class="QHBoxLayout">
-    <property name="spacing">
-     <number>14</number>
-    </property>
-    <property name="leftMargin">
-     <number>20</number>
-    </property>
-    <property name="topMargin">
-     <number>14</number>
-    </property>
-    <property name="rightMargin">
-     <number>20</number>
-    </property>
-    <property name="bottomMargin">
-     <number>14</number>
-    </property>
-    <item>
-     <widget class="QLabel" name="rec1Icon">
-      <property name="minimumSize">
-       <size>
-        <width>42</width>
-        <height>42</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>42</width>
-        <height>42</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string>QLabel { background: #EAF3FC; border-radius: 10px; font-size: 18px; padding: 4px; }</string>
-      </property>
-      <property name="text">
-       <string>📋</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="_2">
-      <property name="spacing">
-       <number>3</number>
-      </property>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="styleSheet">
-         <string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string>
-        </property>
-        <property name="text">
-         <string>General Checkup — Upper Respiratory Tract Infection</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="styleSheet">
-         <string>QLabel { font-size: 11px; color: #546860; }</string>
-        </property>
-        <property name="text">
-         <string>BP: 130/85 mmHg  ·  Weight: 58 kg  ·  Temp: 37.2 °C</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="styleSheet">
-         <string>QLabel { font-size: 11px; color: #546860; }</string>
-        </property>
-        <property name="text">
-         <string>Rx: Amoxicillin 500mg  ·  Cetirizine 10mg  ·  Vitamin C 500mg</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_4">
-        <property name="styleSheet">
-         <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
-        </property>
-        <property name="text">
-         <string>March 15, 2024  ·  City Health Clinic  ·  Dr. Dela Cruz  ·  📎 clinic_receipt.jpg</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <spacer>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>0</width>
-        <height>0</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_5">
-      <property name="styleSheet">
-       <string>QLabel { background: #EAF3FC; color: #1A4F8A; font-size: 10px; font-weight: bold; border-radius: 20px; padding: 2px 10px; }</string>
-      </property>
-      <property name="text">
-       <string>Checkup</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+   <property name="topMargin">
+    <number>14</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>14</number>
+   </property>
+
+<item>
+ <widget class="QFrame" name="selectionIndicator">
+  <property name="minimumSize">
+   <size>
+    <width>4</width>
+    <height>0</height>
+   </size>
+  </property>
+
+  <property name="maximumSize">
+   <size>
+    <width>4</width>
+    <height>16777215</height>
+   </size>
+  </property>
+
+  <property name="styleSheet">
+   <string>
+QFrame {
+    background: transparent;
+    border-radius: 2px;
+}
+   </string>
+  </property>
  </widget>
- <resources />
- <connections />
+</item>
+
+
+
+   <item>
+    <widget class="QLabel" name="rec1Icon">
+     <property name="minimumSize">
+      <size>
+       <width>42</width>
+       <height>42</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>42</width>
+       <height>42</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string>
+QLabel {
+    background: #EAF3FC;
+    border-radius: 10px;
+    font-size: 18px;
+    padding: 4px;
+}
+      </string>
+     </property>
+     <property name="text">
+      <string>📋</string>
+     </property>
+    </widget>
+   </item>
+
+   <item>
+    <layout class="QVBoxLayout" name="contentLayout">
+
+     <property name="spacing">
+      <number>3</number>
+     </property>
+
+     <item>
+      <widget class="QLabel" name="lblPurpose">
+       <property name="styleSheet">
+        <string>
+QLabel {
+    font-size: 13px;
+    font-weight: bold;
+    color: #1C2B25;
+}
+        </string>
+       </property>
+       <property name="text">
+        <string>General Checkup — Upper Respiratory Tract Infection</string>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <widget class="QLabel" name="lblVitals">
+       <property name="styleSheet">
+        <string>
+QLabel {
+    font-size: 11px;
+    color: #546860;
+}
+        </string>
+       </property>
+       <property name="text">
+        <string>BP: 130/85 mmHg · Weight: 58 kg · Temp: 37.2 °C</string>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <widget class="QLabel" name="lblPrescriptions">
+       <property name="styleSheet">
+        <string>
+QLabel {
+    font-size: 11px;
+    color: #546860;
+}
+        </string>
+       </property>
+       <property name="text">
+        <string>Rx: Amoxicillin 500mg · Cetirizine 10mg · Vitamin C 500mg</string>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <widget class="QLabel" name="lblDiagnoses">
+       <property name="styleSheet">
+        <string>
+QLabel {
+    font-size: 11px;
+    color: #546860;
+}
+        </string>
+       </property>
+       <property name="text">
+        <string>Diagnoses: DUMMY_DISEASE · DUMMY_DISEASE</string>
+       </property>
+      </widget>
+     </item>
+
+     <item>
+      <widget class="QLabel" name="lblDoctorInfo">
+       <property name="styleSheet">
+        <string>
+QLabel {
+    font-size: 10px;
+    color: #8FA89F;
+}
+        </string>
+       </property>
+       <property name="text">
+        <string>DUMMY_DATE · DUMMY_HEALTH_FACILITY · DUMMY_DOCTOR · 📎 DUMMY_FILE_PATH.bmp</string>
+       </property>
+      </widget>
+     </item>
+
+    </layout>
+   </item>
+
+   <item>
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+
+   <item>
+    <widget class="QLabel" name="lblBadge">
+     <property name="styleSheet">
+      <string>
+QLabel {
+    background: #EAF3FC;
+    color: #1A4F8A;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 2px 10px;
+}
+      </string>
+     </property>
+     <property name="text">
+      <string>Checkup</string>
+     </property>
+    </widget>
+   </item>
+
+  </layout>
+ </widget>
+
+ <resources/>
+ <connections/>
 </ui>
