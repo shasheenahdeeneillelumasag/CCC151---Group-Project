@@ -86,6 +86,12 @@ class MainWindow(QMainWindow):
             self.settings.get_active_patient_code()
         )
 
+        if self.active_patient is None:
+            raise RuntimeError(
+                f"No patient found for code '{self.settings.get_active_patient_code()}'. "
+                "Make sure init_db() has been called and the database is seeded."
+            )
+
         self.page_dashboard   = PageDashboard()
         self.page_profile     = PageProfile()
         self.page_records     = PageRecords()
@@ -144,8 +150,6 @@ class MainWindow(QMainWindow):
         self._update_badges()
         self._navigate(0)
 
-    #  Embed helper 
-
     def _embed(self, slot_widget, page_widget):
         layout = slot_widget.layout()
         if layout is None:
@@ -161,7 +165,6 @@ class MainWindow(QMainWindow):
         layout.addWidget(page_widget)
         page_widget.show()
 
-    #  Navigation 
 
     def _navigate(self, index: int):
         self.stackedWidget.setCurrentIndex(index) 
@@ -169,7 +172,6 @@ class MainWindow(QMainWindow):
             btn.setChecked(i == index)
         self._update_badges()
 
-    #  Patient chip 
 
     def _load_patient_chip(self):
         p = self.active_patient
@@ -183,21 +185,17 @@ class MainWindow(QMainWindow):
         self.patientId.setText(p.patient_code)
         self.patientAvatar.setText(initials)
 
-    #  Sidebar badges 
 
     def _update_badges(self):
         patient_id = self.active_patient.patient_id
         today      = date.today()
 
-        # Records badge
         records = VisitRecordService().get_visit_records_by_patient_id(patient_id)
         self._set_badge(self.badgeRecords, len(records))
 
-        # Vaccinations badge
         shots = VaccinationShotService().get_vaccinations_by_patient_id(patient_id)
         self._set_badge(self.badgeVaccinations, len(shots))
 
-        # Appointments badge
         appointments = AppointmentService().get_appointments_by_patient_id(patient_id)
         upcoming = [
             a for a in appointments
@@ -205,11 +203,9 @@ class MainWindow(QMainWindow):
         ]
         self._set_badge(self.badgeAppointments, len(upcoming))
 
-        # Reminders badge
         flagged = [a for a in appointments if reminder_status(a) == "flagged"]
         self._set_badge(self.badgeReminders, len(flagged), amber=bool(flagged))
 
-        # Documents badge
         record_ids = {r.record_id for r in records}
         shot_ids   = {s.vaccine_id for s in shots}
         doc_svc    = DocumentService()
@@ -238,9 +234,6 @@ class MainWindow(QMainWindow):
                 border-radius: 10px;
             }}
         """)
-
-
-# Entry point 
 
 def main():
     init_db()
