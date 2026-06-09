@@ -1,11 +1,11 @@
 import os
-from PyQt6.QtGui import QIcon
+from PyQt6.QtGui import QIcon, QPixmap, QPainter, QBrush
 import sys
 from datetime import date
 
 from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget
 from PyQt6 import uic
-from PyQt6.QtCore import QSize
+from PyQt6.QtCore import QSize, Qt
 
 from database.init_db import init_db
 from core.app_settings import AppSettings
@@ -31,6 +31,16 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/main_window.ui", self)
+
+        icon_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'logo.png')
+        
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
+        else:
+            fallback_path = os.path.join(os.path.dirname(__file__), 'assets', 'logo.png')
+            self.setWindowIcon(QIcon(fallback_path))
+
+        self.setWindowTitle("HealthLink — Digital Health Record")
 
         self.apply_navigation_icons()
 
@@ -183,7 +193,29 @@ class MainWindow(QMainWindow):
 
         self.patientName.setText(full_name)
         self.patientId.setText(p.patient_code)
-        self.patientAvatar.setText(initials)
+
+        photo_path = os.path.join(os.path.dirname(__file__), 'assets', f"{p.patient_code}.png")
+
+        if os.path.exists(photo_path):
+            size = 48
+            raw = QPixmap(photo_path).scaled(
+                size, size,
+                Qt.AspectRatioMode.KeepAspectRatioByExpanding,
+                Qt.TransformationMode.SmoothTransformation
+            )
+            circular = QPixmap(size, size)
+            circular.fill(Qt.GlobalColor.transparent)
+            painter = QPainter(circular)
+            painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+            painter.setBrush(QBrush(raw))
+            painter.setPen(Qt.PenStyle.NoPen)
+            painter.drawEllipse(0, 0, size, size)
+            painter.end()
+
+            self.patientAvatar.setPixmap(circular)
+            self.patientAvatar.setText("")
+        else:
+            self.patientAvatar.setText(initials)
 
 
     def _update_badges(self):
