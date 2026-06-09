@@ -10,11 +10,8 @@ def init_db():
     with get_connection() as conn:
         cursor = conn.cursor()
 
-        # IMPORTANT FIX:
-        # use executescript ONLY ONCE per connection
         cursor.executescript(sql_script)
-
-        # safely handle indexes one-by-one (prevents partial crash issues)
+        
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_vaccine_patient ON vaccination_shots(patient_id)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_appointment_patient ON appointment(patient_id)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_visit_patient ON visit_record(patient_id)")
@@ -23,7 +20,6 @@ def init_db():
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_document_vaccine ON document(vaccine_id)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_document_record ON document(record_id)")
 
-        # Seed a default patient (P001) if no patients exist yet
         cursor.execute("SELECT COUNT(*) FROM patient")
         if cursor.fetchone()[0] == 0:
             cursor.execute("""

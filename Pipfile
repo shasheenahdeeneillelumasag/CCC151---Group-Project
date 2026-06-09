@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+annotated-doc = "==0.0.4"
+click = "==8.3.3"
+markdown-it-py = "==4.2.0"
+mdurl = "==0.1.2"
+pygments = "==2.20.0"
+pyqt6 = "==6.11.0"
+pyqt6-qt6 = "==6.11.1"
+pyqt6-sip = "==13.11.1"
+rich = "==15.0.0"
+shellingham = "==1.5.4"
+typer = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.13"
