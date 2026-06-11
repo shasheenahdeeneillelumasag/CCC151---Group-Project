@@ -22,7 +22,6 @@
      padding: 9px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF;
     }
     QLineEdit:focus, QTextEdit:focus, QDateEdit:focus { border-color: #1A9E78; }
-    QComboBox::drop-down { border: none; width: 24px; }
     QFrame#uploadZone { border: 2px dashed #C8D9D2; border-radius: 9px; background: #F8FBFA; }
     QFrame#uploadZone:hover { border-color: #1A9E78; background: #E3F5EE; }
     QFrame#subFormBox { border: 1px solid #DDE8E3; border-radius: 9px; background: #F8FBFA; }
@@ -69,8 +68,10 @@
    </item>
    <item>
     <widget class="QScrollArea" name="bodyScroll">
-     <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
-     <property name="widgetResizable"><bool>true</bool></property>
+      <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
+      <property name="widgetResizable"><bool>true</bool></property>
+      <property name="horizontalScrollBarPolicy"><enum>Qt::ScrollBarAlwaysOff</enum></property>
+      <property name="verticalScrollBarPolicy"><enum>Qt::ScrollBarAlwaysOff</enum></property>
      <widget class="QWidget" name="bodyContent">
       <layout class="QVBoxLayout">
        <property name="spacing"><number>16</number></property>
@@ -88,11 +89,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QDateEdit" name="inputVisitDate">
-           <property name="locale"><locale language="English" country="AmericanSamoa"/></property>
-           <property name="displayFormat"><string>MMMM d, yyyy</string></property>
-           <property name="calendarPopup"><bool>true</bool></property>
-          </widget>
+          <layout class="QHBoxLayout"><property name="spacing"><number>6</number></property>
+           <item><widget class="QComboBox" name="inputVisitDateMonth"><property name="editable"><bool>true</bool></property></widget></item>
+           <item><widget class="QComboBox" name="inputVisitDateDay"><property name="editable"><bool>true</bool></property><property name="sizePolicy"><sizepolicy hsizetype="Maximum" vsizetype="Preferred"><horstretch>0</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
+           <item><widget class="QComboBox" name="inputVisitDateYear"><property name="editable"><bool>true</bool></property></widget></item>
+          </layout>
          </item>
         </layout>
        </item>
@@ -201,11 +202,11 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QDateEdit" name="inputDiagnosisDate">
-                  <property name="locale"><locale language="English" country="AmericanSamoa"/></property>
-                  <property name="displayFormat"><string>MMMM d, yyyy</string></property>
-                  <property name="calendarPopup"><bool>true</bool></property>
-                 </widget>
+                  <layout class="QHBoxLayout"><property name="spacing"><number>6</number></property>
+                   <item><widget class="QComboBox" name="inputDiagnosisDateMonth"><property name="editable"><bool>true</bool></property></widget></item>
+                   <item><widget class="QComboBox" name="inputDiagnosisDateDay"><property name="editable"><bool>true</bool></property><property name="sizePolicy"><sizepolicy hsizetype="Maximum" vsizetype="Preferred"><horstretch>0</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
+                   <item><widget class="QComboBox" name="inputDiagnosisDateYear"><property name="editable"><bool>true</bool></property></widget></item>
+                  </layout>
                 </item>
                </layout>
               </item>
@@ -331,11 +332,11 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QDateEdit" name="inputRxDate">
-                  <property name="locale"><locale language="English" country="AmericanSamoa"/></property>
-                  <property name="displayFormat"><string>MMMM d, yyyy</string></property>
-                  <property name="calendarPopup"><bool>true</bool></property>
-                 </widget>
+                  <layout class="QHBoxLayout"><property name="spacing"><number>6</number></property>
+                   <item><widget class="QComboBox" name="inputRxDateMonth"><property name="editable"><bool>true</bool></property></widget></item>
+                   <item><widget class="QComboBox" name="inputRxDateDay"><property name="editable"><bool>true</bool></property><property name="sizePolicy"><sizepolicy hsizetype="Maximum" vsizetype="Preferred"><horstretch>0</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
+                   <item><widget class="QComboBox" name="inputRxDateYear"><property name="editable"><bool>true</bool></property></widget></item>
+                  </layout>
                 </item>
                </layout>
               </item>

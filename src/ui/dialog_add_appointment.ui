@@ -2,18 +2,17 @@
 <ui version="4.0">
  <class>DialogAddAppointment</class>
  <widget class="QDialog" name="DialogAddAppointment">
-  <property name="geometry"><rect><x>0</x><y>0</y><width>500</width><height>480</height></rect></property>
+   <property name="geometry"><rect><x>0</x><y>0</y>    <width>700</width><height>480</height></rect></property>
   <property name="windowTitle"><string>Add Appointment</string></property>
   <property name="styleSheet">
    <string>
     QDialog { background: #FFFFFF; font-family: "Segoe UI", sans-serif; }
     QLabel { background: transparent; color: #1C2B25; }
-    QLineEdit, QComboBox, QTextEdit, QDateEdit, QTimeEdit {
+    QLineEdit, QComboBox, QTextEdit {
      border: 1px solid #C8D9D2; border-radius: 9px;
      padding: 9px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF;
     }
-    QLineEdit:focus, QDateEdit:focus, QTimeEdit:focus, QTextEdit:focus { border-color: #1A9E78; }
-    QComboBox::drop-down { border: none; width: 24px; }
+    QLineEdit:focus, QComboBox:focus, QTextEdit:focus { border-color: #1A9E78; }
     QFrame#reminderBox { background: #E3F5EE; border: 1px solid #9FE1CB; border-radius: 9px; }
    </string>
   </property>
@@ -25,8 +24,10 @@
    <property name="bottomMargin"><number>0</number></property>
    <item>
     <widget class="QScrollArea" name="scrollArea">
-     <property name="widgetResizable"><bool>true</bool></property>
-     <property name="frameShape"><enum>QFrame::NoFrame</enum></property>
+      <property name="widgetResizable"><bool>true</bool></property>
+      <property name="frameShape"><enum>QFrame::NoFrame</enum></property>
+      <property name="horizontalScrollBarPolicy"><enum>Qt::ScrollBarAlwaysOff</enum></property>
+      <property name="verticalScrollBarPolicy"><enum>Qt::ScrollBarAlwaysOff</enum></property>
      <widget class="QWidget" name="scrollContent">
       <layout class="QVBoxLayout" name="contentLayout">
        <property name="spacing"><number>18</number></property>
@@ -43,19 +44,28 @@
        </item>
        <item>
         <layout class="QHBoxLayout" name="formGroupRow">
-         <property name="spacing"><number>12</number></property>
+          <property name="spacing"><number>8</number></property>
          <item>
           <layout class="QVBoxLayout" name="colDate">
            <property name="spacing"><number>6</number></property>
            <item><widget class="QLabel" name="labelDate"><property name="text"><string>DATE</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; }</string></property></widget></item>
-           <item><widget class="QDateEdit" name="inputDate"><property name="calendarPopup"><bool>true</bool></property></widget></item>
+           <item><layout class="QHBoxLayout"><property name="spacing"><number>6</number></property>
+             <item><widget class="QComboBox" name="inputDateMonth"><property name="editable"><bool>true</bool></property></widget></item>
+             <item><widget class="QComboBox" name="inputDateDay"><property name="editable"><bool>true</bool></property><property name="sizePolicy"><sizepolicy hsizetype="Maximum" vsizetype="Preferred"><horstretch>0</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
+             <item><widget class="QComboBox" name="inputDateYear"><property name="editable"><bool>true</bool></property></widget></item>
+           </layout></item>
           </layout>
          </item>
          <item>
           <layout class="QVBoxLayout" name="colTime">
            <property name="spacing"><number>6</number></property>
            <item><widget class="QLabel" name="labelTime"><property name="text"><string>TIME</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; }</string></property></widget></item>
-           <item><widget class="QTimeEdit" name="inputTime" /></item>
+             <item><layout class="QHBoxLayout"><property name="spacing"><number>0</number></property>
+               <item><widget class="QLineEdit" name="inputTimeHour"><property name="maxLength"><number>2</number></property><property name="placeholderText"><string>HH</string></property><property name="alignment"><set>AlignCenter</set></property><property name="maximumSize"><size><width>36</width><height>16777215</height></size></property><property name="styleSheet"><string>QLineEdit { padding: 9px 2px; border: 1px solid #C8D9D2; border-radius: 9px; font-size: 13px; color: #1C2B25; background: #FFFFFF; }</string></property></widget></item>
+               <item><widget class="QLabel" name="labelTimeColon"><property name="text"><string>:</string></property><property name="styleSheet"><string>QLabel { font-size: 16px; font-weight: bold; color: #1C2B25; background: transparent; border: none; padding: 0; margin: 0; min-width: 8px; max-width: 8px; }</string></property></widget></item>
+               <item><widget class="QLineEdit" name="inputTimeMinute"><property name="maxLength"><number>2</number></property><property name="placeholderText"><string>MM</string></property><property name="alignment"><set>AlignCenter</set></property><property name="maximumSize"><size><width>36</width><height>16777215</height></size></property><property name="styleSheet"><string>QLineEdit { padding: 9px 2px; border: 1px solid #C8D9D2; border-radius: 9px; font-size: 13px; color: #1C2B25; background: #FFFFFF; }</string></property></widget></item>
+               <item><widget class="QComboBox" name="inputTimeAmpm"><property name="sizePolicy"><sizepolicy hsizetype="Maximum" vsizetype="Preferred"><horstretch>0</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
+            </layout></item>
           </layout>
          </item>
         </layout>

@@ -8,6 +8,7 @@ from PyQt6 import uic
 
 from services.vaccination_shot_service import VaccinationShotService
 from services.document_service import DocumentService
+from widgets.date_picker import init_date_picker, set_date_picker, get_date_str_from_picker
 
 DOCS_DIR = "documents"
 
@@ -17,6 +18,7 @@ class DialogAddVaccination(QDialog):
     def __init__(self, patient_id: int):
         super().__init__()
         uic.loadUi("ui/dialog_add_vaccination.ui", self)
+        self.setFixedSize(self.size())
 
         self.vaccination_service = VaccinationShotService()
         self.document_service = DocumentService()
@@ -26,8 +28,8 @@ class DialogAddVaccination(QDialog):
 
         self.inputVaccineStatus.currentIndexChanged.connect(self._update_fields)
 
-
-        self.inputDate.setDate(QDate.currentDate())
+        init_date_picker(self.inputDateMonth, self.inputDateDay, self.inputDateYear)
+        set_date_picker(self.inputDateMonth, self.inputDateDay, self.inputDateYear, QDate.currentDate())
 
         self.btnClose.clicked.connect(self.reject)
         self.btnCancel.clicked.connect(self.reject)
@@ -68,7 +70,7 @@ class DialogAddVaccination(QDialog):
         facility = self.inputFacility.text().strip()
         status = self.inputVaccineStatus.currentText()
 
-        selected_date = self.inputDate.date().toPyDate().strftime("%Y-%m-%d")
+        selected_date = get_date_str_from_picker(self.inputDateMonth, self.inputDateDay, self.inputDateYear)
 
         date_administered = None
         schedule_date = None

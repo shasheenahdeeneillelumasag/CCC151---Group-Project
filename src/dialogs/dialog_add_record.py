@@ -18,6 +18,7 @@ from services.visit_record_service import VisitRecordService
 from services.diagnosis_service import DiagnosisService
 from services.prescription_service import PrescriptionService
 from services.document_service import DocumentService
+from widgets.date_picker import init_date_picker, set_date_picker, get_date_from_picker, get_date_str_from_picker
 
 _ROW_STYLE = (
     "QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; "
@@ -82,6 +83,7 @@ class DialogAddRecord(QDialog):
         super().__init__(parent)
 
         uic.loadUi("ui/dialog_add_record.ui", self)
+        self.setFixedSize(self.size())
 
         self.patient_id = patient_id
 
@@ -95,9 +97,12 @@ class DialogAddRecord(QDialog):
         self._files:         list[str]  = []  
 
         today = QDate.currentDate()
-        self.inputVisitDate.setDate(today)
-        self.inputDiagnosisDate.setDate(today)
-        self.inputRxDate.setDate(today)
+        init_date_picker(self.inputVisitDateMonth, self.inputVisitDateDay, self.inputVisitDateYear)
+        init_date_picker(self.inputDiagnosisDateMonth, self.inputDiagnosisDateDay, self.inputDiagnosisDateYear)
+        init_date_picker(self.inputRxDateMonth, self.inputRxDateDay, self.inputRxDateYear)
+        set_date_picker(self.inputVisitDateMonth, self.inputVisitDateDay, self.inputVisitDateYear, today)
+        set_date_picker(self.inputDiagnosisDateMonth, self.inputDiagnosisDateDay, self.inputDiagnosisDateYear, today)
+        set_date_picker(self.inputRxDateMonth, self.inputRxDateDay, self.inputRxDateYear, today)
 
         self.btnClose.clicked.connect(self.reject)
         self.btnCancel.clicked.connect(self.reject)
@@ -114,7 +119,7 @@ class DialogAddRecord(QDialog):
             return
 
         desc = self.inputDiagnosisDescription.toPlainText().strip()
-        d    = self.inputDiagnosisDate.date().toPyDate()
+        d    = get_date_from_picker(self.inputDiagnosisDateMonth, self.inputDiagnosisDateDay, self.inputDiagnosisDateYear).toPyDate()
 
         entry = {"name": name, "description": desc, "date": d}
         self._diagnoses.append(entry)
@@ -129,7 +134,7 @@ class DialogAddRecord(QDialog):
 
         self.inputDiagnosisName.clear()
         self.inputDiagnosisDescription.clear()
-        self.inputDiagnosisDate.setDate(QDate.currentDate())
+        set_date_picker(self.inputDiagnosisDateMonth, self.inputDiagnosisDateDay, self.inputDiagnosisDateYear, QDate.currentDate())
 
     def _remove_diagnosis(self, entry: dict, row: QFrame):
         self._diagnoses.remove(entry)
@@ -147,7 +152,7 @@ class DialogAddRecord(QDialog):
             )
             return
 
-        d = self.inputRxDate.date().toPyDate()
+        d = get_date_from_picker(self.inputRxDateMonth, self.inputRxDateDay, self.inputRxDateYear).toPyDate()
 
         entry = {
             "name": name, "dosage": dosage,
@@ -165,7 +170,7 @@ class DialogAddRecord(QDialog):
         self.inputRxName.clear()
         self.inputRxDosage.clear()
         self.inputRxPrescribedBy.clear()
-        self.inputRxDate.setDate(QDate.currentDate())
+        set_date_picker(self.inputRxDateMonth, self.inputRxDateDay, self.inputRxDateYear, QDate.currentDate())
 
     def _remove_rx(self, entry: dict, row: QFrame):
         self._prescriptions.remove(entry)
@@ -200,7 +205,7 @@ class DialogAddRecord(QDialog):
         row.deleteLater()
 
     def _save(self):
-        visit_date = self.inputVisitDate.date().toPyDate()
+        visit_date = get_date_from_picker(self.inputVisitDateMonth, self.inputVisitDateDay, self.inputVisitDateYear).toPyDate()
         bp         = self.inputBP.text().strip() or None
         weight_raw = self.inputWeight.text().strip()
 

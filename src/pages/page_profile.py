@@ -1,6 +1,8 @@
-from PyQt6.QtWidgets import QWidget
+from PyQt6.QtWidgets import QWidget, QMessageBox
 from PyQt6 import uic
 from PyQt6.QtCore import QDate
+
+from widgets.date_picker import init_date_picker, set_date_picker, get_date_str_from_picker
 
 from services.patient_service import PatientService
 from services.patient_contact_service import PatientContactService
@@ -24,6 +26,7 @@ class PageProfile(QWidget):
 
         self.contact_id = None
 
+        self._init_dob_pickers()
         self.load_patient()
 
         self.btnSaveProfile.clicked.connect(
@@ -31,8 +34,21 @@ class PageProfile(QWidget):
         )
 
         self.btnDiscard.clicked.connect(
-            self.load_patient
+            self._discard_changes
         )
+
+    def _init_dob_pickers(self):
+        init_date_picker(self.inputDobMonth, self.inputDobDay, self.inputDobYear)
+
+    def _discard_changes(self):
+        reply = QMessageBox.question(
+            self,
+            "Discard Changes",
+            "Are you sure you want to discard all unsaved changes?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            self.load_patient()
 
     def load_patient(self):
         if not self.patient_id:
@@ -62,9 +78,7 @@ class PageProfile(QWidget):
             "yyyy-MM-dd"
         )
 
-        self.inputDob.setDate(
-            birthdate
-        )
+        set_date_picker(self.inputDobMonth, self.inputDobDay, self.inputDobYear, birthdate)
 
         contacts = self.contact_service.get_contacts_by_patient_id(
             self.patient_id
@@ -107,6 +121,15 @@ class PageProfile(QWidget):
         if not self.patient_id:
             return
 
+        reply = QMessageBox.question(
+            self,
+            "Save Changes",
+            "Are you sure you want to save the changes to your profile?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+        )
+        if reply != QMessageBox.StandardButton.Yes:
+            return
+
         first_name = self.inputFirstName.text()
 
         last_name = self.inputLastName.text()
@@ -117,9 +140,7 @@ class PageProfile(QWidget):
 
         email = self.inputEmail.text().strip() if hasattr(self, "inputEmail") else ""
 
-        birthdate = self.inputDob.date().toString(
-            "yyyy-MM-dd"
-        )
+        birthdate = get_date_str_from_picker(self.inputDobMonth, self.inputDobDay, self.inputDobYear)
 
         self.patient_service.update_patient(
             patient_id=self.patient_id,
@@ -159,3 +180,9 @@ class PageProfile(QWidget):
         self.avatarInitials.setText(initials)
 
         self.heroEmail.setText(email)
+
+        QMessageBox.information(
+            self,
+            "Profile Updated",
+            "Your profile has been saved successfully."
+        )

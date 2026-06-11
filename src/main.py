@@ -17,6 +17,20 @@ def main():
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
 
+    chevron_path = os.path.join(ASSETS_DIR, 'chevron_down.svg').replace('\\', '/')
+    app.setStyleSheet(f"""
+        QComboBox::down-arrow {{
+            image: url({chevron_path});
+            width: 12px;
+            height: 12px;
+        }}
+        QComboBox::drop-down {{
+            border: none;
+            border-left: 1px solid #C8D9D2;
+            width: 32px;
+        }}
+    """)
+
     icon_path = os.path.join(ASSETS_DIR, 'logo.png')
     if os.path.exists(icon_path):
         app.setWindowIcon(QIcon(icon_path))

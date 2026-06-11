@@ -102,7 +102,7 @@ QFrame {
           <string>QLabel { font-size: 15px; font-weight: bold; color: #1C2B25; }</string>
          </property>
          <property name="text">
-          <string>Hepatitis B Vaccine</string>
+          <string>Vaccine</string>
          </property>
         </widget>
        </item>

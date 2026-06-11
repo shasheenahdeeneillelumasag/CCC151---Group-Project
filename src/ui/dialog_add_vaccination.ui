@@ -19,7 +19,6 @@
     QLabel { background: transparent; color: #1C2B25; }
     QLineEdit, QComboBox, QDateEdit { border: 1px solid #C8D9D2; border-radius: 9px; padding: 9px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF; }
     QLineEdit:focus, QDateEdit:focus { border-color: #1A9E78; }
-    QComboBox::drop-down { border: none; width: 24px; }
     QFrame#uploadZone { border: 2px dashed #C8D9D2; border-radius: 9px; background: #F8FBFA; }
     QFrame#autoBox { background: #E3F5EE; border: 1px solid #9FE1CB; border-radius: 9px; }
    </string>
@@ -108,12 +107,18 @@
    </item>
    <item>
     <widget class="QScrollArea" name="bodyScroll">
-     <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::NoFrame</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOff</enum>
+      </property>
      <widget class="QWidget" name="widget">
       <property name="geometry">
        <rect>
@@ -198,7 +203,7 @@
            <item>
             <widget class="QComboBox" name="inputDoseNum">
              <property name="styleSheet">
-              <string>QComboBox { border: 1px solid #C8D9D2; border-radius: 9px; padding: 9px 13px; font-size: 13px; background: #FFF; } QComboBox::drop-down { border: none; width: 24px; }</string>
+              <string>QComboBox { border: 1px solid #C8D9D2; border-radius: 9px; padding: 9px 13px; font-size: 13px; background: #FFF; }</string>
              </property>
              <item>
               <property name="text">
@@ -271,24 +276,18 @@
            <item>
             <widget class="QLineEdit" name="inputVaccineName">
              <property name="placeholderText">
-              <string>e.g. Hepatitis B, Influenza, COVID-19</string>
+              <string>e.g. Vaccine Name</string>
              </property>
             </widget>
            </item>
           </layout>
          </item>
          <item row="2" column="0" colspan="2">
-          <widget class="QDateEdit" name="inputDate">
-           <property name="locale">
-            <locale language="English" country="AmericanSamoa"/>
-           </property>
-           <property name="displayFormat">
-            <string>MMMM d, yyyy</string>
-           </property>
-           <property name="calendarPopup">
-            <bool>true</bool>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout"><property name="spacing"><number>6</number></property>
+           <item><widget class="QComboBox" name="inputDateMonth"><property name="editable"><bool>true</bool></property></widget></item>
+           <item><widget class="QComboBox" name="inputDateDay"><property name="editable"><bool>true</bool></property><property name="sizePolicy"><sizepolicy hsizetype="Maximum" vsizetype="Preferred"><horstretch>0</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
+           <item><widget class="QComboBox" name="inputDateYear"><property name="editable"><bool>true</bool></property></widget></item>
+          </layout>
          </item>
          <item row="1" column="0" colspan="2">
           <widget class="QLabel" name="dateLabel">

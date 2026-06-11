@@ -4,6 +4,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 from PyQt6 import uic
+from datetime import date
 
 from services.vaccination_shot_service import VaccinationShotService
 from services.patient_service import PatientService
