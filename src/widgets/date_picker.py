@@ -31,15 +31,28 @@ def set_date_picker(month_combo, day_combo, year_combo, dt: QDate):
     year_combo.setCurrentText(dt.toString("yyyy"))
 
 
+def _valid_date(month_combo, day_combo, year_combo) -> QDate | None:
+    try:
+        month = month_combo.currentIndex() + 1
+        day = int(day_combo.currentText())
+        year = int(year_combo.currentText())
+        d = QDate(year, month, day)
+        return d if d.isValid() else None
+    except (ValueError, TypeError):
+        return None
+
+
 def get_date_from_picker(month_combo, day_combo, year_combo) -> QDate:
-    month = month_combo.currentIndex() + 1
-    day = int(day_combo.currentText())
-    year = int(year_combo.currentText())
-    return QDate(year, month, day)
+    d = _valid_date(month_combo, day_combo, year_combo)
+    if d is None:
+        month = month_combo.currentIndex() + 1
+        year = int(year_combo.currentText())
+        d = QDate(year, month, 1)
+        d = d.addDays(d.daysInMonth() - 1)
+        day_combo.setCurrentText(str(d.day()))
+    return d
 
 
 def get_date_str_from_picker(month_combo, day_combo, year_combo) -> str:
-    month = month_combo.currentIndex() + 1
-    day = int(day_combo.currentText())
-    year = int(year_combo.currentText())
-    return f"{year}-{month:02d}-{day:02d}"
+    d = get_date_from_picker(month_combo, day_combo, year_combo)
+    return f"{d.year()}-{d.month():02d}-{d.day():02d}"

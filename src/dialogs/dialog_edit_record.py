@@ -113,8 +113,8 @@ class DialogEditRecord(QDialog):
         self._prefill()
 
         # Wire buttons
-        self.btnClose.clicked.connect(self.reject)
-        self.btnCancel.clicked.connect(self.reject)
+        self.btnClose.clicked.connect(self._confirm_cancel)
+        self.btnCancel.clicked.connect(self._confirm_cancel)
         self.btnSave.clicked.connect(self._save)
         self.btnAddDiagnosis.clicked.connect(self._add_diagnosis)
         self.btnAddRx.clicked.connect(self._add_rx)
@@ -333,4 +333,15 @@ class DialogEditRecord(QDialog):
                 record_id     = record_id,
             )
 
+        QMessageBox.information(self, "Success", "Health record updated successfully.")
         self.accept()
+
+    def _confirm_cancel(self):
+        reply = QMessageBox.question(
+            self, "Discard Changes",
+            "Are you sure you want to discard the changes?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            self.reject()

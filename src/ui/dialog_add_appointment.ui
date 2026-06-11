@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <ui version="4.0">
  <class>DialogAddAppointment</class>
  <widget class="QDialog" name="DialogAddAppointment">
@@ -92,7 +92,7 @@
           <property name="topMargin"><number>12</number></property>
           <property name="rightMargin"><number>12</number></property>
           <property name="bottomMargin"><number>12</number></property>
-          <item><widget class="QLabel" name="remIcon"><property name="pixmap"><pixmap><normaloff>:/assets/ic_bell.svg</normaloff>:/assets/ic_bell.svg</pixmap></property>
+          <item><widget class="QLabel" name="remIcon"><property name="pixmap"><pixmap><normaloff>../assets/ic_bell.svg</normaloff>../assets/ic_bell.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property><property name="styleSheet"><string>QLabel {
     }</string></property></widget></item>
           <item>

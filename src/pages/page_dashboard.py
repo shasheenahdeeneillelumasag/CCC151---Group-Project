@@ -4,9 +4,9 @@ import os
 from PyQt6.QtWidgets import (
     QWidget, QFrame, QLabel, QHBoxLayout,
     QVBoxLayout, QListWidgetItem, QTableWidgetItem,
-    QHeaderView, QSizePolicy, QMessageBox
+    QHeaderView, QMessageBox
 )
-from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtCore import Qt, QSize, pyqtSignal
 from PyQt6.QtGui import QIcon
 from PyQt6 import uic
 
@@ -20,11 +20,8 @@ from services.diagnosis_service import DiagnosisService
 from services.prescription_service import PrescriptionService
 from core.app_settings import AppSettings
 
-from models.patient import Patient
-from models.appointment import Appointment
-from widgets.reminder_card import reminder_status, compute_remind_on, _parse_date, _fmt_date
+from widgets.reminder_card import reminder_status, compute_remind_on, _parse_date
 from dialogs.dialog_add_record import DialogAddRecord
-from dialogs.dialog_add_appointment import DialogAddAppointment
 
 
 def _fmt_short(value) -> str:
@@ -51,6 +48,8 @@ def _bp_status(bp: str | None) -> tuple[str, str]:
 
 class PageDashboard(QWidget):
 
+    navigate_requested = pyqtSignal(int)
+
     def __init__(self):
         super().__init__()
         uic.loadUi("ui/page_dashboard.ui", self)
@@ -71,12 +70,27 @@ class PageDashboard(QWidget):
         self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
         self.btnAddRecord.clicked.connect(self._open_add_record)
-        self.btnAddAppt.clicked.connect(self._open_add_appointment)
         self.btnCloseBanner.clicked.connect(self._close_banner)
         self.btnViewAppt.clicked.connect(self._view_flagged_appt)
         self.btnDismissReminder.clicked.connect(self._dismiss_reminder)
+        self.btnViewVacc.clicked.connect(lambda: self.navigate_requested.emit(3))
+        self.btnViewAllAppt.clicked.connect(lambda: self.navigate_requested.emit(4))
+
+        self._make_stat_cards_clickable()
 
         self.load()
+
+    def _make_stat_cards_clickable(self):
+        for card, page_idx in [
+            ("statCard1", 2),
+            ("statCard2", 3),
+            ("statCard3", 4),
+            ("statCard4", 6),
+        ]:
+            frame = self.findChild(QFrame, card)
+            if frame:
+                frame.setCursor(Qt.CursorShape.PointingHandCursor)
+                frame.mousePressEvent = lambda e, idx=page_idx: self.navigate_requested.emit(idx)
 
     def load(self):
         if not self.patient_id:
@@ -258,14 +272,23 @@ class PageDashboard(QWidget):
         records = self.visit_service.get_visit_records_by_patient_id(self.patient_id)
 
         if not records:
-            self.vitalsDate.setText("No records")
-            self.vitalsTable.setRowCount(1)
-            self.vitalsTable.setColumnCount(1)
-            self.vitalsTable.setItem(0, 0, QTableWidgetItem("No visit records found."))
+            self.vitalsTable.hide()
+            self._vitals_empty.show() if hasattr(self, "_vitals_empty") else None
+            if not hasattr(self, "_vitals_empty"):
+                from PyQt6.QtWidgets import QLabel as _EmptyLabel
+                self._vitals_empty = _EmptyLabel("No visit records found.")
+                self._vitals_empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
+                self._vitals_empty.setStyleSheet(
+                    "font-size: 12px; color: #8FA89F; padding: 30px 20px;"
+                )
+                self.cardVitals.layout().addWidget(self._vitals_empty)
             return
 
+        self.vitalsTable.show()
+        if hasattr(self, "_vitals_empty"):
+            self._vitals_empty.hide()
+
         latest = max(records, key=lambda r: _parse_date(r.visit_date) or date.min)
-        self.vitalsDate.setText(_fmt_short(latest.visit_date))
 
         diagnoses     = self.diagnosis_service.get_diagnoses_by_record_id(latest.record_id)
         prescriptions = self.prescription_service.get_prescriptions_by_record_id(latest.record_id)
@@ -322,11 +345,13 @@ class PageDashboard(QWidget):
         if not upcoming:
             self.apptDay.setText("—")
             self.apptMonth.setText("")
+            self.apptDoctor.setStyleSheet("font-size: 12px; color: #8FA89F; padding: 14px 20px;")
             self.apptDoctor.setText("No upcoming appointments")
             self.apptNote.setText("")
             self.apptRemind.setText("")
             self.apptTime.setText("")
             return
+        self.apptDoctor.setStyleSheet("font-size: 13px; font-weight: bold; color: #1C2B25;")
 
         appt      = upcoming[0]
         appt_date = _parse_date(appt.appt_date)
@@ -427,11 +452,6 @@ class PageDashboard(QWidget):
 
     def _open_add_record(self):
         dialog = DialogAddRecord(self.patient_id)
-        if dialog.exec():
-            self.load()
-
-    def _open_add_appointment(self):
-        dialog = DialogAddAppointment(self.patient_id)
         if dialog.exec():
             self.load()
 

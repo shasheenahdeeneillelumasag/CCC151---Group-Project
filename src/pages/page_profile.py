@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from PyQt6 import uic
 from PyQt6.QtCore import QDate
+from PyQt6.QtCore import Qt
 
 from widgets.date_picker import init_date_picker, set_date_picker, get_date_str_from_picker
 
@@ -29,13 +30,11 @@ class PageProfile(QWidget):
         self._init_dob_pickers()
         self.load_patient()
 
-        self.btnSaveProfile.clicked.connect(
-            self.save_profile
-        )
-
-        self.btnDiscard.clicked.connect(
-            self._discard_changes
-        )
+        self.btnEdit.clicked.connect(self._toggle_edit)
+        self.btnSaveProfile.clicked.connect(self.save_profile)
+        self.btnDiscard.clicked.connect(self._discard_changes)
+        self._editing = False
+        self._set_editable(False)
 
     def _init_dob_pickers(self):
         init_date_picker(self.inputDobMonth, self.inputDobDay, self.inputDobYear)
@@ -49,6 +48,11 @@ class PageProfile(QWidget):
         )
         if reply == QMessageBox.StandardButton.Yes:
             self.load_patient()
+            self._set_editable(False)
+            self._editing = False
+            self.btnEdit.show()
+            self.btnSaveProfile.hide()
+            self.btnDiscard.hide()
 
     def load_patient(self):
         if not self.patient_id:
@@ -186,3 +190,26 @@ class PageProfile(QWidget):
             "Profile Updated",
             "Your profile has been saved successfully."
         )
+        self._set_editable(False)
+        self._editing = False
+        self.btnEdit.show()
+        self.btnSaveProfile.hide()
+        self.btnDiscard.hide()
+
+    def _toggle_edit(self):
+        self._set_editable(True)
+        self._editing = True
+        self.btnEdit.hide()
+        self.btnSaveProfile.show()
+        self.btnDiscard.show()
+
+    def _set_editable(self, editable: bool):
+        self.inputFirstName.setReadOnly(not editable)
+        self.inputLastName.setReadOnly(not editable)
+        self.inputDobMonth.setEnabled(editable)
+        self.inputDobDay.setEnabled(editable)
+        self.inputDobYear.setEnabled(editable)
+        self.inputSex.setEnabled(editable)
+        self.inputContact.setReadOnly(not editable)
+        if hasattr(self, "inputEmail"):
+            self.inputEmail.setReadOnly(not editable)

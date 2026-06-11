@@ -2,7 +2,7 @@ import os
 import shutil
 from datetime import date
 
-from PyQt6.QtWidgets import QDialog, QFileDialog
+from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from PyQt6.QtCore import QDate
 from PyQt6 import uic
 
@@ -10,7 +10,9 @@ from services.vaccination_shot_service import VaccinationShotService
 from services.document_service import DocumentService
 from widgets.date_picker import init_date_picker, set_date_picker, get_date_str_from_picker
 
-DOCS_DIR = "documents"
+DOCS_DIR = os.path.normpath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "documents")
+)
 
 
 class DialogAddVaccination(QDialog):
@@ -31,8 +33,9 @@ class DialogAddVaccination(QDialog):
         init_date_picker(self.inputDateMonth, self.inputDateDay, self.inputDateYear)
         set_date_picker(self.inputDateMonth, self.inputDateDay, self.inputDateYear, QDate.currentDate())
 
-        self.btnClose.clicked.connect(self.reject)
-        self.btnCancel.clicked.connect(self.reject)
+
+
+        self.btnCancel.clicked.connect(self._confirm_cancel)
         self.btnSave.clicked.connect(self._save)
 
         self.uploadZone.mousePressEvent = lambda e: self._pick_file()
@@ -82,10 +85,12 @@ class DialogAddVaccination(QDialog):
 
 
         if not vaccination_name:
+            QMessageBox.warning(self, "Missing Field", "Vaccination name is required.")
             self.inputVaccineName.setFocus()
             return
 
         if not facility:
+            QMessageBox.warning(self, "Missing Field", "Facility name is required.")
             self.inputFacility.setFocus()
             return
 
@@ -121,8 +126,18 @@ class DialogAddVaccination(QDialog):
                 vaccine_id=vaccination.vaccine_id
             )
 
+        QMessageBox.information(self, "Success", "Vaccination saved successfully.")
         self.accept()
 
+    def _confirm_cancel(self):
+        reply = QMessageBox.question(
+            self, "Discard Changes",
+            "Are you sure you want to discard the changes?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            self.reject()
 
     def _update_fields(self, status=None):
         status = self.inputVaccineStatus.currentText()

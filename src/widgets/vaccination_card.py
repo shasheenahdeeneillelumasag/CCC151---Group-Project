@@ -26,6 +26,8 @@ def _fmt_date(value) -> str:
 
 class VaccinationCard(QFrame):
     clicked = pyqtSignal()
+    edit_requested = pyqtSignal(object)
+    delete_requested = pyqtSignal(object)
 
     def __init__(self, shot: VaccinationShot):
         super().__init__()
@@ -35,6 +37,8 @@ class VaccinationCard(QFrame):
         self.selected = False
         self.shot = shot
 
+        self.btnEdit.clicked.connect(lambda: self.edit_requested.emit(shot))
+        self.btnDeleteVax.clicked.connect(lambda: self.delete_requested.emit(shot))
         self.populate()
 
     def populate(self):
@@ -52,9 +56,8 @@ class VaccinationCard(QFrame):
             f"{shot.display_date}"
         )
 
-        self.lblVaxCardPhoto.setText(
-            f"{document_service.get_document_by_code(shot.vaccine_code)}"
-        )
+        doc = document_service.get_document_by_code(shot.vaccine_code)
+        self.lblVaxCardPhoto.setText(doc.doc_filename if doc else "No attachment")
 
         self.lblDoseStatus.setText(
             f"{shot.status}"

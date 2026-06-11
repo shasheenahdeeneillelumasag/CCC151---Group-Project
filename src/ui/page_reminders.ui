@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <ui version="4.0">
  <class>PageReminders</class>
  <widget class="QWidget" name="PageReminders">
@@ -20,7 +20,6 @@
        <item><widget class="QLabel"><property name="text"><string>Auto-generated appointment reminders</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #8FA89F; }</string></property></widget></item>
       </layout></item>
       <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
-      <item><widget class="QLabel"><property name="text"><string>  1 Active Reminder  </string></property><property name="styleSheet"><string>QLabel { background: #FEF3DC; color: #7A4D0A; font-size: 11px; font-weight: bold; border-radius: 20px; padding: 5px 6px; }</string></property></widget></item>
      </layout>
     </widget>
    </item>
@@ -40,14 +39,14 @@
         <widget class="QFrame" name="activeBanner">
          <property name="styleSheet"><string>QFrame#activeBanner { background: #FEF3DC; border: 1.5px solid #FBDF9E; border-radius: 14px; }</string></property>
          <layout class="QHBoxLayout"><property name="leftMargin"><number>20</number></property><property name="topMargin"><number>16</number></property><property name="rightMargin"><number>20</number></property><property name="bottomMargin"><number>16</number></property><property name="spacing"><number>14</number></property>
-          <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>:/assets/ic_bell.svg</normaloff>:/assets/ic_bell.svg</pixmap></property>
+          <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>../assets/ic_bell.svg</normaloff>../assets/ic_bell.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property><property name="minimumSize"><size><width>42</width><height>42</height></size></property><property name="maximumSize"><size><width>42</width><height>42</height></size></property><property name="styleSheet"><string>QLabel { background: #FBDF9E; border-radius: 11px;
     }</string></property></widget></item>
           <item>
            <layout class="QVBoxLayout"><property name="spacing"><number>4</number></property>
-            <item><widget class="QLabel"><property name="text"><string>REMINDER FLAGGED — TODAY IS APRIL 16, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 9px; font-weight: bold; color: #C47B12; letter-spacing: 0.8px; }</string></property></widget></item>
+            <item><widget class="QLabel"><property name="text"><string>REMINDER FLAGGED â€” TODAY IS APRIL 16, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 9px; font-weight: bold; color: #C47B12; letter-spacing: 0.8px; }</string></property></widget></item>
             <item><widget class="QLabel"><property name="text"><string>Prepare for your follow-up visit in 2 days</string></property><property name="styleSheet"><string>QLabel { font-size: 14px; font-weight: bold; color: #3D2800; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>April 18, 2024  ·  10:00 AM  ·  Dr. Ramon Santos  ·  City Health Clinic</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #7A4D0A; }</string></property></widget></item>
+            <item><widget class="QLabel"><property name="text"><string>April 18, 2024  Â·  10:00 AM  Â·  Dr. Ramon Santos  Â·  City Health Clinic</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #7A4D0A; }</string></property></widget></item>
             <item>
              <layout class="QHBoxLayout"><property name="spacing"><number>8</number></property>
               <item><widget class="QPushButton" name="btnViewDetails"><property name="text"><string>View Details</string></property><property name="styleSheet"><string>QPushButton { background: #C47B12; color: #FFF; font-size: 11px; font-weight: 600; border: none; border-radius: 6px; padding: 6px 14px; } QPushButton:hover { background: #7A4D0A; }</string></property></widget></item>
@@ -74,15 +73,15 @@
            <widget class="QFrame" name="rem1">
             <property name="styleSheet"><string>QFrame#rem1 { background: #FFFBF0; border-bottom: 1px solid #DDE8E3; }</string></property>
             <layout class="QHBoxLayout"><property name="leftMargin"><number>20</number></property><property name="topMargin"><number>15</number></property><property name="rightMargin"><number>20</number></property><property name="bottomMargin"><number>15</number></property><property name="spacing"><number>14</number></property>
-             <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>:/assets/ic_bell.svg</normaloff>:/assets/ic_bell.svg</pixmap></property>
+             <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>../assets/ic_bell.svg</normaloff>../assets/ic_bell.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property><property name="minimumSize"><size><width>40</width><height>40</height></size></property><property name="maximumSize"><size><width>40</width><height>40</height></size></property><property name="styleSheet"><string>QLabel { background: #FEF3DC; border-radius: 10px;
     padding: 4px; }</string></property></widget></item>
              <item>
               <layout class="QVBoxLayout"><property name="spacing"><number>3</number></property>
                <item><widget class="QLabel"><property name="text"><string>Follow-up: Upper Respiratory Tract Infection</string></property><property name="styleSheet"><string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
-               <item><widget class="QLabel"><property name="text"><string>Dr. Ramon Santos  ·  City Health Clinic  ·  10:00 AM</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #546860; }</string></property></widget></item>
-               <item><widget class="QLabel"><property name="text"><string> Flagged today — appointment is 2 days away (Apr 18)</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #C47B12; font-weight: 600; }</string></property></widget></item>
-               <item><widget class="QLabel"><property name="text"><string>remind_on: April 16, 2024   ·   appointment_date: April 18, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; font-style: italic; }</string></property></widget></item>
+               <item><widget class="QLabel"><property name="text"><string>Dr. Ramon Santos  Â·  City Health Clinic  Â·  10:00 AM</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #546860; }</string></property></widget></item>
+               <item><widget class="QLabel"><property name="text"><string> Flagged today â€” appointment is 2 days away (Apr 18)</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #C47B12; font-weight: 600; }</string></property></widget></item>
+               <item><widget class="QLabel"><property name="text"><string>remind_on: April 16, 2024   Â·   appointment_date: April 18, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; font-style: italic; }</string></property></widget></item>
               </layout>
              </item>
              <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
@@ -101,14 +100,14 @@
            <widget class="QFrame" name="rem2">
             <property name="styleSheet"><string>QFrame#rem2 { border-bottom: 1px solid #DDE8E3; } QFrame#rem2:hover { background: #F8FBFA; }</string></property>
             <layout class="QHBoxLayout"><property name="leftMargin"><number>20</number></property><property name="topMargin"><number>15</number></property><property name="rightMargin"><number>20</number></property><property name="bottomMargin"><number>15</number></property><property name="spacing"><number>14</number></property>
-             <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>:/assets/ic_check.svg</normaloff>:/assets/ic_check.svg</pixmap></property>
+             <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>../assets/ic_check.svg</normaloff>../assets/ic_check.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property><property name="minimumSize"><size><width>40</width><height>40</height></size></property><property name="maximumSize"><size><width>40</width><height>40</height></size></property><property name="styleSheet"><string>QLabel { background: #E8F5EB; border-radius: 10px;
     padding: 4px; }</string></property></widget></item>
              <item>
               <layout class="QVBoxLayout"><property name="spacing"><number>3</number></property>
                <item><widget class="QLabel"><property name="text"><string>Annual Physical Exam</string></property><property name="styleSheet"><string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
-               <item><widget class="QLabel"><property name="text"><string>Dr. Santos  ·  PhilHealth Clinic</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #546860; }</string></property></widget></item>
-               <item><widget class="QLabel"><property name="text"><string>remind_on: January 8, 2024   ·   appointment_date: January 10, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; font-style: italic; }</string></property></widget></item>
+               <item><widget class="QLabel"><property name="text"><string>Dr. Santos  Â·  PhilHealth Clinic</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #546860; }</string></property></widget></item>
+               <item><widget class="QLabel"><property name="text"><string>remind_on: January 8, 2024   Â·   appointment_date: January 10, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; font-style: italic; }</string></property></widget></item>
               </layout>
              </item>
              <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
@@ -122,14 +121,14 @@
            <widget class="QFrame" name="rem3">
             <property name="styleSheet"><string>QFrame#rem3:hover { background: #F8FBFA; }</string></property>
             <layout class="QHBoxLayout"><property name="leftMargin"><number>20</number></property><property name="topMargin"><number>15</number></property><property name="rightMargin"><number>20</number></property><property name="bottomMargin"><number>15</number></property><property name="spacing"><number>14</number></property>
-             <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>:/assets/ic_check.svg</normaloff>:/assets/ic_check.svg</pixmap></property>
+             <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>../assets/ic_check.svg</normaloff>../assets/ic_check.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property><property name="minimumSize"><size><width>40</width><height>40</height></size></property><property name="maximumSize"><size><width>40</width><height>40</height></size></property><property name="styleSheet"><string>QLabel { background: #E8F5EB; border-radius: 10px;
     padding: 4px; }</string></property></widget></item>
              <item>
               <layout class="QVBoxLayout"><property name="spacing"><number>3</number></property>
                <item><widget class="QLabel"><property name="text"><string>ER Follow-up Checkup</string></property><property name="styleSheet"><string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
-               <item><widget class="QLabel"><property name="text"><string>Dr. Mendoza  ·  QC General Hospital</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #546860; }</string></property></widget></item>
-               <item><widget class="QLabel"><property name="text"><string>remind_on: November 1, 2023   ·   appointment_date: November 3, 2023</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; font-style: italic; }</string></property></widget></item>
+               <item><widget class="QLabel"><property name="text"><string>Dr. Mendoza  Â·  QC General Hospital</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #546860; }</string></property></widget></item>
+               <item><widget class="QLabel"><property name="text"><string>remind_on: November 1, 2023   Â·   appointment_date: November 3, 2023</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; font-style: italic; }</string></property></widget></item>
               </layout>
              </item>
              <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
@@ -147,7 +146,7 @@
         <widget class="QFrame" name="infoBox">
          <property name="styleSheet"><string>QFrame#infoBox { background: #E3F5EE; border: 1px solid #9FE1CB; border-radius: 14px; }</string></property>
          <layout class="QHBoxLayout"><property name="leftMargin"><number>20</number></property><property name="topMargin"><number>16</number></property><property name="rightMargin"><number>20</number></property><property name="bottomMargin"><number>16</number></property><property name="spacing"><number>12</number></property>
-          <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>:/assets/ic_info.svg</normaloff>:/assets/ic_info.svg</pixmap></property>
+          <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>../assets/ic_info.svg</normaloff>../assets/ic_info.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property><property name="minimumSize"><size><width>36</width><height>36</height></size></property><property name="maximumSize"><size><width>36</width><height>36</height></size></property><property name="styleSheet"><string>QLabel { background: #9FE1CB; color: #084332; border-radius: 9px;
     font-weight: bold; padding: 4px; }</string></property></widget></item>
           <item>

@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QDialog, QMessageBox
 from PyQt6.QtCore import QDate
 from PyQt6 import uic
 
@@ -23,7 +23,7 @@ class DialogAddAppointment(QDialog):
         self.inputTimeMinute.setText("00")
         self.inputTimeAmpm.addItems(["AM", "PM"])
 
-        self.btnCancel.clicked.connect(self.reject)
+        self.btnCancel.clicked.connect(self._confirm_cancel)
         self.btnSave.clicked.connect(self._save)
 
     def _save(self):
@@ -41,6 +41,7 @@ class DialogAddAppointment(QDialog):
         appt_time = f"{hour:02d}:{minute}"
 
         if not clinic_name:
+            QMessageBox.warning(self, "Missing Field", "Doctor or clinic name is required.")
             self.inputDoctor.setFocus()
             return
 
@@ -53,4 +54,15 @@ class DialogAddAppointment(QDialog):
             patient_id=self.patient_id
         )
 
+        QMessageBox.information(self, "Success", "Appointment saved successfully.")
         self.accept()
+
+    def _confirm_cancel(self):
+        reply = QMessageBox.question(
+            self, "Discard Changes",
+            "Are you sure you want to discard the changes?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            self.reject()

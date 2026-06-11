@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <ui version="4.0">
  <class>PageDashboard</class>
  <widget class="QWidget" name="PageDashboard">
@@ -7,8 +7,12 @@
     QWidget { background-color: #F2F7F5; font-family: "Segoe UI", "SF Pro Display", sans-serif; }
     QLabel { background: transparent; }
     QFrame#card { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }
-    QFrame#reminderBanner { background: #FEF3DC; border: 1px solid #FBDF9E; border-radius: 14px; }
+    QFrame#reminderBanner { background: #FEF3DC; border: 1.5px solid #FBDF9E; border-radius: 14px; }
     QFrame#statCard { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }
+    QFrame#cardActivity:hover, QFrame#cardVitals:hover,
+    QFrame#cardAppt:hover, QFrame#cardVaccine:hover,
+    QFrame#statCard1:hover, QFrame#statCard2:hover,
+    QFrame#statCard3:hover, QFrame#statCard4:hover { background: #F8FBFA; }
    </string>
   </property>
   <layout class="QVBoxLayout" name="dashLayout">
@@ -65,9 +69,9 @@
           <property name="styleSheet">
            <string>QLabel { font-size: 11px; color: #8FA89F; }</string>
           </property>
-          <property name="text">
-           <string>Good morning, Shae — here's your health at a glance</string>
-          </property>
+           <property name="text">
+            <string></string>
+           </property>
          </widget>
         </item>
        </layout>
@@ -94,7 +98,7 @@
          <string>QPushButton { background: #1A9E78; color: #FFFFFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string>
         </property>
         <property name="text">
-         <string>＋  Add Record</string>
+         <string>Add Record</string>
         </property>
        </widget>
       </item>
@@ -170,7 +174,7 @@
              <string>QLabel { background: #FBDF9E; border-radius: 11px;
     }</string>
             </property>
-            <property name="pixmap"><pixmap><normaloff>:/assets/ic_bell.svg</normaloff>:/assets/ic_bell.svg</pixmap></property>
+            <property name="pixmap"><pixmap><normaloff>../assets/ic_bell.svg</normaloff>../assets/ic_bell.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property>
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -188,7 +192,7 @@
                <string>QLabel { font-size: 9px; font-weight: bold; color: #C47B12; letter-spacing: 1px; }</string>
               </property>
               <property name="text">
-               <string>APPOINTMENT REMINDER — FLAGGED TODAY</string>
+               <string>APPOINTMENT REMINDER â€” FLAGGED TODAY</string>
               </property>
              </widget>
             </item>
@@ -208,7 +212,7 @@
                <string>QLabel { font-size: 11px; color: #7A4D0A; }</string>
               </property>
               <property name="text">
-               <string>April 18, 2024  ·  10:00 AM  ·  City Health Clinic — URTI Follow-up</string>
+               <string>April 18, 2024  Â·  10:00 AM  Â·  City Health Clinic â€” URTI Follow-up</string>
               </property>
              </widget>
             </item>
@@ -330,7 +334,7 @@
                <string>QLabel { background: #E3F5EE; border-radius: 9px;
     padding: 4px; }</string>
               </property>
-              <property name="pixmap"><pixmap><normaloff>:/assets/ic_document.svg</normaloff>:/assets/ic_document.svg</pixmap></property>
+              <property name="pixmap"><pixmap><normaloff>../assets/ic_document.svg</normaloff>../assets/ic_document.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignLeading</set>
@@ -347,26 +351,26 @@
               </property>
              </widget>
             </item>
-            <item>
-             <widget class="QLabel" name="stat1Value">
-              <property name="styleSheet">
-               <string>QLabel { font-size: 28px; font-weight: bold; color: #1C2B25; }</string>
-              </property>
-              <property name="text">
-               <string>3</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="stat1Sub">
-              <property name="styleSheet">
-               <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
-              </property>
-              <property name="text">
-               <string>Last: Mar 15, 2024</string>
-              </property>
-             </widget>
-            </item>
+             <item>
+              <widget class="QLabel" name="stat1Value">
+               <property name="styleSheet">
+                <string>QLabel { font-size: 28px; font-weight: bold; color: #1C2B25; }</string>
+               </property>
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="stat1Sub">
+               <property name="styleSheet">
+                <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
+               </property>
+               <property name="text">
+                <string>No records yet</string>
+               </property>
+              </widget>
+             </item>
            </layout>
           </widget>
          </item>
@@ -409,7 +413,7 @@
                <string>QLabel { background: #EAF3FC; border-radius: 9px;
     padding: 4px; }</string>
               </property>
-              <property name="pixmap"><pixmap><normaloff>:/assets/ic_vaccine.svg</normaloff>:/assets/ic_vaccine.svg</pixmap></property>
+              <property name="pixmap"><pixmap><normaloff>../assets/ic_vaccine.svg</normaloff>../assets/ic_vaccine.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property>
              </widget>
             </item>
@@ -428,18 +432,18 @@
               <property name="styleSheet">
                <string>QLabel { font-size: 28px; font-weight: bold; color: #1C2B25; }</string>
               </property>
-              <property name="text">
-               <string>2</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="stat2Sub">
-              <property name="styleSheet">
-               <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
-              </property>
-              <property name="text">
-               <string>1 dose pending</string>
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="stat2Sub">
+               <property name="styleSheet">
+                <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
+               </property>
+               <property name="text">
+                <string>All up to date</string>
               </property>
              </widget>
             </item>
@@ -485,7 +489,7 @@
                <string>QLabel { background: #FEF3DC; border-radius: 9px;
     padding: 4px; }</string>
               </property>
-              <property name="pixmap"><pixmap><normaloff>:/assets/ic_calendar.svg</normaloff>:/assets/ic_calendar.svg</pixmap></property>
+              <property name="pixmap"><pixmap><normaloff>../assets/ic_calendar.svg</normaloff>../assets/ic_calendar.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property>
              </widget>
             </item>
@@ -504,18 +508,18 @@
               <property name="styleSheet">
                <string>QLabel { font-size: 28px; font-weight: bold; color: #1C2B25; }</string>
               </property>
-              <property name="text">
-               <string>1</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="stat3Sub">
-              <property name="styleSheet">
-               <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
-              </property>
-              <property name="text">
-               <string>Next: Apr 18, 2024</string>
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="stat3Sub">
+               <property name="styleSheet">
+                <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
+               </property>
+               <property name="text">
+                <string>No upcoming</string>
               </property>
              </widget>
             </item>
@@ -561,7 +565,7 @@
                <string>QLabel { background: #EEEAFC; border-radius: 9px;
     padding: 4px; }</string>
               </property>
-              <property name="pixmap"><pixmap><normaloff>:/assets/ic_folder.svg</normaloff>:/assets/ic_folder.svg</pixmap></property>
+              <property name="pixmap"><pixmap><normaloff>../assets/ic_folder.svg</normaloff>../assets/ic_folder.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property>
              </widget>
             </item>
@@ -580,18 +584,18 @@
               <property name="styleSheet">
                <string>QLabel { font-size: 28px; font-weight: bold; color: #1C2B25; }</string>
               </property>
-              <property name="text">
-               <string>4</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="stat4Sub">
-              <property name="styleSheet">
-               <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
-              </property>
-              <property name="text">
-               <string>2 linked this month</string>
+               <property name="text">
+                <string>0</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="stat4Sub">
+               <property name="styleSheet">
+                <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
+               </property>
+               <property name="text">
+                <string>No new this month</string>
               </property>
              </widget>
             </item>
@@ -663,16 +667,7 @@
                 </property>
                </spacer>
               </item>
-              <item>
-               <widget class="QPushButton" name="btnViewAllActivity">
-                <property name="styleSheet">
-                 <string>QPushButton { background: transparent; color: #1A9E78; font-size: 11px; font-weight: 600; border: none; }</string>
-                </property>
-                <property name="text">
-                 <string>View all</string>
-                </property>
-               </widget>
-              </item>
+
              </layout>
             </item>
             <item>
@@ -749,30 +744,7 @@
                 </property>
                </widget>
               </item>
-              <item>
-               <spacer>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QLabel" name="vitalsDate">
-                <property name="styleSheet">
-                 <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
-                </property>
-                <property name="text">
-                 <string>Mar 15, 2024</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+               </layout>
             </item>
             <item>
              <widget class="QFrame" name="vitalsDivider">
@@ -803,111 +775,16 @@
               <property name="horizontalScrollBarPolicy">
                <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
               </property>
-              <property name="showGrid">
-               <bool>false</bool>
-              </property>
-              <property name="rowCount">
-               <number>5</number>
-              </property>
-              <property name="columnCount">
-               <number>3</number>
-              </property>
-              <row />
-              <row />
-              <row />
-              <row />
-              <row />
-              <column>
-               <property name="text">
-                <string>Vital</string>
+               <property name="showGrid">
+                <bool>false</bool>
                </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Value</string>
+               <property name="rowCount">
+                <number>0</number>
                </property>
-              </column>
-              <column>
-               <property name="text">
-                <string>Status</string>
+               <property name="columnCount">
+                <number>0</number>
                </property>
-              </column>
-              <item row="0" column="0">
-               <property name="text">
-                <string>Blood Pressure</string>
-               </property>
-              </item>
-              <item row="0" column="1">
-               <property name="text">
-                <string>130 / 85 mmHg</string>
-               </property>
-              </item>
-              <item row="0" column="2">
-               <property name="text">
-                <string> Watch</string>
-               </property>
-              </item>
-              <item row="1" column="0">
-               <property name="text">
-                <string>Weight</string>
-               </property>
-              </item>
-              <item row="1" column="1">
-               <property name="text">
-                <string>58 kg</string>
-               </property>
-              </item>
-              <item row="1" column="2">
-               <property name="text">
-                <string> Normal</string>
-               </property>
-              </item>
-              <item row="2" column="0">
-               <property name="text">
-                <string>Temperature</string>
-               </property>
-              </item>
-              <item row="2" column="1">
-               <property name="text">
-                <string>37.2 °C</string>
-               </property>
-              </item>
-              <item row="2" column="2">
-               <property name="text">
-                <string> Normal</string>
-               </property>
-              </item>
-              <item row="3" column="0">
-               <property name="text">
-                <string>Diagnosis</string>
-               </property>
-              </item>
-              <item row="3" column="1">
-               <property name="text">
-                <string>URTI</string>
-               </property>
-              </item>
-              <item row="3" column="2">
-               <property name="text">
-                <string />
-               </property>
-              </item>
-              <item row="4" column="0">
-               <property name="text">
-                <string>Prescription</string>
-               </property>
-              </item>
-              <item row="4" column="1">
-               <property name="text">
-                <string>Amoxicillin 500mg</string>
-               </property>
-              </item>
-              <item row="4" column="2">
-               <property name="text">
-                <string />
-               </property>
-              </item>
-             </widget>
+              </widget>
             </item>
            </layout>
           </widget>
@@ -977,16 +854,19 @@
                 </property>
                </spacer>
               </item>
-              <item>
-               <widget class="QPushButton" name="btnAddAppt">
-                <property name="styleSheet">
-                 <string>QPushButton { background: transparent; color: #546860; font-size: 11px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 7px; padding: 4px 12px; } QPushButton:hover { background: #E3F5EE; border-color: #9FE1CB; }</string>
-                </property>
-                <property name="text">
-                 <string>+ Add</string>
-                </property>
-               </widget>
-              </item>
+               <item>
+                <widget class="QPushButton" name="btnViewAllAppt">
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="styleSheet">
+                  <string>QPushButton { background: transparent; color: #1A9E78; font-size: 11px; font-weight: 600; border: none; } QPushButton:hover { color: #0D6B52; }</string>
+                 </property>
+                 <property name="text">
+                  <string>View all</string>
+                 </property>
+                </widget>
+               </item>
              </layout>
             </item>
             <item>
@@ -1024,20 +904,20 @@
                 <item>
                  <widget class="QLabel" name="apptDay">
                   <property name="styleSheet">
-                   <string>QLabel { font-size: 26px; font-weight: 800; color: #1A9E78; }</string>
+                   <string>QLabel { font-size: 26px; font-weight: 800; color: #1C2B25; }</string>
                   </property>
                   <property name="text">
-                   <string>18</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="apptMonth">
-                  <property name="styleSheet">
-                   <string>QLabel { font-size: 9px; color: #8FA89F; letter-spacing: 0.5px; font-weight: 600; }</string>
-                  </property>
-                  <property name="text">
-                   <string>APR 2024</string>
+                <string>—</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="apptMonth">
+               <property name="styleSheet">
+                <string>QLabel { font-size: 9px; color: #8FA89F; letter-spacing: 0.5px; font-weight: 600; }</string>
+               </property>
+               <property name="text">
+                <string></string>
                   </property>
                  </widget>
                 </item>
@@ -1054,8 +934,8 @@
                    <string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string>
                   </property>
                   <property name="text">
-                   <string>Dr. Ramon Santos</string>
-                  </property>
+                <string>No upcoming appointments</string>
+               </property>
                  </widget>
                 </item>
                 <item>
@@ -1064,8 +944,8 @@
                    <string>QLabel { font-size: 11px; color: #546860; }</string>
                   </property>
                   <property name="text">
-                   <string>General Follow-up · City Health Clinic</string>
-                  </property>
+                <string></string>
+               </property>
                  </widget>
                 </item>
                 <item>
@@ -1074,8 +954,8 @@
                    <string>QLabel { font-size: 10px; color: #C47B12; font-weight: 600; }</string>
                   </property>
                   <property name="text">
-                   <string> Reminder set: Apr 16</string>
-                  </property>
+                <string></string>
+               </property>
                  </widget>
                 </item>
                </layout>
@@ -1099,8 +979,8 @@
                  <string>QLabel { font-size: 11px; color: #8FA89F; }</string>
                 </property>
                 <property name="text">
-                 <string>10:00 AM</string>
-                </property>
+                <string></string>
+               </property>
                </widget>
               </item>
              </layout>
@@ -1167,14 +1047,17 @@
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="btnViewVacc">
-                <property name="styleSheet">
-                 <string>QPushButton { background: transparent; color: #1A9E78; font-size: 11px; font-weight: 600; border: none; }</string>
-                </property>
-                <property name="text">
-                 <string>View all</string>
-                </property>
-               </widget>
+                <widget class="QPushButton" name="btnViewVacc">
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="styleSheet">
+                  <string>QPushButton { background: transparent; color: #1A9E78; font-size: 11px; font-weight: 600; border: none; } QPushButton:hover { color: #0D6B52; }</string>
+                 </property>
+                 <property name="text">
+                  <string>View all</string>
+                 </property>
+                </widget>
               </item>
              </layout>
             </item>

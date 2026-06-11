@@ -3,7 +3,7 @@ from PyQt6.QtGui import QIcon, QPixmap, QPainter, QBrush
 import sys
 from datetime import date
 
-from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget
+from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget, QMessageBox
 from PyQt6 import uic
 from PyQt6.QtCore import QSize, Qt
 
@@ -45,7 +45,7 @@ class MainWindow(QMainWindow):
 
         self.apply_navigation_icons()
 
-        self.centralWidget.setStyleSheet("background-color: #1A9E78;")
+        self.centralWidget.setStyleSheet("background-color: #2B8F74;")
         self.stackedWidget.setStyleSheet("background-color: #F2F7F5;")
 
         pages = [
@@ -79,13 +79,16 @@ class MainWindow(QMainWindow):
         self.load_icon(self.navAppointments, "calendar_month.svg")
         self.load_icon(self.navReminders, "notifications.svg")
         self.load_icon(self.navDocuments, "document.svg")
+        self.load_icon(self.logOutBtn, "ic_logout.svg")
 
-        self.setStyleSheet("""
-            QPushButton {
-                padding: 8px;
-                text-align: left;
-            }
-        """)
+        logo_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'logo.png')
+        if os.path.exists(logo_path):
+            from PyQt6.QtGui import QPixmap
+            self.logoIcon.setPixmap(QPixmap(logo_path).scaled(
+                36, 36,
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation
+            ))
 
         self.settings        = AppSettings()
         self.patient_service = PatientService()
@@ -102,13 +105,15 @@ class MainWindow(QMainWindow):
             if patient_code else None
         )
 
-        self.page_dashboard   = PageDashboard()
-        self.page_profile     = PageProfile()
-        self.page_records     = PageRecords()
+        self.page_dashboard    = PageDashboard()
+        self.page_profile      = PageProfile()
+        self.page_records      = PageRecords()
         self.page_vaccinations = PageVaccinations()
         self.page_appointments = PageAppointments()
-        self.page_reminders   = PageReminders()
-        self.page_documents   = PageDocuments()
+        self.page_reminders    = PageReminders()
+        self.page_documents    = PageDocuments()
+
+        self.page_dashboard.navigate_requested.connect(self._navigate)
 
         self._embed(self.pageDashboard,    self.page_dashboard)
         self._embed(self.pageProfile,      self.page_profile)
@@ -152,6 +157,9 @@ class MainWindow(QMainWindow):
             lambda: self._navigate(5))
         self.navDocuments.clicked.connect(
             lambda: self._navigate(6))
+
+        self.logOutBtn.clicked.connect(self._logout)
+        self.patientChip.hide()
 
         self._load_patient_chip()
 
@@ -272,6 +280,21 @@ class MainWindow(QMainWindow):
                 border-radius: 10px;
             }}
         """)
+
+    def _logout(self):
+        reply = QMessageBox.question(
+            self, "Log Out",
+            "Are you sure you want to log out?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            from core.app_settings import AppSettings
+            AppSettings().set_active_patient_code("")
+            from login_window import AuthWindow
+            self.auth_window = AuthWindow()
+            self.auth_window.show()
+            self.close()
 
 def main():
     init_db()

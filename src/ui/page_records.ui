@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>PageRecords</class>
  <widget class="QWidget" name="PageRecords">
@@ -39,9 +39,9 @@
  </spacer>
 </item>
       <item><widget class="QLineEdit" name="searchInput"><property name="placeholderText"><string> Search records...</string></property><property name="minimumWidth"><number>200</number></property><property name="maximumWidth"><number>240</number></property></widget></item>
-      <item><widget class="QPushButton" name="btnNewRecord"><property name="text"><string>＋  New Record</string></property><property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property></widget></item>
-      <item><widget class="QPushButton" name="btnEditRecord"><property name="text"><string>✎  Edit Record</string></property><property name="styleSheet"><string>QPushButton { background: #FFFFFF; color: #1A9E78; font-size: 12px; font-weight: 600; border: 1px solid #1A9E78; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #E3F5EE; }</string></property></widget></item>
-      <item><widget class="QPushButton" name="btnDeleteRecord"><property name="text"><string> Delete Record</string></property><property name="styleSheet"><string>QPushButton { background: #FFFFFF; color: #C0392B; font-size: 12px; font-weight: 600; border: 1px solid #C0392B; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #FDECEB; }</string></property></widget></item>
+      <item><widget class="QPushButton" name="btnNewRecord"><property name="text"><string>New Record</string></property><property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property></widget></item>
+      <item><widget class="QPushButton" name="btnEditRecord"><property name="text"><string>Edit Record</string></property><property name="styleSheet"><string>QPushButton { background: #FFFFFF; color: #1A9E78; font-size: 12px; font-weight: 600; border: 1px solid #1A9E78; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #E3F5EE; }</string></property></widget></item>
+      <item><widget class="QPushButton" name="btnDeleteRecord"><property name="text"><string>Delete Record</string></property><property name="styleSheet"><string>QPushButton { background: #FFFFFF; color: #C0392B; font-size: 12px; font-weight: 600; border: 1px solid #C0392B; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #FDECEB; }</string></property></widget></item>
      </layout>
     </widget>
    </item>
@@ -93,3 +93,5 @@
  </widget>
  <resources/><connections/>
 </ui>
+
+

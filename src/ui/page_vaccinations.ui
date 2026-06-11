@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>PageVaccinations</class>
  <widget class="QWidget" name="PageVaccinations">
@@ -85,7 +85,7 @@
          <string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string>
         </property>
         <property name="text">
-         <string>＋  Log Vaccination</string>
+         <string>Log Vaccination</string>
         </property>
        </widget>
       </item>
@@ -143,3 +143,4 @@
  <resources/>
  <connections/>
 </ui>
+

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>DialogAddVaccination</class>
  <widget class="QDialog" name="DialogAddVaccination">
@@ -80,28 +80,7 @@
         </property>
        </spacer>
       </item>
-      <item>
-       <widget class="QPushButton" name="btnClose">
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>30</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string>QPushButton { background: #F1EFE8; color: #546860; border: none; border-radius: 15px; font-size: 13px; } QPushButton:hover { background: #DDE8E3; }</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
+
      </layout>
     </widget>
    </item>
@@ -327,7 +306,7 @@
     color: #1A9E78; }</string>
             </property>
             <property name="pixmap">
-             <pixmap>:/assets/ic_upload.svg</pixmap>
+             <pixmap>../assets/ic_upload.svg</pixmap>
             </property>
             <property name="scaledContents">
              <bool>true</bool>

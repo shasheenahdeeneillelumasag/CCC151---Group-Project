@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>vaxCard</class>
  <widget class="QFrame" name="vaxCard">
@@ -84,7 +84,7 @@ QFrame {
         <string>QLabel { background: #E3F5EE; border-radius: 12px; padding: 4px; }</string>
        </property>
        <property name="pixmap">
-        <pixmap>:/assets/ic_vaccine.svg</pixmap>
+        <pixmap>../assets/ic_vaccine.svg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -112,7 +112,7 @@ QFrame {
           <string>QLabel { font-size: 12px; color: #546860; }</string>
          </property>
          <property name="text">
-          <string>Vaccine ID: VAX-HEP-001  ·  Facility: Barangay Health Center No. 5</string>
+          <string>Vaccine ID: VAX-HEP-001  Â·  Facility: Barangay Health Center No. 5</string>
          </property>
         </widget>
        </item>
@@ -131,17 +131,27 @@ QFrame {
        </property>
       </spacer>
      </item>
-     <item>
-      <widget class="QPushButton" name="btnEdit">
-       <property name="styleSheet">
-        <string>QPushButton { background: transparent; color: #546860; font-size: 11px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 8px; padding: 6px 14px; } QPushButton:hover { background: #E3F5EE; }</string>
-       </property>
-       <property name="text">
-        <string>Edit</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+      <item>
+       <widget class="QPushButton" name="btnEdit">
+        <property name="styleSheet">
+         <string>QPushButton { background: transparent; color: #546860; font-size: 11px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 8px; padding: 6px 14px; } QPushButton:hover { background: #E3F5EE; }</string>
+        </property>
+        <property name="text">
+         <string>Edit</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnDeleteVax">
+        <property name="styleSheet">
+         <string>QPushButton { background: transparent; color: #C0392B; font-size: 11px; font-weight: 600; border: 1px solid #C0392B; border-radius: 8px; padding: 6px 14px; } QPushButton:hover { background: #FDECEB; }</string>
+        </property>
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
    </item>
    <item>
     <widget class="QFrame" name="doseSchedule">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ui version="4.0">
  <class>Form</class>
  <widget class="QFrame" name="HistoryCard">
@@ -34,7 +34,7 @@ QFrame#HistoryCard:hover { background: #F8FBFA; }
      <property name="styleSheet">
       <string>QLabel { background: #EAF3FC; border-radius: 10px; padding: 4px; }</string>
      </property>
-     <property name="pixmap"><pixmap><normaloff>:/assets/ic_records.svg</normaloff>:/assets/ic_records.svg</pixmap></property>
+     <property name="pixmap"><pixmap><normaloff>../assets/ic_records.svg</normaloff>../assets/ic_records.svg</pixmap></property>
      <property name="scaledContents"><bool>true</bool></property>
     </widget>
    </item>

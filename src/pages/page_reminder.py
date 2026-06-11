@@ -65,7 +65,6 @@ class PageReminders(QWidget):
 
         self._populate_banner(flagged)
         self._populate_list(all_reminders)
-        self._update_count_badge(len(flagged))
 
     def _populate_banner(self, flagged: list[Appointment]):
         if hasattr(self, "_banner_widget"):
@@ -209,14 +208,6 @@ class PageReminders(QWidget):
         idx = 2 if hasattr(self, "_banner_widget") else 1
         self.scrollContent.layout().insertWidget(idx, list_frame)
         self._list_container = list_frame
-
-    def _update_count_badge(self, count: int):
-        if hasattr(self, "countBadge"):
-            if count > 0:
-                self.countBadge.setText(f"  {count} Active Reminder{'s' if count != 1 else ''}  ")
-                self.countBadge.show()
-            else:
-                self.countBadge.hide()
 
     def _show_detail(self, appt: Appointment):
         from widgets.reminder_card import compute_remind_on, _fmt_date

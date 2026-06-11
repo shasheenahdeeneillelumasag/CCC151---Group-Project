@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import (
     QWidget,
-    QLabel
+    QLabel,
+    QMessageBox
 )
 from PyQt6.QtCore import Qt
 from PyQt6 import uic
@@ -121,6 +122,12 @@ class PageVaccinations(QWidget):
             card.clicked.connect(
                 lambda c=card, s=shot: self.select_vaccination(c, s)
             )
+            card.edit_requested.connect(
+                lambda s=shot: self._open_add_dialog()
+            )
+            card.delete_requested.connect(
+                lambda s=shot: self._delete_vaccination(s)
+            )
 
             layout.addWidget(card)
 
@@ -141,6 +148,19 @@ class PageVaccinations(QWidget):
         )
 
         if dialog.exec():
+            self.load_vaccinations()
+
+    def _delete_vaccination(self, shot):
+        reply = QMessageBox.question(
+            self,
+            "Delete Vaccination",
+            f"Are you sure you want to delete this vaccination record?\n\n{shot.vaccination_name}",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No
+        )
+
+        if reply == QMessageBox.StandardButton.Yes:
+            self.vaccination_service.delete_vaccination(shot.vaccine_id)
             self.load_vaccinations()
 
     def select_vaccination(self, card, shot):

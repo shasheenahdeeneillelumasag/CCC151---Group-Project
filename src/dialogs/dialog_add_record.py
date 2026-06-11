@@ -104,8 +104,9 @@ class DialogAddRecord(QDialog):
         set_date_picker(self.inputDiagnosisDateMonth, self.inputDiagnosisDateDay, self.inputDiagnosisDateYear, today)
         set_date_picker(self.inputRxDateMonth, self.inputRxDateDay, self.inputRxDateYear, today)
 
-        self.btnClose.clicked.connect(self.reject)
-        self.btnCancel.clicked.connect(self.reject)
+
+
+        self.btnCancel.clicked.connect(self._confirm_cancel)
         self.btnSave.clicked.connect(self._save)
 
         self.btnAddDiagnosis.clicked.connect(self._add_diagnosis)
@@ -260,4 +261,15 @@ class DialogAddRecord(QDialog):
                 record_id     = record_id,
             )
 
+        QMessageBox.information(self, "Success", "Health record saved successfully.")
         self.accept()
+
+    def _confirm_cancel(self):
+        reply = QMessageBox.question(
+            self, "Discard Changes",
+            "Are you sure you want to discard the changes?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.No,
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            self.reject()

@@ -1,11 +1,10 @@
 import os
-import shutil
 from datetime import date
 
 from PyQt6.QtWidgets import (
     QWidget, QFrame, QLabel, QGridLayout,
     QVBoxLayout, QHBoxLayout, QMessageBox,
-    QFileDialog, QSizePolicy
+    QSizePolicy
 )
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QPixmap
@@ -363,49 +362,6 @@ class PageDocuments(QWidget):
             card.delete_requested.connect(self._delete_document)
             row, col = divmod(idx, col_count)
             self.doc_grid.addWidget(card, row, col)
-
-    def _upload_document(self):
-        path, _ = QFileDialog.getOpenFileName(
-            self,
-            "Upload Document",
-            "",
-            "Images & PDFs (*.jpg *.jpeg *.png *.pdf);;All Files (*)"
-        )
-
-        if not path:
-            return
-
-        filename = os.path.basename(path)
-        dest = os.path.join(DOCS_DIR, filename)
-
-        base, ext = os.path.splitext(filename)
-        counter = 1
-        while os.path.exists(dest):
-            filename = f"{base}_{counter}{ext}"
-            dest = os.path.join(DOCS_DIR, filename)
-            counter += 1
-
-        shutil.copy2(path, dest)
-
-        records = self.visit_service.get_visit_records_by_patient_id(self.patient_id)
-        if not records:
-            QMessageBox.warning(
-                self,
-                "No Visit Record Found",
-                "This document was saved to disk but could not be linked to any "
-                "visit record because this patient has no records yet.\n\n"
-                "Please upload documents from within a visit record instead."
-            )
-            return
-
-        record_id = records[0].record_id
-        self.doc_service.create_record_document(
-            doc_filename=filename,
-            date_uploaded=date.today(),
-            record_id=record_id
-        )
-
-        self.load_documents()
 
     def _resolve_file_path(self, doc) -> str | None:
         """Return the real on-disk path for a document, or None if missing."""
