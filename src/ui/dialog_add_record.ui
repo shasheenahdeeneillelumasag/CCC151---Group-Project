@@ -101,9 +101,7 @@
         <property name="styleSheet">
          <string>QPushButton { background: #F1EFE8; color: #546860; border: none; border-radius: 15px; font-size: 13px; } QPushButton:hover { background: #DDE8E3; }</string>
         </property>
-        <property name="text">
-         <string>✕</string>
-        </property>
+        <property name="text"><string></string></property>
        </widget>
       </item>
      </layout>
@@ -118,14 +116,6 @@
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="bodyContent">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>-281</y>
-        <width>528</width>
-        <height>792</height>
-       </rect>
-      </property>
       <layout class="QVBoxLayout">
        <property name="spacing">
         <number>14</number>
@@ -506,11 +496,11 @@
           <item>
            <widget class="QLabel" name="label">
             <property name="styleSheet">
-             <string>QLabel { font-size: 20px; color: #1A9E78; }</string>
+             <string>QLabel {
+    color: #1A9E78; }</string>
             </property>
-            <property name="text">
-             <string>⬆</string>
-            </property>
+            <property name="pixmap"><pixmap><normaloff>:/assets/ic_upload.svg</normaloff>:/assets/ic_upload.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property>
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignCenter</set>
             </property>

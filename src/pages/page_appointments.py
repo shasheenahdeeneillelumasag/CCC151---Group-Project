@@ -100,7 +100,7 @@ class AppointmentRow(QFrame):
         badge.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         right_col.addWidget(badge)
 
-        del_lbl = QLabel("🗑")
+        del_lbl = QLabel("[Del]")
         del_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
         del_lbl.setStyleSheet("font-size: 13px; color: #C0C0C0;")
         del_lbl.setToolTip("Delete appointment")
@@ -183,7 +183,7 @@ class UpcomingCard(QFrame):
 
         if reminder_date:
             reminder_str = reminder_date.strftime("%B %d, %Y")
-            lbl_reminder = QLabel(f"🔔  Reminder auto-set: {reminder_str}  (2 days before)")
+            lbl_reminder = QLabel(f"[!]  Reminder auto-set: {reminder_str}  (2 days before)")
             lbl_reminder.setStyleSheet("font-size: 11px; color: #C47B12; font-weight: 600;")
             info.addWidget(lbl_reminder)
 
@@ -214,7 +214,7 @@ class UpcomingCard(QFrame):
             badge.setAlignment(Qt.AlignmentFlag.AlignRight)
             right.addWidget(badge)
 
-        del_lbl = QLabel("🗑")
+        del_lbl = QLabel("[Del]")
         del_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
         del_lbl.setStyleSheet("font-size: 13px; color: #C0C0C0;")
         del_lbl.setToolTip("Delete appointment")
@@ -436,16 +436,16 @@ class PageAppointments(QWidget):
 
         rem_sub = reminder_date.strftime("%b %d") if reminder_date else "—"
         if reminder_active:
-            rem_sub += " ← Today"
+            rem_sub += " <- Today"
         visit_sub = appt_date.strftime("%b %d") if appt_date else "—"
 
-        row.addLayout(_step("✔", "Appt Created", appt_date.strftime("%b %d") if appt_date else "—", done=True,  active=False))
+        row.addLayout(_step("[v]", "Appt Created", appt_date.strftime("%b %d") if appt_date else "—", done=True,  active=False))
         row.addWidget(_connector(done=True))
-        row.addLayout(_step("🔔", "Reminder Flagged", rem_sub,  done=bool(reminder_done), active=bool(reminder_active)))
+        row.addLayout(_step("[!]", "Reminder Flagged", rem_sub,  done=bool(reminder_done), active=bool(reminder_active)))
         row.addWidget(_connector(done=bool(visit_done)))
-        row.addLayout(_step("📅", "Visit Day",        visit_sub, done=bool(visit_done),   active=today == appt_date if appt_date else False))
+        row.addLayout(_step("[Cal]", "Visit Day",        visit_sub, done=bool(visit_done),   active=today == appt_date if appt_date else False))
         row.addWidget(_connector(done=bool(visit_done)))
-        row.addLayout(_step("✔", "Completed",        "—",       done=bool(visit_done),   active=False))
+        row.addLayout(_step("[v]", "Completed",        "—",       done=bool(visit_done),   active=False))
         row.addStretch()
 
         outer.addLayout(row)

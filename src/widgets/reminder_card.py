@@ -52,7 +52,7 @@ def reminder_status(appt: Appointment) -> str:
 class ReminderCard(QFrame):
     """
     A single reminder row for use inside the remList card.
-    Emits view_clicked(appointment) when the › button is pressed.
+    Emits view_clicked(appointment) when the > button is pressed.
     """
 
     view_clicked = pyqtSignal(object) 
@@ -94,13 +94,13 @@ class ReminderCard(QFrame):
 
         # Icon 
         if status == "flagged":
-            icon_text, icon_bg = "🔔", "#FEF3DC"
+            icon_text, icon_bg = "[!]", "#FEF3DC"
         elif status == "completed":
-            icon_text, icon_bg = "✔", "#E8F5EB"
+            icon_text, icon_bg = "[v]", "#E8F5EB"
         elif status == "dismissed":
-            icon_text, icon_bg = "✕", "#FAE8E8"
+            icon_text, icon_bg = "[x]", "#FAE8E8"
         else:
-            icon_text, icon_bg = "🗓", "#EAF3FC"
+            icon_text, icon_bg = "[Cal]", "#EAF3FC"
 
         icon = QLabel(icon_text)
         icon.setFixedSize(40, 40)
@@ -129,7 +129,7 @@ class ReminderCard(QFrame):
 
         if status == "flagged" and days_away is not None:
             flag_text = (
-                f"🔔  Flagged today — appointment is "
+                f"[!]  Flagged today — appointment is "
                 f"{'today' if days_away == 0 else f'{days_away} day(s) away'}"
                 f" ({_fmt_date(appt_date)})"
             )
@@ -179,7 +179,7 @@ class ReminderCard(QFrame):
         badge.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         right.addWidget(badge)
 
-        view_btn = QPushButton("›")
+        view_btn = QPushButton(">")
         view_btn.setFixedSize(30, 30)
         view_btn.setStyleSheet("""
             QPushButton {

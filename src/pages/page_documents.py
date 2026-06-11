@@ -37,11 +37,11 @@ def _preview_style(filename: str) -> tuple[str, str]:
 def _preview_icon(filename: str) -> str:
     ext = os.path.splitext(filename)[1].lower()
     if ext in (".jpg", ".jpeg", ".png", ".gif", ".webp"):
-        return "🖼"
+        return "[Img]"
     elif ext == ".pdf":
-        return "📄"
+        return "[Doc]"
     else:
-        return "📎"
+        return "[Att]"
 
 
 def _badge_style(link_type: str) -> tuple[str, str, str]:
@@ -182,7 +182,7 @@ class DocCard(QFrame):
         bottom.addWidget(badge)
         bottom.addStretch()
 
-        del_btn = QLabel("🗑")
+        del_btn = QLabel("[Del]")
         del_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         del_btn.setStyleSheet("font-size: 14px; color: #C0C0C0;")
         del_btn.setToolTip("Delete document")

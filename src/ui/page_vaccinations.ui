@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>PageVaccinations</class>
  <widget class="QWidget" name="PageVaccinations">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>1050</width>
-    <height>800</height>
-   </rect>
-  </property>
   <property name="styleSheet">
    <string>QWidget { background-color: #F2F7F5; font-family: &quot;Segoe UI&quot;, sans-serif; } QLabel { background: transparent; }</string>
   </property>
@@ -112,14 +104,6 @@
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="scrollContent">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>1050</width>
-        <height>738</height>
-       </rect>
-      </property>
       <layout class="QVBoxLayout">
        <property name="spacing">
         <number>16</number>

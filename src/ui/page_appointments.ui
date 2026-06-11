@@ -2,7 +2,6 @@
 <ui version="4.0">
  <class>PageAppointments</class>
  <widget class="QWidget" name="PageAppointments">
-  <property name="geometry"><rect><x>0</x><y>0</y><width>1050</width><height>800</height></rect></property>
   <property name="styleSheet">
    <string>QWidget { background-color: #F2F7F5; font-family: "Segoe UI", sans-serif; } QLabel { background: transparent; }</string>
   </property>
@@ -62,7 +61,7 @@
            <layout class="QVBoxLayout"><property name="spacing"><number>5</number></property>
             <item><widget class="QLabel"><property name="text"><string>Dr. Ramon Santos — General Practice</string></property><property name="styleSheet"><string>QLabel { font-size: 14px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
             <item><widget class="QLabel"><property name="text"><string>Follow-up for Upper Respiratory Tract Infection  ·  City Health Clinic</string></property><property name="styleSheet"><string>QLabel { font-size: 12px; color: #546860; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>🔔  Reminder auto-set: April 16, 2024  (2 days before appointment)</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #C47B12; font-weight: 600; }</string></property></widget></item>
+            <item><widget class="QLabel"><property name="text"><string> Reminder auto-set: April 16, 2024  (2 days before appointment)</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #C47B12; font-weight: 600; }</string></property></widget></item>
            </layout>
           </item>
           <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
@@ -89,7 +88,9 @@
             
             <item>
              <layout class="QVBoxLayout"><property name="spacing"><number>5</number></property><property name="alignment"><enum>Qt::AlignHCenter</enum></property>
-              <item><widget class="QLabel"><property name="text"><string>✔</string></property><property name="alignment"><set>AlignCenter</set></property><property name="minimumSize"><size><width>30</width><height>30</height></size></property><property name="maximumSize"><size><width>30</width><height>30</height></size></property><property name="styleSheet"><string>QLabel { background: #1A9E78; color: #FFF; font-size: 14px; font-weight: bold; border-radius: 15px; }</string></property></widget></item>
+              <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>:/assets/ic_check.svg</normaloff>:/assets/ic_check.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property><property name="alignment"><set>AlignCenter</set></property><property name="minimumSize"><size><width>30</width><height>30</height></size></property><property name="maximumSize"><size><width>30</width><height>30</height></size></property><property name="styleSheet"><string>QLabel { background: #1A9E78; color: #FFF;
+    font-weight: bold; border-radius: 15px; }</string></property></widget></item>
               <item><widget class="QLabel"><property name="text"><string>Appt Created</string></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel { font-size: 9px; font-weight: bold; color: #7A4D0A; }</string></property></widget></item>
               <item><widget class="QLabel"><property name="text"><string>Mar 15</string></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel { font-size: 9px; color: #C47B12; }</string></property></widget></item>
              </layout>
@@ -100,7 +101,9 @@
             
             <item>
              <layout class="QVBoxLayout"><property name="spacing"><number>5</number></property><property name="alignment"><enum>Qt::AlignHCenter</enum></property>
-              <item><widget class="QLabel"><property name="text"><string>🔔</string></property><property name="alignment"><set>AlignCenter</set></property><property name="minimumSize"><size><width>30</width><height>30</height></size></property><property name="maximumSize"><size><width>30</width><height>30</height></size></property><property name="styleSheet"><string>QLabel { background: #FBDF9E; border: 2px solid #C47B12; border-radius: 15px; font-size: 13px; }</string></property></widget></item>
+              <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>:/assets/ic_bell.svg</normaloff>:/assets/ic_bell.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property><property name="alignment"><set>AlignCenter</set></property><property name="minimumSize"><size><width>30</width><height>30</height></size></property><property name="maximumSize"><size><width>30</width><height>30</height></size></property><property name="styleSheet"><string>QLabel { background: #FBDF9E; border: 2px solid #C47B12; border-radius: 15px;
+    }</string></property></widget></item>
               <item><widget class="QLabel"><property name="text"><string>Reminder Flagged</string></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel { font-size: 9px; font-weight: bold; color: #7A4D0A; }</string></property></widget></item>
               <item><widget class="QLabel"><property name="text"><string>Apr 16 ← Today</string></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel { font-size: 9px; color: #C47B12; font-weight: 600; }</string></property></widget></item>
              </layout>
@@ -111,7 +114,9 @@
             
             <item>
              <layout class="QVBoxLayout"><property name="spacing"><number>5</number></property><property name="alignment"><enum>Qt::AlignHCenter</enum></property>
-              <item><widget class="QLabel"><property name="text"><string>📅</string></property><property name="alignment"><set>AlignCenter</set></property><property name="minimumSize"><size><width>30</width><height>30</height></size></property><property name="maximumSize"><size><width>30</width><height>30</height></size></property><property name="styleSheet"><string>QLabel { background: #FFFFFF; border: 2px solid #C8D9D2; border-radius: 15px; font-size: 13px; }</string></property></widget></item>
+              <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>:/assets/ic_calendar.svg</normaloff>:/assets/ic_calendar.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property><property name="alignment"><set>AlignCenter</set></property><property name="minimumSize"><size><width>30</width><height>30</height></size></property><property name="maximumSize"><size><width>30</width><height>30</height></size></property><property name="styleSheet"><string>QLabel { background: #FFFFFF; border: 2px solid #C8D9D2; border-radius: 15px;
+    }</string></property></widget></item>
               <item><widget class="QLabel"><property name="text"><string>Visit Day</string></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel { font-size: 9px; font-weight: bold; color: #8FA89F; }</string></property></widget></item>
               <item><widget class="QLabel"><property name="text"><string>Apr 18</string></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel { font-size: 9px; color: #8FA89F; }</string></property></widget></item>
              </layout>
@@ -122,7 +127,9 @@
             
             <item>
              <layout class="QVBoxLayout"><property name="spacing"><number>5</number></property><property name="alignment"><enum>Qt::AlignHCenter</enum></property>
-              <item><widget class="QLabel"><property name="text"><string>✔</string></property><property name="alignment"><set>AlignCenter</set></property><property name="minimumSize"><size><width>30</width><height>30</height></size></property><property name="maximumSize"><size><width>30</width><height>30</height></size></property><property name="styleSheet"><string>QLabel { background: #FFFFFF; border: 2px solid #C8D9D2; color: #C8D9D2; font-size: 14px; font-weight: bold; border-radius: 15px; }</string></property></widget></item>
+              <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>:/assets/ic_check.svg</normaloff>:/assets/ic_check.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property><property name="alignment"><set>AlignCenter</set></property><property name="minimumSize"><size><width>30</width><height>30</height></size></property><property name="maximumSize"><size><width>30</width><height>30</height></size></property><property name="styleSheet"><string>QLabel { background: #FFFFFF; border: 2px solid #C8D9D2; color: #C8D9D2;
+    font-weight: bold; border-radius: 15px; }</string></property></widget></item>
               <item><widget class="QLabel"><property name="text"><string>Completed</string></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel { font-size: 9px; font-weight: bold; color: #8FA89F; }</string></property></widget></item>
               <item><widget class="QLabel"><property name="text"><string>—</string></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel { font-size: 9px; color: #8FA89F; }</string></property></widget></item>
              </layout>

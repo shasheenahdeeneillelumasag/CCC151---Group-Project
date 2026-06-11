@@ -95,20 +95,20 @@ class PageProfile(QWidget):
             f"{patient.first_name} {patient.last_name}"
         )
 
-        self.heroPid.setText(
-            f"{patient.patient_code}"
+        initials = (
+            (patient.first_name[0] if patient.first_name else "") +
+            (patient.last_name[0] if patient.last_name else "")
+        ).upper()
+        self.avatarInitials.setText(initials)
+
+        self.heroEmail.setText(
+            patient.email if hasattr(patient, "email") and patient.email else ""
         )
 
-        today = QDate.currentDate()
-
-        age = birthdate.daysTo(today) // 365
-
-        self.heroMeta.setText(
-            f"{patient.sex}  ·  "
-            f"Date of Birth: "
-            f"{birthdate.toString('MMMM d, yyyy')}  ·  "
-            f"{age} years old"
-        )
+        if hasattr(self, "inputEmail"):
+            self.inputEmail.setText(
+                patient.email if hasattr(patient, "email") and patient.email else ""
+            )
 
     def save_profile(self):
 
@@ -119,6 +119,8 @@ class PageProfile(QWidget):
         sex = self.inputSex.currentText()
 
         contact_number = self.inputContact.text().strip()
+
+        email = self.inputEmail.text().strip() if hasattr(self, "inputEmail") else ""
 
         # QDate -> STRING
         birthdate = self.inputDob.date().toString(
@@ -170,18 +172,10 @@ class PageProfile(QWidget):
             f"{first_name} {last_name}"
         )
 
-        birthdate_qdate = QDate.fromString(
-            birthdate,
-            "yyyy-MM-dd"
-        )
+        initials = (
+            (first_name[0] if first_name else "") +
+            (last_name[0] if last_name else "")
+        ).upper()
+        self.avatarInitials.setText(initials)
 
-        today = QDate.currentDate()
-
-        age = birthdate_qdate.daysTo(today) // 365
-
-        self.heroMeta.setText(
-            f"{sex}  ·  "
-            f"Date of Birth: "
-            f"{birthdate_qdate.toString('MMMM d, yyyy')}  ·  "
-            f"{age} years old"
-        )
+        self.heroEmail.setText(email)

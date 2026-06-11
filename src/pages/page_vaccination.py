@@ -151,7 +151,7 @@ class VaccineCard(QFrame):
         header = QHBoxLayout()
         header.setSpacing(14)
 
-        icon = QLabel("💉")
+        icon = QLabel("[Vax]")
         icon.setFixedSize(48, 48)
         icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
         icon.setStyleSheet("QLabel { background: #E3F5EE; border-radius: 12px; font-size: 22px; }")
@@ -207,7 +207,7 @@ class VaccineCard(QFrame):
             add_btn_lbl.mousePressEvent = lambda e: on_add_dose()
             header.addWidget(add_btn_lbl)
 
-        del_lbl = QLabel("🗑")
+        del_lbl = QLabel("[Del]")
         del_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
         del_lbl.setStyleSheet("font-size: 14px; color: #C0C0C0;")
         del_lbl.setToolTip("Delete all doses of this vaccine")
@@ -282,7 +282,7 @@ class VaccineCard(QFrame):
             docs_row = QHBoxLayout()
             docs_row.setSpacing(6)
             for doc in documents:
-                doc_lbl = QLabel(f"📎  {doc.doc_filename}")
+                doc_lbl = QLabel(f"[Att]  {doc.doc_filename}")
                 doc_lbl.setStyleSheet("""
                     QLabel {
                         background: #F1EFE8;

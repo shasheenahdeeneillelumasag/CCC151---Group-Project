@@ -1,11 +1,13 @@
 from datetime import date, datetime
+import os
 
 from PyQt6.QtWidgets import (
     QWidget, QFrame, QLabel, QHBoxLayout,
     QVBoxLayout, QListWidgetItem, QTableWidgetItem,
     QHeaderView, QSizePolicy, QMessageBox
 )
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QSize
+from PyQt6.QtGui import QIcon
 from PyQt6 import uic
 
 from services.patient_service import PatientService
@@ -38,11 +40,11 @@ def _bp_status(bp: str | None) -> tuple[str, str]:
         parts = bp.replace(" ", "").split("/")
         systolic = int(parts[0])
         if systolic < 120:
-            return "✔ Normal", "#1A9E78"
+            return "Normal", "#1A9E78"
         elif systolic < 130:
-            return "✔ Elevated", "#C47B12"
+            return "Elevated", "#C47B12"
         else:
-            return "⚠ Watch", "#C47B12"
+            return "Watch", "#C47B12"
     except (ValueError, IndexError):
         return bp, "#546860"
 
@@ -97,9 +99,33 @@ class PageDashboard(QWidget):
         self._load_upcoming_appt()
         self._load_vaccine_progress()
 
+    def _get_icon_path(self, icon_name: str) -> str:
+        """Helper to safely point to your project's root assets folder."""
+        return os.path.join(os.path.dirname(__file__), '..', 'assets', icon_name)
+
     #  Stat cards 
     def _load_stats(self):
         today = date.today()
+
+        # Hide the colored icon squares and make the category labels bold + larger
+        _icon_names  = ["stat1Icon", "stat2Icon", "stat3Icon", "stat4Icon",
+                        "statIcon1", "statIcon2", "statIcon3", "statIcon4"]
+        _label_names = ["stat1Label", "stat2Label", "stat3Label", "stat4Label",
+                        "statLabel1", "statLabel2", "statLabel3", "statLabel4"]
+
+        from PyQt6.QtWidgets import QFrame, QLabel as _QLabel
+        for name in _icon_names:
+            w = self.findChild(QFrame, name)
+            if w:
+                w.hide()
+
+        _label_style = (
+            "font-size: 13px; font-weight: bold; color: #546860; letter-spacing: 0.5px;"
+        )
+        for name in _label_names:
+            w = self.findChild(_QLabel, name)
+            if w:
+                w.setStyleSheet(_label_style)
 
         records = self.visit_service.get_visit_records_by_patient_id(self.patient_id)
         self.stat1Value.setText(str(len(records)))
@@ -200,35 +226,38 @@ class PageDashboard(QWidget):
 
     def _load_activity(self):
         self.activityList.clear()
-
         items = []
 
-        # Visit records
+        # Visit records - Removed [Rec] emoji mapping
         records = self.visit_service.get_visit_records_by_patient_id(self.patient_id)
         for r in records:
             diagnoses = self.diagnosis_service.get_diagnoses_by_record_id(r.record_id)
             dx_text = ", ".join(d.diagnosis_name for d in diagnoses) or "Visit"
-            items.append((_parse_date(r.visit_date), f"📋  {dx_text}  ·  {_fmt_short(r.visit_date)}"))
+            items.append((_parse_date(r.visit_date), f"{dx_text}  ·  {_fmt_short(r.visit_date)}", "description.svg"))
 
-        # Vaccinations
+        # Vaccinations - Removed [Vax] emoji mapping
         shots = self.vaccination_service.get_vaccinations_by_patient_id(self.patient_id)
         for s in shots:
             items.append((_parse_date(s.date_administered),
-                          f"💉  {s.vaccination_name} Dose {s.dose_number}  ·  {_fmt_short(s.date_administered)}"))
+                          f"{s.vaccination_name} Dose {s.dose_number}  ·  {_fmt_short(s.date_administered)}", "vaccines.svg"))
 
-        # Appointments
+        # Appointments - Removed [Cal] and [!] emoji mappings
         appointments = self.appointment_service.get_appointments_by_patient_id(self.patient_id)
         for a in appointments:
             items.append((_parse_date(a.appt_date),
-                          f"📅  {a.purpose}  ·  {_fmt_short(a.appt_date)}"))
+                          f"{a.purpose}  ·  {_fmt_short(a.appt_date)}", "calendar_month.svg"))
             remind_on = compute_remind_on(a.appt_date)
             if remind_on:
                 items.append((remind_on,
-                               f"🔔  Reminder for {a.purpose}  ·  Remind: {_fmt_short(remind_on)}"))
+                               f"Reminder for {a.purpose}  ·  Remind: {_fmt_short(remind_on)}", "notifications.svg"))
 
         items.sort(key=lambda x: x[0] or date.min, reverse=True)
-        for _, text in items[:8]:
-            self.activityList.addItem(QListWidgetItem(text))
+        for _, text, icon_name in items[:8]:
+            item = QListWidgetItem(text)
+            icon_path = self._get_icon_path(icon_name)
+            if os.path.exists(icon_path):
+                item.setIcon(QIcon(icon_path))
+            self.activityList.addItem(item)
 
         if not items:
             self.activityList.addItem(QListWidgetItem("No activity yet."))
@@ -259,7 +288,7 @@ class PageDashboard(QWidget):
 
         # Weight
         if latest.weight_kg:
-            rows.append(("Weight", f"{latest.weight_kg} kg", "✔ Recorded", "#1A9E78"))
+            rows.append(("Weight", f"{latest.weight_kg} kg", "Recorded", "#1A9E78"))
 
         # Diagnoses
         for d in diagnoses:
@@ -324,7 +353,7 @@ class PageDashboard(QWidget):
         self.apptDoctor.setText(appt.clinic_name)
         self.apptNote.setText(f"{appt.purpose}")
         self.apptRemind.setText(
-            f"🔔  Reminder set: {remind_on.strftime('%b %d') if remind_on else '—'}"
+            f"Reminder set: {remind_on.strftime('%b %d') if remind_on else '—'}"
         )
         self.apptTime.setText(str(appt.appt_time))
 
@@ -332,7 +361,6 @@ class PageDashboard(QWidget):
 
     def _load_vaccine_progress(self):
         shots = self.vaccination_service.get_vaccinations_by_patient_id(self.patient_id)
-
 
         groups: dict[str, list] = {}
         for s in shots:
@@ -364,11 +392,18 @@ class PageDashboard(QWidget):
                 row.setContentsMargins(20, 12, 20, 12)
                 row.setSpacing(12)
 
-                icon = QLabel("💉")
+                # Replaced raw [Vax] text label layout with dynamic QPixmap lookup
+                icon = QLabel()
                 icon.setFixedSize(36, 36)
                 icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
                 color = "#E8F5EB" if complete else "#E3F5EE"
-                icon.setStyleSheet(f"QLabel {{ background: {color}; border-radius: 9px; font-size: 16px; padding: 4px; }}")
+                icon.setStyleSheet(f"QLabel {{ background: {color}; border-radius: 9px; padding: 4px; }}")
+                
+                icon_path = self._get_icon_path("vaccines.svg")
+                if os.path.exists(icon_path):
+                    pixmap = QIcon(icon_path).pixmap(QSize(20, 20))
+                    icon.setPixmap(pixmap)
+
                 row.addWidget(icon)
 
                 info = QVBoxLayout()

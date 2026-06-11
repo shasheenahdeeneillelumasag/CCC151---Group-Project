@@ -98,7 +98,7 @@ class PageReminders(QWidget):
         layout.setContentsMargins(20, 16, 20, 16)
         layout.setSpacing(14)
 
-        bell = QLabel("🔔")
+        bell = QLabel("[!]")
         bell.setFixedSize(42, 42)
         bell.setAlignment(Qt.AlignmentFlag.AlignCenter)
         bell.setStyleSheet("""

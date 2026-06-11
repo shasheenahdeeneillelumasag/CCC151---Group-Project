@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>PageDashboard</class>
  <widget class="QWidget" name="PageDashboard">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>1050</width>
-    <height>800</height>
-   </rect>
-  </property>
   <property name="styleSheet">
    <string>
     QWidget { background-color: #F2F7F5; font-family: "Segoe UI", "SF Pro Display", sans-serif; }
@@ -121,14 +113,6 @@
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="scrollContent">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>1050</width>
-        <height>738</height>
-       </rect>
-      </property>
       <layout class="QVBoxLayout" name="contentLayout">
        <property name="spacing">
         <number>16</number>
@@ -183,11 +167,11 @@
              </size>
             </property>
             <property name="styleSheet">
-             <string>QLabel { background: #FBDF9E; border-radius: 11px; font-size: 18px; }</string>
+             <string>QLabel { background: #FBDF9E; border-radius: 11px;
+    }</string>
             </property>
-            <property name="text">
-             <string>🔔</string>
-            </property>
+            <property name="pixmap"><pixmap><normaloff>:/assets/ic_bell.svg</normaloff>:/assets/ic_bell.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property>
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignCenter</set>
             </property>
@@ -296,9 +280,7 @@
             <property name="styleSheet">
              <string>QPushButton { background: rgba(196,123,18,0.12); color: #C47B12; border: none; border-radius: 13px; font-size: 13px; font-weight: bold; } QPushButton:hover { background: rgba(196,123,18,0.25); }</string>
             </property>
-            <property name="text">
-             <string>✕</string>
-            </property>
+            <property name="text"><string></string></property>
            </widget>
           </item>
          </layout>
@@ -345,11 +327,11 @@
                </size>
               </property>
               <property name="styleSheet">
-               <string>QLabel { background: #E3F5EE; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+               <string>QLabel { background: #E3F5EE; border-radius: 9px;
+    padding: 4px; }</string>
               </property>
-              <property name="text">
-               <string>📄</string>
-              </property>
+              <property name="pixmap"><pixmap><normaloff>:/assets/ic_document.svg</normaloff>:/assets/ic_document.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignLeading</set>
               </property>
@@ -424,11 +406,11 @@
                </size>
               </property>
               <property name="styleSheet">
-               <string>QLabel { background: #EAF3FC; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+               <string>QLabel { background: #EAF3FC; border-radius: 9px;
+    padding: 4px; }</string>
               </property>
-              <property name="text">
-               <string>💉</string>
-              </property>
+              <property name="pixmap"><pixmap><normaloff>:/assets/ic_vaccine.svg</normaloff>:/assets/ic_vaccine.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property>
              </widget>
             </item>
             <item>
@@ -500,11 +482,11 @@
                </size>
               </property>
               <property name="styleSheet">
-               <string>QLabel { background: #FEF3DC; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+               <string>QLabel { background: #FEF3DC; border-radius: 9px;
+    padding: 4px; }</string>
               </property>
-              <property name="text">
-               <string>📅</string>
-              </property>
+              <property name="pixmap"><pixmap><normaloff>:/assets/ic_calendar.svg</normaloff>:/assets/ic_calendar.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property>
              </widget>
             </item>
             <item>
@@ -576,11 +558,11 @@
                </size>
               </property>
               <property name="styleSheet">
-               <string>QLabel { background: #EEEAFC; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+               <string>QLabel { background: #EEEAFC; border-radius: 9px;
+    padding: 4px; }</string>
               </property>
-              <property name="text">
-               <string>📁</string>
-              </property>
+              <property name="pixmap"><pixmap><normaloff>:/assets/ic_folder.svg</normaloff>:/assets/ic_folder.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property>
              </widget>
             </item>
             <item>
@@ -718,22 +700,22 @@
               </property>
               <item>
                <property name="text">
-                <string>📋  General Checkup — URTI  ·  Mar 15, 2024</string>
+                <string> General Checkup — URTI  ·  Mar 15, 2024</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>💉  Hepatitis B Dose 1 administered  ·  Feb 28, 2024</string>
+                <string> Hepatitis B Dose 1 administered  ·  Feb 28, 2024</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>📅  Follow-up appointment created  ·  Apr 18, 2024</string>
+                <string> Follow-up appointment created  ·  Apr 18, 2024</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>🔔  Reminder auto-generated  ·  Remind: Apr 16, 2024</string>
+                <string> Reminder auto-generated  ·  Remind: Apr 16, 2024</string>
                </property>
               </item>
              </widget>
@@ -881,7 +863,7 @@
               </item>
               <item row="0" column="2">
                <property name="text">
-                <string>⚠ Watch</string>
+                <string> Watch</string>
                </property>
               </item>
               <item row="1" column="0">
@@ -896,7 +878,7 @@
               </item>
               <item row="1" column="2">
                <property name="text">
-                <string>✔ Normal</string>
+                <string> Normal</string>
                </property>
               </item>
               <item row="2" column="0">
@@ -911,7 +893,7 @@
               </item>
               <item row="2" column="2">
                <property name="text">
-                <string>✔ Normal</string>
+                <string> Normal</string>
                </property>
               </item>
               <item row="3" column="0">
@@ -1111,7 +1093,7 @@
                    <string>QLabel { font-size: 10px; color: #C47B12; font-weight: 600; }</string>
                   </property>
                   <property name="text">
-                   <string>🔔  Reminder set: Apr 16</string>
+                   <string> Reminder set: Apr 16</string>
                   </property>
                  </widget>
                 </item>
@@ -1257,11 +1239,11 @@
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string>QLabel { background: #E3F5EE; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+                 <string>QLabel { background: #E3F5EE; border-radius: 9px;
+    padding: 4px; }</string>
                 </property>
-                <property name="text">
-                 <string>💉</string>
-                </property>
+                <property name="pixmap"><pixmap><normaloff>:/assets/ic_vaccine.svg</normaloff>:/assets/ic_vaccine.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property>
                </widget>
               </item>
               <item>
@@ -1412,11 +1394,11 @@
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string>QLabel { background: #E8F5EB; border-radius: 9px; font-size: 16px; padding: 4px; }</string>
+                 <string>QLabel { background: #E8F5EB; border-radius: 9px;
+    padding: 4px; }</string>
                 </property>
-                <property name="text">
-                 <string>💉</string>
-                </property>
+                <property name="pixmap"><pixmap><normaloff>:/assets/ic_vaccine.svg</normaloff>:/assets/ic_vaccine.svg</pixmap></property>
+     <property name="scaledContents"><bool>true</bool></property>
                </widget>
               </item>
               <item>
