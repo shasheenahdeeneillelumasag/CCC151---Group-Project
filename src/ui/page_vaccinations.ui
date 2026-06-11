@@ -26,6 +26,8 @@
      <property name="styleSheet">
       <string>QFrame { background: #FFFFFF; border-bottom: 1px solid #DDE8E3; }</string>
      </property>
+     <property name="minimumHeight"><number>62</number></property>
+     <property name="maximumHeight"><number>62</number></property>
      <layout class="QHBoxLayout">
       <property name="leftMargin">
        <number>28</number>

@@ -53,15 +53,15 @@
       <property name="leftMargin">
        <number>28</number>
       </property>
-      <property name="topMargin">
-       <number>12</number>
-      </property>
-      <property name="rightMargin">
-       <number>28</number>
-      </property>
-      <property name="bottomMargin">
-       <number>12</number>
-      </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>28</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
       <item>
        <layout class="QVBoxLayout">
         <property name="spacing">
@@ -70,7 +70,7 @@
         <item>
          <widget class="QLabel" name="pageTitle">
           <property name="styleSheet">
-           <string>QLabel { font-size: 17px; font-weight: bold; color: #1C2B25; }</string>
+           <string>QLabel { font-size: 18px; font-weight: bold; color: #1C2B25; }</string>
           </property>
           <property name="text">
            <string>My Profile</string>

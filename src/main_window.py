@@ -81,15 +81,6 @@ class MainWindow(QMainWindow):
         self.load_icon(self.navDocuments, "document.svg")
         self.load_icon(self.logOutBtn, "ic_logout.svg")
 
-        logo_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'logo.png')
-        if os.path.exists(logo_path):
-            from PyQt6.QtGui import QPixmap
-            self.logoIcon.setPixmap(QPixmap(logo_path).scaled(
-                36, 36,
-                Qt.AspectRatioMode.KeepAspectRatio,
-                Qt.TransformationMode.SmoothTransformation
-            ))
-
         self.settings        = AppSettings()
         self.patient_service = PatientService()
 
