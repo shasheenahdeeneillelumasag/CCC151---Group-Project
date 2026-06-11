@@ -3,7 +3,7 @@
  <class>Form</class>
  <widget class="QFrame" name="HistoryCard">
   <property name="geometry">
-   <rect><x>0</x><y>0</y><width>992</width><height>101</height></rect>
+   <rect><x>0</x><y>0</y><width>992</width><height>90</height></rect>
   </property>
   <property name="windowTitle"><string>Form</string></property>
   <property name="styleSheet">
@@ -46,7 +46,7 @@ QFrame#HistoryCard:hover { background: #F8FBFA; }
        <property name="styleSheet">
         <string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string>
        </property>
-       <property name="text"><string>General Checkup — Upper Respiratory Tract Infection</string></property>
+       <property name="text"><string></string></property>
       </widget>
      </item>
      <item>
@@ -54,7 +54,7 @@ QFrame#HistoryCard:hover { background: #F8FBFA; }
        <property name="styleSheet">
         <string>QLabel { font-size: 11px; color: #546860; }</string>
        </property>
-       <property name="text"><string>BP: 130/85 mmHg · Weight: 58 kg · Temp: 37.2 °C</string></property>
+       <property name="text"><string></string></property>
       </widget>
      </item>
      <item>
@@ -62,7 +62,7 @@ QFrame#HistoryCard:hover { background: #F8FBFA; }
        <property name="styleSheet">
         <string>QLabel { font-size: 11px; color: #546860; }</string>
        </property>
-       <property name="text"><string>Rx: Amoxicillin 500mg · Cetirizine 10mg · Vitamin C 500mg</string></property>
+       <property name="text"><string></string></property>
       </widget>
      </item>
      <item>
@@ -70,17 +70,10 @@ QFrame#HistoryCard:hover { background: #F8FBFA; }
        <property name="styleSheet">
         <string>QLabel { font-size: 11px; color: #546860; }</string>
        </property>
-       <property name="text"><string>Diagnoses: DUMMY_DISEASE · DUMMY_DISEASE</string></property>
+       <property name="text"><string></string></property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="lblDoctorInfo">
-       <property name="styleSheet">
-        <string>QLabel { font-size: 10px; color: #8FA89F; }</string>
-       </property>
-       <property name="text"><string>DUMMY_DATE · DUMMY_HEALTH_FACILITY · DUMMY_DOCTOR · DUMMY_FILE_PATH.bmp</string></property>
-      </widget>
-     </item>
+
     </layout>
    </item>
    <item>
@@ -89,14 +82,7 @@ QFrame#HistoryCard:hover { background: #F8FBFA; }
      <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
     </spacer>
    </item>
-   <item>
-    <widget class="QLabel" name="lblBadge">
-     <property name="styleSheet">
-      <string>QLabel { background: #EAF3FC; color: #1A4F8A; font-size: 10px; font-weight: bold; border-radius: 20px; padding: 2px 10px; }</string>
-     </property>
-     <property name="text"><string>Checkup</string></property>
-    </widget>
-   </item>
+
   </layout>
  </widget>
  <resources/>

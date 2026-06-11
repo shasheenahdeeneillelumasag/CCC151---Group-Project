@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QFrame
 from PyQt6 import uic
 from PyQt6.QtCore import pyqtSignal
 
+
 class HistoryCard(QFrame):
     clicked = pyqtSignal()
 
@@ -34,23 +35,17 @@ class HistoryCard(QFrame):
         )
 
         self.lblPurpose.setText(
-            f"{record.visit_date} · {record.record_code}"
+            f"{record.visit_date}  ·  {record.record_code}"
         )
 
         self.lblVitals.setText(
-            f"BP: {record.blood_pressure or '-'} · "
-            f"Weight: {record.weight_kg or '-'} kg"
+            f"BP: {record.blood_pressure or '—'}  ·  "
+            f"Weight: {record.weight_kg or '—'} kg"
         )
 
-        self.lblDiagnoses.setText(
-            f"Diagnoses: {diagnoses}"
-        )
+        self.lblPrescriptions.setText(f"Rx: {prescriptions}")
 
-        self.lblPrescriptions.setText(
-            f"Rx: {prescriptions}"
-        )
-
-        self.lblBadge.setText("VISIT")
+        self.lblDiagnoses.setText(f"Diagnoses: {diagnoses}")
 
     def set_selected(self, selected):
         self.selected = selected
@@ -62,11 +57,9 @@ class HistoryCard(QFrame):
                     border-bottom: 1px solid #DDE8E3;
                 }
             """)
-
             self.selectionIndicator.setStyleSheet(
                 "background: #1A9E78;"
             )
-
         else:
             self.setStyleSheet("""
                 QFrame#HistoryCard {
@@ -74,19 +67,9 @@ class HistoryCard(QFrame):
                     border-bottom: 1px solid #DDE8E3;
                 }
             """)
-
             self.selectionIndicator.setStyleSheet(
                 "background: transparent;"
             )
-
-
-
-
-    def enterEvent(self, event):
-        super().enterEvent(event)
-
-    def leaveEvent(self, event):
-        super().leaveEvent(event)
 
     def mousePressEvent(self, event):
         self.clicked.emit()

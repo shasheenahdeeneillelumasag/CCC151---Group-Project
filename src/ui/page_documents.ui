@@ -7,23 +7,46 @@
   </property>
   <layout class="QVBoxLayout" name="docLayout">
    <property name="spacing"><number>0</number></property>
-   <property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property>
-
-   
+   <property name="leftMargin"><number>0</number></property>
+   <property name="topMargin"><number>0</number></property>
+   <property name="rightMargin"><number>0</number></property>
+   <property name="bottomMargin"><number>0</number></property>
    <item>
     <widget class="QFrame" name="topbar">
      <property name="styleSheet"><string>QFrame { background: #FFFFFF; border-bottom: 1px solid #DDE8E3; }</string></property>
-     <property name="minimumHeight"><number>62</number></property><property name="maximumHeight"><number>62</number></property>
-     <layout class="QHBoxLayout"><property name="leftMargin"><number>28</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>28</number></property><property name="bottomMargin"><number>0</number></property>
-      <item><layout class="QVBoxLayout"><property name="spacing"><number>1</number></property>
-       <item><widget class="QLabel"><property name="text"><string>Documents</string></property><property name="styleSheet"><string>QLabel { font-size: 18px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
-       <item><widget class="QLabel"><property name="text"><string>Receipts, lab results, vaccine cards &amp; more</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #8FA89F; }</string></property></widget></item>
-      </layout></item>
-      <item><widget class="QPushButton" name="btnUpload"><property name="text"><string>＋  Upload Document</string></property><property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property></widget></item>
+     <property name="minimumHeight"><number>62</number></property>
+     <property name="maximumHeight"><number>62</number></property>
+     <layout class="QHBoxLayout">
+      <property name="leftMargin"><number>28</number></property>
+      <property name="topMargin"><number>0</number></property>
+      <property name="rightMargin"><number>28</number></property>
+      <property name="bottomMargin"><number>0</number></property>
+      <item>
+       <layout class="QVBoxLayout">
+        <property name="spacing"><number>1</number></property>
+        <item>
+         <widget class="QLabel">
+          <property name="text"><string>Documents</string></property>
+          <property name="styleSheet"><string>QLabel { font-size: 18px; font-weight: bold; color: #1C2B25; }</string></property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel">
+          <property name="text"><string>Receipts, lab results, vaccine cards &amp; more</string></property>
+          <property name="styleSheet"><string>QLabel { font-size: 11px; color: #8FA89F; }</string></property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation"><enum>Qt::Horizontal</enum></property>
+        <property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
-
    <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="widgetResizable"><bool>true</bool></property>
@@ -32,11 +55,13 @@
      <widget class="QWidget" name="scrollContent">
       <layout class="QVBoxLayout">
        <property name="spacing"><number>16</number></property>
-       <property name="leftMargin"><number>28</number></property><property name="topMargin"><number>24</number></property><property name="rightMargin"><number>28</number></property><property name="bottomMargin"><number>28</number></property>
-
-       
+       <property name="leftMargin"><number>28</number></property>
+       <property name="topMargin"><number>24</number></property>
+       <property name="rightMargin"><number>28</number></property>
+       <property name="bottomMargin"><number>28</number></property>
        <item>
         <widget class="QTabBar" name="tabBar">
+         <property name="expanding"><bool>false</bool></property>
          <property name="styleSheet">
           <string>
            QTabBar::tab { background: transparent; color: #546860; font-size: 12px; font-weight: 600; padding: 9px 16px; border-bottom: 2px solid transparent; }
@@ -44,100 +69,22 @@
            QTabBar::tab:hover { color: #1A9E78; }
           </string>
          </property>
-         <property name="expanding"><bool>false</bool></property>
         </widget>
        </item>
-
-       
        <item>
-        <layout class="QGridLayout" name="docGrid">
-         <property name="horizontalSpacing"><number>14</number></property>
-         <property name="verticalSpacing"><number>14</number></property>
-
-         
-         <item row="0" column="0">
-          <widget class="QFrame" name="doc1">
-           <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
-           <property name="styleSheet"><string>QFrame#doc1 { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; } QFrame#doc1:hover { border-color: #9FE1CB; background: #F8FBFA; }</string></property>
-           <layout class="QVBoxLayout"><property name="leftMargin"><number>16</number></property><property name="topMargin"><number>16</number></property><property name="rightMargin"><number>16</number></property><property name="bottomMargin"><number>16</number></property><property name="spacing"><number>8</number></property>
-            <item><widget class="QFrame" name="docPreview1"><property name="minimumHeight"><number>80</number></property><property name="maximumHeight"><number>80</number></property><property name="styleSheet"><string>QFrame { background: #F8FBFA; border: 1px solid #DDE8E3; border-radius: 9px; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>vaccine_card_photo.jpg</string></property><property name="styleSheet"><string>QLabel { font-size: 12px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>Linked: Hepatitis B — Dose 1</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #546860; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>Feb 28, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>  Vaccination  </string></property><property name="maximumWidth"><number>90</number></property><property name="styleSheet"><string>QLabel { background: #E3F5EE; color: #0D6B52; font-size: 9px; font-weight: bold; border-radius: 20px; padding: 2px 4px; }</string></property></widget></item>
-           </layout>
-          </widget>
-         </item>
-
-         
-         <item row="0" column="1">
-          <widget class="QFrame" name="doc2">
-           <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
-           <property name="styleSheet"><string>QFrame#doc2 { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; } QFrame#doc2:hover { border-color: #9FE1CB; background: #F8FBFA; }</string></property>
-           <layout class="QVBoxLayout"><property name="leftMargin"><number>16</number></property><property name="topMargin"><number>16</number></property><property name="rightMargin"><number>16</number></property><property name="bottomMargin"><number>16</number></property><property name="spacing"><number>8</number></property>
-            <item><widget class="QFrame" name="docPreview2"><property name="minimumHeight"><number>80</number></property><property name="maximumHeight"><number>80</number></property><property name="styleSheet"><string>QFrame { background: #EAF3FC; border: 1px solid #B5D4F4; border-radius: 9px; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>clinic_receipt.jpg</string></property><property name="styleSheet"><string>QLabel { font-size: 12px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>Linked: Checkup — URTI</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #546860; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>Mar 15, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>  Receipt  </string></property><property name="maximumWidth"><number>70</number></property><property name="styleSheet"><string>QLabel { background: #EAF3FC; color: #1A4F8A; font-size: 9px; font-weight: bold; border-radius: 20px; padding: 2px 4px; }</string></property></widget></item>
-           </layout>
-          </widget>
-         </item>
-
-         
-         <item row="1" column="0">
-          <widget class="QFrame" name="doc3">
-           <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
-           <property name="styleSheet"><string>QFrame#doc3 { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; } QFrame#doc3:hover { border-color: #9FE1CB; background: #F8FBFA; }</string></property>
-           <layout class="QVBoxLayout"><property name="leftMargin"><number>16</number></property><property name="topMargin"><number>16</number></property><property name="rightMargin"><number>16</number></property><property name="bottomMargin"><number>16</number></property><property name="spacing"><number>8</number></property>
-            <item><widget class="QFrame" name="docPreview3"><property name="minimumHeight"><number>80</number></property><property name="maximumHeight"><number>80</number></property><property name="styleSheet"><string>QFrame { background: #EEEAFC; border: 1px solid #AFA9EC; border-radius: 9px; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>lab_results.pdf</string></property><property name="styleSheet"><string>QLabel { font-size: 12px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>Linked: Annual PE — Jan 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #546860; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>Jan 10, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>  Lab Result  </string></property><property name="maximumWidth"><number>80</number></property><property name="styleSheet"><string>QLabel { background: #EEEAFC; color: #3D2F88; font-size: 9px; font-weight: bold; border-radius: 20px; padding: 2px 4px; }</string></property></widget></item>
-           </layout>
-          </widget>
-         </item>
-
-         
-         <item row="1" column="1">
-          <widget class="QFrame" name="doc4">
-           <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
-           <property name="styleSheet"><string>QFrame#doc4 { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; } QFrame#doc4:hover { border-color: #9FE1CB; background: #F8FBFA; }</string></property>
-           <layout class="QVBoxLayout"><property name="leftMargin"><number>16</number></property><property name="topMargin"><number>16</number></property><property name="rightMargin"><number>16</number></property><property name="bottomMargin"><number>16</number></property><property name="spacing"><number>8</number></property>
-            <item><widget class="QFrame" name="docPreview4"><property name="minimumHeight"><number>80</number></property><property name="maximumHeight"><number>80</number></property><property name="styleSheet"><string>QFrame { background: #FEF3DC; border: 1px solid #FAC775; border-radius: 9px; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>receipt_jan.jpg</string></property><property name="styleSheet"><string>QLabel { font-size: 12px; font-weight: bold; color: #1C2B25; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>Linked: Annual PE — Jan 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #546860; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>Jan 10, 2024</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89F; }</string></property></widget></item>
-            <item><widget class="QLabel"><property name="text"><string>  Receipt  </string></property><property name="maximumWidth"><number>70</number></property><property name="styleSheet"><string>QLabel { background: #FEF3DC; color: #7A4D0A; font-size: 9px; font-weight: bold; border-radius: 20px; padding: 2px 4px; }</string></property></widget></item>
-           </layout>
-          </widget>
-         </item>
-
-        </layout>
-       </item>
-
-       
-       <item>
-        <widget class="QFrame" name="uploadZone">
-         <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
-         <property name="styleSheet"><string>QFrame#uploadZone { background: transparent; border: 2px dashed #C8D9D2; border-radius: 12px; } QFrame#uploadZone:hover { background: #E3F5EE; border-color: #1A9E78; }</string></property>
-         <property name="minimumHeight"><number>120</number></property>
-         <layout class="QVBoxLayout"><property name="leftMargin"><number>28</number></property><property name="topMargin"><number>24</number></property><property name="rightMargin"><number>28</number></property><property name="bottomMargin"><number>24</number></property><property name="spacing"><number>8</number></property>
-          <item><widget class="QLabel"><property name="pixmap"><pixmap><normaloff>:/assets/ic_upload.svg</normaloff>:/assets/ic_upload.svg</pixmap></property>
-     <property name="scaledContents"><bool>true</bool></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel {
-    color: #1A9E78; }</string></property></widget></item>
-          <item><widget class="QLabel"><property name="text"><string>Click to upload or drag &amp; drop</string></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel { font-size: 13px; font-weight: 600; color: #546860; }</string></property></widget></item>
-          <item><widget class="QLabel"><property name="text"><string>JPG, PNG, PDF — max 10 MB per file</string></property><property name="alignment"><set>AlignCenter</set></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #8FA89F; }</string></property></widget></item>
-         </layout>
-        </widget>
+        <spacer>
+         <property name="orientation"><enum>Qt::Vertical</enum></property>
+         <property name="sizeHint" stdset="0"><size><width>20</width><height>40</height></size></property>
+        </spacer>
        </item>
 
       </layout>
      </widget>
     </widget>
    </item>
+
   </layout>
  </widget>
- <resources/><connections/>
+ <resources/>
+ <connections/>
 </ui>

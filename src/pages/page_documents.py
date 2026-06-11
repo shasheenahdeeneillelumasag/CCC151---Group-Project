@@ -20,7 +20,9 @@ from services.patient_service import PatientService
 from core.app_settings import AppSettings
 from models.document import Document
 
-DOCS_DIR = "documents"
+DOCS_DIR = os.path.normpath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "documents")
+)
 
 
 def _preview_style(filename: str) -> tuple[str, str]:
@@ -81,19 +83,17 @@ def _resolve_link(doc: Document,
     return "Unlinked", "record"
 
 
-# Document card widget 
-
 class DocCard(QFrame):
     clicked = pyqtSignal(object) 
     delete_requested = pyqtSignal(object)
 
-    def __init__(self, doc: Document, link_text: str, link_type: str):
+    def __init__(self, doc: Document, link_text: str, link_type: str, missing: bool = False):
         super().__init__()
         self.doc = doc
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
-        bg, border = _preview_style(doc.doc_filename)
-        icon = _preview_icon(doc.doc_filename)
+        bg, border = ("#FFF5F5", "#F5A0A0") if missing else _preview_style(doc.doc_filename)
+        icon = "⚠" if missing else _preview_icon(doc.doc_filename)
         badge_label, badge_bg, badge_fg = _badge_style(link_type)
 
         date_str = doc.date_uploaded
@@ -182,11 +182,26 @@ class DocCard(QFrame):
         bottom.addWidget(badge)
         bottom.addStretch()
 
-        del_btn = QLabel("[Del]")
+        from PyQt6.QtWidgets import QPushButton
+        del_btn = QPushButton("Delete")
         del_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        del_btn.setStyleSheet("font-size: 14px; color: #C0C0C0;")
         del_btn.setToolTip("Delete document")
-        del_btn.mousePressEvent = lambda e, d=doc: self.delete_requested.emit(d)
+        del_btn.setStyleSheet("""
+            QPushButton {
+                background: #FEE2E2;
+                color: #B91C1C;
+                font-size: 10px;
+                font-weight: 600;
+                border: 1px solid #FECACA;
+                border-radius: 6px;
+                padding: 3px 10px;
+            }
+            QPushButton:hover {
+                background: #FCA5A5;
+                border-color: #F87171;
+            }
+        """)
+        del_btn.clicked.connect(lambda checked=False, d=doc: self.delete_requested.emit(d))
         bottom.addWidget(del_btn)
 
         layout.addLayout(bottom)
@@ -225,16 +240,18 @@ class PageDocuments(QWidget):
 
         os.makedirs(DOCS_DIR, exist_ok=True)
 
+        self.doc_grid = QGridLayout()
+        self.doc_grid.setHorizontalSpacing(14)
+        self.doc_grid.setVerticalSpacing(14)
+        scroll_layout = self.scrollContent.layout()
+        scroll_layout.insertLayout(1, self.doc_grid)
+
         self._setup_tabs()
         self._current_tab = self.TAB_ALL
 
-        self.btnUpload.clicked.connect(self._upload_document)
         self.tabBar.currentChanged.connect(self._on_tab_changed)
-        self.uploadZone.mousePressEvent = lambda e: self._upload_document()
 
         self.load_documents()
-
-    #  Tab setup
 
     def _setup_tabs(self):
         for label in ("All", "Vaccinations", "Visits", "Diagnoses", "Prescriptions"):
@@ -243,8 +260,6 @@ class PageDocuments(QWidget):
     def _on_tab_changed(self, index: int):
         self._current_tab = index
         self.load_documents()
-
-    #  Load & populate 
 
     def _get_patient_docs(self) -> list[Document]:
         """Fetch all documents that belong to the active patient."""
@@ -305,6 +320,7 @@ class PageDocuments(QWidget):
 
     def load_documents(self):
         all_docs = self._get_patient_docs()
+        self._heal_all_docs(all_docs)      
         docs = self._filter_docs(all_docs)
         self._populate_grid(docs)
         self._update_tab_counts(all_docs)
@@ -322,28 +338,17 @@ class PageDocuments(QWidget):
             self.tabBar.setTabText(i, f"{label} ({count})")
 
     def _populate_grid(self, docs: list[Document]):
-        grid: QGridLayout = self.scrollContent.findChild(QGridLayout, "docGrid")
-        if grid is None:
-            layout = self.scrollContent.layout()
-            for i in range(layout.count()):
-                item = layout.itemAt(i)
-                if item and isinstance(item.layout(), QGridLayout):
-                    grid = item.layout()
-                    break
-
-        if grid:
-            while grid.count():
-                item = grid.takeAt(0)
-                w = item.widget()
-                if w:
-                    w.deleteLater()
+        while self.doc_grid.count():
+            item = self.doc_grid.takeAt(0)
+            w = item.widget()
+            if w:
+                w.deleteLater()
 
         if not docs:
             empty = QLabel("No documents found.")
             empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
             empty.setStyleSheet("font-size: 13px; color: #8FA89F; padding: 40px;")
-            if grid:
-                grid.addWidget(empty, 0, 0, 1, 2)
+            self.doc_grid.addWidget(empty, 0, 0, 1, 2)
             return
 
         col_count = 2
@@ -355,14 +360,12 @@ class PageDocuments(QWidget):
                 self.diagnosis_service,
                 self.prescription_service
             )
-            card = DocCard(doc, link_text, link_type)
+            missing = self._resolve_file_path(doc) is None
+            card = DocCard(doc, link_text, link_type, missing=missing)
             card.clicked.connect(self._open_document)
             card.delete_requested.connect(self._delete_document)
             row, col = divmod(idx, col_count)
-            if grid:
-                grid.addWidget(card, row, col)
-
-    #  Upload 
+            self.doc_grid.addWidget(card, row, col)
 
     def _upload_document(self):
         path, _ = QFileDialog.getOpenFileName(
@@ -388,42 +391,117 @@ class PageDocuments(QWidget):
         shutil.copy2(path, dest)
 
         records = self.visit_service.get_visit_records_by_patient_id(self.patient_id)
-        record_id = records[0].record_id if records else None
+        if not records:
+            QMessageBox.warning(
+                self,
+                "No Visit Record Found",
+                "This document was saved to disk but could not be linked to any "
+                "visit record because this patient has no records yet.\n\n"
+                "Please upload documents from within a visit record instead."
+            )
+            return
 
+        record_id = records[0].record_id
         self.doc_service.create_record_document(
             doc_filename=filename,
             date_uploaded=date.today(),
             record_id=record_id
-        ) if record_id else self.doc_service._create_document(
-            doc_filename=filename,
-            date_uploaded=date.today()
         )
 
         self.load_documents()
 
-    #  Open 
+    def _resolve_file_path(self, doc) -> str | None:
+        """Return the real on-disk path for a document, or None if missing."""
+        local = os.path.join(DOCS_DIR, os.path.basename(doc.doc_filename))
+        if os.path.exists(local):
+            return local
+        if os.path.isabs(doc.doc_filename) and os.path.exists(doc.doc_filename):
+            return doc.doc_filename
+        return None
 
-    def _open_document(self, doc: Document):
-        full_path = os.path.join(DOCS_DIR, doc.doc_filename)
+    def _heal_document(self, doc) -> str | None:
+        """
+        Three-pass healing for a document whose on-disk path is broken:
 
-        if not os.path.exists(full_path):
+        Pass 1 — absolute path stored AND source still exists:
+                  copy to documents/, update DB to basename only.
+        Pass 2 — absolute path stored but source is gone, yet basename
+                  already exists in documents/ (was copied earlier):
+                  just update DB to basename so future lookups work.
+        Pass 3 — nothing found, return None.
+        """
+        basename = os.path.basename(doc.doc_filename)
+        local    = os.path.join(DOCS_DIR, basename)
+
+        if os.path.isabs(doc.doc_filename):
+            if os.path.exists(doc.doc_filename):
+                dest = local
+                if os.path.exists(dest):
+                    base, ext = os.path.splitext(basename)
+                    counter = 1
+                    while os.path.exists(dest):
+                        basename = f"{base}_{counter}{ext}"
+                        dest = os.path.join(DOCS_DIR, basename)
+                        counter += 1
+                shutil.copy2(doc.doc_filename, dest)
+                self.doc_service.update_document(
+                    doc_id=doc.doc_id,
+                    doc_filename=basename,
+                    date_uploaded=doc.date_uploaded,
+                    vaccine_id=doc.vaccine_id,
+                    record_id=doc.record_id,
+                    diagnosis_id=doc.diagnosis_id,
+                    prescription_id=doc.prescription_id,
+                )
+                doc.doc_filename = basename
+                return dest
+
+            if os.path.exists(local):
+                self.doc_service.update_document(
+                    doc_id=doc.doc_id,
+                    doc_filename=basename,
+                    date_uploaded=doc.date_uploaded,
+                    vaccine_id=doc.vaccine_id,
+                    record_id=doc.record_id,
+                    diagnosis_id=doc.diagnosis_id,
+                    prescription_id=doc.prescription_id,
+                )
+                doc.doc_filename = basename
+                return local
+            
+        return None
+
+    def _heal_all_docs(self, docs: list) -> None:
+        """
+        Run healing silently over all docs before rendering.
+        Fixes absolute-path records in one pass so every card renders correctly.
+        """
+        for doc in docs:
+            if self._resolve_file_path(doc) is None:
+                self._heal_document(doc)
+
+    def _open_document(self, doc):
+        import subprocess, sys
+
+        path = self._resolve_file_path(doc)
+
+        if path is None:
+            path = self._heal_document(doc)
+
+        if path is None:
             QMessageBox.warning(
                 self,
                 "File Not Found",
-                f"The file '{doc.doc_filename}' could not be found on disk.\n\n"
-                f"Expected path: {os.path.abspath(full_path)}"
+                f"'{os.path.basename(doc.doc_filename)}' could not be found on disk."
             )
             return
 
-        import subprocess, sys
         if sys.platform == "win32":
-            os.startfile(full_path)
+            os.startfile(path)
         elif sys.platform == "darwin":
-            subprocess.Popen(["open", full_path])
+            subprocess.Popen(["open", path])
         else:
-            subprocess.Popen(["xdg-open", full_path])
-
-    #  Delete 
+            subprocess.Popen(["xdg-open", path])
 
     def _delete_document(self, doc: Document):
         reply = QMessageBox.question(
@@ -436,12 +514,12 @@ class PageDocuments(QWidget):
         if reply != QMessageBox.StandardButton.Yes:
             return
 
-        # Remove from disk
-        full_path = os.path.join(DOCS_DIR, doc.doc_filename)
+        full_path = os.path.join(DOCS_DIR, os.path.basename(doc.doc_filename))
         if os.path.exists(full_path):
             os.remove(full_path)
+        elif os.path.isabs(doc.doc_filename) and os.path.exists(doc.doc_filename):
+            os.remove(doc.doc_filename)
 
-        # Remove from DB
         self.doc_service.delete_document(doc.doc_id)
 
         self.load_documents()

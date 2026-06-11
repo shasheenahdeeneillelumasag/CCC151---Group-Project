@@ -4,13 +4,12 @@ import shutil
 DOCS_DIR = os.path.normpath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "documents")
 )
-from datetime import date
+from datetime import date, datetime
 
 from PyQt6.QtCore import Qt, QDate
 from PyQt6.QtWidgets import (
-    QDialog, QWidget, QHBoxLayout, QVBoxLayout,
-    QLabel, QPushButton, QFrame, QMessageBox,
-    QFileDialog,
+    QDialog, QFrame, QHBoxLayout, QVBoxLayout,
+    QLabel, QPushButton, QMessageBox, QFileDialog,
 )
 from PyQt6 import uic
 
@@ -18,6 +17,7 @@ from services.visit_record_service import VisitRecordService
 from services.diagnosis_service import DiagnosisService
 from services.prescription_service import PrescriptionService
 from services.document_service import DocumentService
+
 
 _ROW_STYLE = (
     "QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; "
@@ -34,14 +34,6 @@ _DEL_STYLE   = (
 
 
 def _make_entry_row(primary: str, secondary: str) -> QFrame:
-    """
-    Returns a styled QFrame with:
-      • primary text (bold, main line)
-      • secondary text (muted, sub-line)
-      • a Delete button on the right
-
-    The Delete button emits clicked; callers connect to it to remove the row.
-    """
     frame = QFrame()
     frame.setStyleSheet(_ROW_STYLE)
 
@@ -73,39 +65,93 @@ def _make_entry_row(primary: str, secondary: str) -> QFrame:
     outer.addWidget(btn_del, alignment=Qt.AlignmentFlag.AlignVCenter)
 
     frame.btn_delete = btn_del 
-
     return frame
 
-class DialogAddRecord(QDialog):
 
-    def __init__(self, patient_id: int, parent=None):
+def _parse_date(value):
+    """Accept a date object, datetime, or YYYY-MM-DD string."""
+    if isinstance(value, date):
+        return value
+    if isinstance(value, str):
+        return datetime.strptime(value[:10], "%Y-%m-%d").date()
+    raise ValueError(f"Cannot parse date: {value!r}")
+
+
+class DialogEditRecord(QDialog):
+
+    def __init__(self, history_item, parent=None):
         super().__init__(parent)
 
         uic.loadUi("ui/dialog_add_record.ui", self)
 
-        self.patient_id = patient_id
+      
+        self.setWindowTitle("Edit Health Record")
+        self.label.setText("Edit Health Record")
+        self.btnSave.setText("Save Changes")
+
+        self.history_item = history_item
+        self.record       = history_item.record
 
         self.visit_record_service = VisitRecordService()
-        self.diagnosis_service     = DiagnosisService()
-        self.prescription_service  = PrescriptionService()
-        self.document_service      = DocumentService()
+        self.diagnosis_service    = DiagnosisService()
+        self.prescription_service = PrescriptionService()
+        self.document_service     = DocumentService()
 
-        self._diagnoses:     list[dict] = []   
-        self._prescriptions: list[dict] = []   
+    
+        self._diagnoses:     list[dict] = []
+        self._prescriptions: list[dict] = []
         self._files:         list[str]  = []  
 
-        today = QDate.currentDate()
-        self.inputVisitDate.setDate(today)
-        self.inputDiagnosisDate.setDate(today)
-        self.inputRxDate.setDate(today)
+        self._prefill()
 
+        # Wire buttons
         self.btnClose.clicked.connect(self.reject)
         self.btnCancel.clicked.connect(self.reject)
         self.btnSave.clicked.connect(self._save)
-
         self.btnAddDiagnosis.clicked.connect(self._add_diagnosis)
         self.btnAddRx.clicked.connect(self._add_rx)
         self.uploadZone.mousePressEvent = lambda _e: self._pick_files()
+
+    def _prefill(self):
+        r = self.record
+
+        # Visit date — may be a string "YYYY-MM-DD" from SQLite
+        vd = _parse_date(r.visit_date)
+        self.inputVisitDate.setDate(QDate(vd.year, vd.month, vd.day))
+
+        # Vitals
+        self.inputBP.setText(r.blood_pressure or "")
+        self.inputWeight.setText(
+            str(r.weight_kg) if r.weight_kg is not None else ""
+        )
+
+        # Default sub-form dates to today
+        today = QDate.currentDate()
+        self.inputDiagnosisDate.setDate(today)
+        self.inputRxDate.setDate(today)
+
+        for d in self.history_item.diagnoses:
+            entry = {
+                "id": d.diagnosis_id,
+                "name": d.diagnosis_name,
+                "description": d.description or "",
+                "date": _parse_date(d.diagnosed_date),
+                "_delete": False,
+            }
+            self._diagnoses.append(entry)
+            self._render_diagnosis_row(entry)
+
+        for p in self.history_item.prescriptions:
+            entry = {
+                "id": p.prescription_id,
+                "name": p.medication_name,
+                "dosage": p.dosage,
+                "prescribed_by": p.prescribed_by,
+                "date": _parse_date(p.prescribed_date),
+                "_delete": False,
+            }
+            self._prescriptions.append(entry)
+            self._render_rx_row(entry)
 
     def _add_diagnosis(self):
         name = self.inputDiagnosisName.text().strip()
@@ -116,28 +162,33 @@ class DialogAddRecord(QDialog):
         desc = self.inputDiagnosisDescription.toPlainText().strip()
         d    = self.inputDiagnosisDate.date().toPyDate()
 
-        entry = {"name": name, "description": desc, "date": d}
+        entry = {"id": None, "name": name, "description": desc, "date": d, "_delete": False}
         self._diagnoses.append(entry)
-
-        primary   = name
-        secondary = f"{d.strftime('%B %d, %Y')}{'  ·  ' + desc if desc else ''}"
-        row = _make_entry_row(primary, secondary)
-        row.btn_delete.clicked.connect(
-            lambda _checked, e=entry, r=row: self._remove_diagnosis(e, r)
-        )
-        self.diagnosisEntriesLayout.addWidget(row)
+        self._render_diagnosis_row(entry)
 
         self.inputDiagnosisName.clear()
         self.inputDiagnosisDescription.clear()
         self.inputDiagnosisDate.setDate(QDate.currentDate())
 
+    def _render_diagnosis_row(self, entry: dict):
+        d         = entry["date"]
+        date_str  = d.strftime("%B %d, %Y")
+        desc      = entry.get("description", "")
+        secondary = f"{date_str}{'  ·  ' + desc if desc else ''}"
+
+        row = _make_entry_row(entry["name"], secondary)
+        row.btn_delete.clicked.connect(
+            lambda _checked, e=entry, r=row: self._remove_diagnosis(e, r)
+        )
+        self.diagnosisEntriesLayout.addWidget(row)
+
     def _remove_diagnosis(self, entry: dict, row: QFrame):
-        self._diagnoses.remove(entry)
+        entry["_delete"] = True
         row.deleteLater()
 
     def _add_rx(self):
-        name         = self.inputRxName.text().strip()
-        dosage       = self.inputRxDosage.text().strip()
+        name          = self.inputRxName.text().strip()
+        dosage        = self.inputRxDosage.text().strip()
         prescribed_by = self.inputRxPrescribedBy.text().strip()
 
         if not name or not dosage or not prescribed_by:
@@ -148,35 +199,37 @@ class DialogAddRecord(QDialog):
             return
 
         d = self.inputRxDate.date().toPyDate()
-
         entry = {
-            "name": name, "dosage": dosage,
-            "prescribed_by": prescribed_by, "date": d,
+            "id": None, "name": name, "dosage": dosage,
+            "prescribed_by": prescribed_by, "date": d, "_delete": False,
         }
         self._prescriptions.append(entry)
+        self._render_rx_row(entry)
 
-        primary   = f"{name}  —  {dosage}"
-        secondary = f"{d.strftime('%B %d, %Y')}  ·  {prescribed_by}"
-        row = _make_entry_row(primary, secondary)
-        row.btn_delete.clicked.connect(
-            lambda _checked, e=entry, r=row: self._remove_rx(e, r)
-        )
-        self.rxEntriesLayout.addWidget(row)
         self.inputRxName.clear()
         self.inputRxDosage.clear()
         self.inputRxPrescribedBy.clear()
         self.inputRxDate.setDate(QDate.currentDate())
 
+    def _render_rx_row(self, entry: dict):
+        d         = entry["date"]
+        date_str  = d.strftime("%B %d, %Y")
+        primary   = f"{entry['name']}  —  {entry['dosage']}"
+        secondary = f"{date_str}  ·  {entry['prescribed_by']}"
+
+        row = _make_entry_row(primary, secondary)
+        row.btn_delete.clicked.connect(
+            lambda _checked, e=entry, r=row: self._remove_rx(e, r)
+        )
+        self.rxEntriesLayout.addWidget(row)
+
     def _remove_rx(self, entry: dict, row: QFrame):
-        self._prescriptions.remove(entry)
+        entry["_delete"] = True
         row.deleteLater()
 
     def _pick_files(self):
         paths, _ = QFileDialog.getOpenFileNames(
-            self,
-            "Select files to attach",
-            "",
-            "All files (*.*)",
+            self, "Select files to attach", "", "All files (*.*)",
         )
         for path in paths:
             if path and path not in self._files:
@@ -186,9 +239,7 @@ class DialogAddRecord(QDialog):
     def _add_file_row(self, path: str):
         filename  = os.path.basename(path)
         size_kb   = os.path.getsize(path) // 1024
-        secondary = f"{size_kb} KB  ·  {path}"
-
-        row = _make_entry_row(filename, secondary)
+        row = _make_entry_row(filename, f"{size_kb} KB  ·  {path}")
         row.btn_delete.clicked.connect(
             lambda _checked, p=path, r=row: self._remove_file(p, r)
         )
@@ -200,11 +251,22 @@ class DialogAddRecord(QDialog):
         row.deleteLater()
 
     def _save(self):
+        try:
+            self._do_save()
+        except Exception as exc:
+            import traceback
+            traceback.print_exc()
+            QMessageBox.critical(
+                self, "Save Failed",
+                f"An error occurred while saving:\n\n{exc}"
+            )
+
+    def _do_save(self):
         visit_date = self.inputVisitDate.date().toPyDate()
         bp         = self.inputBP.text().strip() or None
         weight_raw = self.inputWeight.text().strip()
 
-        weight_kg: float | None = None
+        weight_kg = None
         if weight_raw:
             try:
                 weight_kg = float(weight_raw)
@@ -212,30 +274,38 @@ class DialogAddRecord(QDialog):
                 QMessageBox.warning(self, "Invalid Weight", "Weight must be a number.")
                 return
 
-        record = self.visit_record_service.create_visit_record(
-            patient_id  = self.patient_id,
-            visit_date  = visit_date,
-            weight_kg   = weight_kg,
+        self.visit_record_service.update_visit_record(
+            record_id      = self.record.record_id,
+            patient_id     = self.record.patient_id,
+            visit_date     = visit_date,
+            weight_kg      = weight_kg,
             blood_pressure = bp,
         )
-        record_id = record.record_id
+
+        record_id = self.record.record_id
 
         for d in self._diagnoses:
-            self.diagnosis_service.create_diagnosis(
-                record_id      = record_id,
-                diagnosis_name = d["name"],
-                description    = d["description"] or None,
-                diagnosed_date = d["date"],
-            )
+            if d["_delete"] and d["id"]:
+                self.diagnosis_service.delete_diagnosis(d["id"])
+            elif not d["_delete"] and d["id"] is None:
+                self.diagnosis_service.create_diagnosis(
+                    record_id      = record_id,
+                    diagnosis_name = d["name"],
+                    description    = d["description"] or None,
+                    diagnosed_date = d["date"],
+                )
 
         for rx in self._prescriptions:
-            self.prescription_service.create_prescription(
-                record_id       = record_id,
-                medication_name = rx["name"],
-                dosage          = rx["dosage"],
-                prescribed_date = rx["date"],
-                prescribed_by   = rx["prescribed_by"],
-            )
+            if rx["_delete"] and rx["id"]:
+                self.prescription_service.delete_prescription(rx["id"])
+            elif not rx["_delete"] and rx["id"] is None:
+                self.prescription_service.create_prescription(
+                    record_id       = record_id,
+                    medication_name = rx["name"],
+                    dosage          = rx["dosage"],
+                    prescribed_date = rx["date"],
+                    prescribed_by   = rx["prescribed_by"],
+                )
 
         today = date.today()
         os.makedirs(DOCS_DIR, exist_ok=True)
