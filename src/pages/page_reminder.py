@@ -12,7 +12,7 @@ from services.appointment_service import AppointmentService
 from services.patient_service import PatientService
 from core.app_settings import AppSettings
 from models.appointment import Appointment
-from widgets.reminder_card import reminder_status, compute_remind_on, _parse_date, _fmt_date
+from widgets.reminder_card import reminder_status, compute_remind_on, _parse_date, _fmt_date, ReminderCard
 
 
 class PageReminders(QWidget):
