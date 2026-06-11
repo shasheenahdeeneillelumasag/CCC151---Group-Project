@@ -232,7 +232,7 @@ class PageDashboard(QWidget):
         shots = self.vaccination_service.get_vaccinations_by_patient_id(self.patient_id)
         for s in shots:
             items.append((_parse_date(s.display_date),
-                          f"{s.vaccination_name} Dose {s.dose_number}  ·  {_fmt_short(s.display_date)}", "vaccines.svg"))
+                          f"{s.vaccination_name} Dose {s.display_dose}  ·  {_fmt_short(s.display_date)}", "vaccines.svg"))
 
         appointments = self.appointment_service.get_appointments_by_patient_id(self.patient_id)
         for a in appointments:

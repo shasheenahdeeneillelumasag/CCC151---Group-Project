@@ -60,6 +60,10 @@ class VaccinationCard(QFrame):
             f"{shot.status}"
         )
 
+        self.lblDose.setText(
+            f"Dose: {shot.display_dose}"
+        )
+
         if shot.status == "Completed":
             self.lblDoseStatus.setStyleSheet("""
                 QLabel {

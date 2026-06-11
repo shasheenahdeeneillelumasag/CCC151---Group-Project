@@ -24,3 +24,10 @@ class VaccinationShot:
             return self.date_administered
 
         return self.schedule_date
+
+    @property
+    def display_dose(self):
+        if self.dose_number == 0:
+            return "Booster"
+
+        return self.dose_number
