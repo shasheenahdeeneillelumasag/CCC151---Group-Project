@@ -5,7 +5,6 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 from PyQt6 import uic
-from datetime import date
 
 from services.vaccination_shot_service import VaccinationShotService
 from services.patient_service import PatientService
@@ -48,9 +47,8 @@ class PageVaccinations(QWidget):
             else None
         )
 
-        self.btnLogVax.clicked.connect(
-            self._open_add_dialog
-        )
+        self.btnLogVax.clicked.connect(self._open_add_dialog)
+        self.btnDeleteVax.clicked.connect(self.delete_vaccination)
 
         self.load_vaccinations()
 
@@ -122,12 +120,6 @@ class PageVaccinations(QWidget):
             card.clicked.connect(
                 lambda c=card, s=shot: self.select_vaccination(c, s)
             )
-            card.edit_requested.connect(
-                lambda s=shot: self._open_add_dialog()
-            )
-            card.delete_requested.connect(
-                lambda s=shot: self._delete_vaccination(s)
-            )
 
             layout.addWidget(card)
 
@@ -150,19 +142,6 @@ class PageVaccinations(QWidget):
         if dialog.exec():
             self.load_vaccinations()
 
-    def _delete_vaccination(self, shot):
-        reply = QMessageBox.question(
-            self,
-            "Delete Vaccination",
-            f"Are you sure you want to delete this vaccination record?\n\n{shot.vaccination_name}",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-            QMessageBox.StandardButton.No
-        )
-
-        if reply == QMessageBox.StandardButton.Yes:
-            self.vaccination_service.delete_vaccination(shot.vaccine_id)
-            self.load_vaccinations()
-
     def select_vaccination(self, card, shot):
 
         if self.selected_card:
@@ -172,3 +151,25 @@ class PageVaccinations(QWidget):
         self.selected_shot = shot
 
         card.set_selected(True)
+
+    def delete_vaccination(self):
+        if not self.selected_card:
+            QMessageBox.warning(
+                self, "No Vaccine Selected",
+                "Please select a vaccine first."
+            )
+            return
+
+        reply = QMessageBox.question(
+            self, "Delete Vaccine",
+            "Are you sure you want to delete this vaccine?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+        )
+        if reply != QMessageBox.StandardButton.Yes:
+            return
+
+        self.vaccination_service.delete_vaccination(self.selected_shot.vaccine_id)
+
+        self.selected_shot = None
+        self.selected_card   = None
+        self.load_vaccinations()
