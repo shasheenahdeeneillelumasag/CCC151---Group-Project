@@ -4,6 +4,8 @@ from cli.visit_record_commands import visit_record_app
 from cli.patient_contact_commands import patient_contact_app
 from cli.diagnosis_commands import diagnosis_app
 from cli.document_commands import document_app
+from cli.vaccine_commands import vaccine_shot_app
+
 
 from database.init_db import init_db
 
@@ -32,6 +34,11 @@ app.add_typer(
 app.add_typer(
     document_app,
     name="document"
+)
+
+app.add_typer(
+    vaccine_shot_app,
+    name="vaccine"
 )
 
 if __name__ == "__main__":
