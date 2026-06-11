@@ -17,3 +17,10 @@ class VaccinationShot:
     status: str
 
     patient_id: int
+
+    @property
+    def display_date(self):
+        if self.status == "Completed":
+            return self.date_administered
+
+        return self.schedule_date
