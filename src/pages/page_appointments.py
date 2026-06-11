@@ -111,9 +111,6 @@ class AppointmentRow(QFrame):
         row.addLayout(right_col)
         outer.addLayout(row)
 
-
-# Upcoming appointment card 
-
 class UpcomingCard(QFrame):
     delete_requested = pyqtSignal(object)
 
@@ -224,9 +221,6 @@ class UpcomingCard(QFrame):
 
         layout.addLayout(right)
 
-
-#  Main page 
-
 class PageAppointments(QWidget):
 
     def __init__(self):
@@ -239,16 +233,16 @@ class PageAppointments(QWidget):
 
         self.active_patient = self.patient_service.get_patient_by_code(
             self.settings.get_active_patient_code()
-        )
-        self.patient_id = self.active_patient.patient_id
+        ) if self.settings.get_active_patient_code() else None
+        self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
         self.btnAddAppt.clicked.connect(self._open_add_dialog)
 
         self.load_appointments()
 
-    #  Load 
-
     def load_appointments(self):
+        if not self.patient_id:
+            return
         appointments = self.appointment_service.get_appointments_by_patient_id(
             self.patient_id
         )
@@ -270,8 +264,6 @@ class PageAppointments(QWidget):
 
         self._populate_upcoming(upcoming)
         self._populate_past(past)
-
-    # Populate upcoming 
 
     def _populate_upcoming(self, appointments: list[Appointment]):
 
@@ -302,8 +294,6 @@ class PageAppointments(QWidget):
 
         layout.insertWidget(1, container)
         self._upcoming_container = container
-
-    # Populate past 
 
     def _populate_past(self, appointments: list[Appointment]):
         if hasattr(self, "_past_container"):
@@ -343,8 +333,6 @@ class PageAppointments(QWidget):
         layout = self.scrollContent.layout()
         layout.insertWidget(3, container)
         self._past_container = container
-
-    # Lifecycle track 
 
     def _build_lifecycle_track(self, appt: Appointment) -> QFrame:
         from datetime import timedelta
@@ -451,14 +439,10 @@ class PageAppointments(QWidget):
         outer.addLayout(row)
         return track
 
-    # Add dialog 
-
     def _open_add_dialog(self):
         dialog = DialogAddAppointment(self.patient_id)
         if dialog.exec():
             self.load_appointments()
-
-    # Delete 
 
     def _delete_appointment(self, appt: Appointment):
         reply = QMessageBox.question(

@@ -20,13 +20,6 @@ def init_db():
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_document_vaccine ON document(vaccine_id)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_document_record ON document(record_id)")
 
-        cursor.execute("SELECT COUNT(*) FROM patient")
-        if cursor.fetchone()[0] == 0:
-            cursor.execute("""
-                INSERT INTO patient (patient_code, first_name, last_name, birthdate, sex)
-                VALUES ('P001', 'Juan', 'Dela Cruz', '1990-01-01', 'Male')
-            """)
-
         conn.commit()
 
 if __name__ == "__main__":

@@ -26,8 +26,8 @@ class PageRecords(QWidget):
 
         self.active_patient = self.patient_service.get_patient_by_code(
             self.settings.get_active_patient_code()
-        )
-        self.patient_id = self.active_patient.patient_id
+        ) if self.settings.get_active_patient_code() else None
+        self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
         self.history_service = MedicalHistoryService()
 
@@ -39,6 +39,8 @@ class PageRecords(QWidget):
         self.btnDeleteRecord.clicked.connect(self.delete_record)
 
     def load_records(self):
+        if not self.patient_id:
+            return
         history = self.history_service.get_patient_history(self.patient_id)
         self.populate_records(history)
 

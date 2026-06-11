@@ -67,8 +67,8 @@ class PageDashboard(QWidget):
 
         self.active_patient = self.patient_service.get_patient_by_code(
             self.settings.get_active_patient_code()
-        )
-        self.patient_id = self.active_patient.patient_id
+        ) if self.settings.get_active_patient_code() else None
+        self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
         self.btnAddRecord.clicked.connect(self._open_add_record)
         self.btnAddAppt.clicked.connect(self._open_add_appointment)
@@ -79,6 +79,10 @@ class PageDashboard(QWidget):
         self.load()
 
     def load(self):
+        if not self.patient_id:
+            if hasattr(self, 'topSub'):
+                self.topSub.setText("Welcome! Please fill in your profile to get started.")
+            return
         patient = self.patient_service.get_patient_by_id(self.patient_id)
 
         hour = datetime.now().hour
@@ -103,11 +107,9 @@ class PageDashboard(QWidget):
         """Helper to safely point to your project's root assets folder."""
         return os.path.join(os.path.dirname(__file__), '..', 'assets', icon_name)
 
-    #  Stat cards 
     def _load_stats(self):
         today = date.today()
 
-        # Hide the colored icon squares and make the category labels bold + larger
         _icon_names  = ["stat1Icon", "stat2Icon", "stat3Icon", "stat4Icon",
                         "statIcon1", "statIcon2", "statIcon3", "statIcon4"]
         _label_names = ["stat1Label", "stat2Label", "stat3Label", "stat4Label",
@@ -135,7 +137,6 @@ class PageDashboard(QWidget):
         else:
             self.stat1Sub.setText("No records yet")
 
-        # Vaccinations
         shots = self.vaccination_service.get_vaccinations_by_patient_id(self.patient_id)
         self.stat2Value.setText(str(len(shots)))
         pending = sum(1 for s in shots if s.status == "Pending")
@@ -143,7 +144,6 @@ class PageDashboard(QWidget):
             f"{pending} dose{'s' if pending != 1 else ''} pending" if pending else "All up to date"
         )
 
-        # Appointments
         appointments = self.appointment_service.get_appointments_by_patient_id(self.patient_id)
         self.stat3Value.setText(str(len(appointments)))
         upcoming = sorted(
@@ -156,7 +156,6 @@ class PageDashboard(QWidget):
         else:
             self.stat3Sub.setText("No upcoming")
 
-        # Documents
         record_ids  = {r.record_id for r in records}
         shot_ids    = {s.vaccine_id for s in shots}
         this_month  = 0
@@ -185,8 +184,6 @@ class PageDashboard(QWidget):
         self.stat4Sub.setText(
             f"{this_month} linked this month" if this_month else "No new this month"
         )
-
-    # Reminder banner 
 
     def _load_reminder_banner(self):
         today        = date.today()
@@ -222,26 +219,21 @@ class PageDashboard(QWidget):
         )
         self.reminderBanner.show()
 
-    #  Recent activity 
-
     def _load_activity(self):
         self.activityList.clear()
         items = []
 
-        # Visit records - Removed [Rec] emoji mapping
         records = self.visit_service.get_visit_records_by_patient_id(self.patient_id)
         for r in records:
             diagnoses = self.diagnosis_service.get_diagnoses_by_record_id(r.record_id)
             dx_text = ", ".join(d.diagnosis_name for d in diagnoses) or "Visit"
             items.append((_parse_date(r.visit_date), f"{dx_text}  ·  {_fmt_short(r.visit_date)}", "description.svg"))
 
-        # Vaccinations - Removed [Vax] emoji mapping
         shots = self.vaccination_service.get_vaccinations_by_patient_id(self.patient_id)
         for s in shots:
             items.append((_parse_date(s.date_administered),
                           f"{s.vaccination_name} Dose {s.dose_number}  ·  {_fmt_short(s.date_administered)}", "vaccines.svg"))
 
-        # Appointments - Removed [Cal] and [!] emoji mappings
         appointments = self.appointment_service.get_appointments_by_patient_id(self.patient_id)
         for a in appointments:
             items.append((_parse_date(a.appt_date),
@@ -262,8 +254,6 @@ class PageDashboard(QWidget):
         if not items:
             self.activityList.addItem(QListWidgetItem("No activity yet."))
 
-    #  Latest vitals 
-
     def _load_vitals(self):
         records = self.visit_service.get_visit_records_by_patient_id(self.patient_id)
 
@@ -282,19 +272,15 @@ class PageDashboard(QWidget):
 
         rows = []
 
-        # BP
         bp_status, bp_color = _bp_status(latest.blood_pressure)
         rows.append(("Blood Pressure", latest.blood_pressure or "—", bp_status, bp_color))
 
-        # Weight
         if latest.weight_kg:
             rows.append(("Weight", f"{latest.weight_kg} kg", "Recorded", "#1A9E78"))
 
-        # Diagnoses
         for d in diagnoses:
             rows.append(("Diagnosis", d.diagnosis_name, "", "#546860"))
 
-        # Prescriptions
         for p in prescriptions:
             rows.append(("Prescription", f"{p.medication_name} {p.dosage}".strip(), "", "#546860"))
 
@@ -323,8 +309,6 @@ class PageDashboard(QWidget):
             self.vitalsTable.setItem(i, 2, item_status)
 
         self.vitalsTable.resizeRowsToContents()
-
-    #  Upcoming appointment card 
 
     def _load_upcoming_appt(self):
         today        = date.today()
@@ -356,8 +340,6 @@ class PageDashboard(QWidget):
             f"Reminder set: {remind_on.strftime('%b %d') if remind_on else '—'}"
         )
         self.apptTime.setText(str(appt.appt_time))
-
-    # Vaccine progress card 
 
     def _load_vaccine_progress(self):
         shots = self.vaccination_service.get_vaccinations_by_patient_id(self.patient_id)
@@ -392,7 +374,6 @@ class PageDashboard(QWidget):
                 row.setContentsMargins(20, 12, 20, 12)
                 row.setSpacing(12)
 
-                # Replaced raw [Vax] text label layout with dynamic QPixmap lookup
                 icon = QLabel()
                 icon.setFixedSize(36, 36)
                 icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -443,8 +424,6 @@ class PageDashboard(QWidget):
         card_layout = self.cardVaccine.layout()
         card_layout.insertWidget(2, container)
         self._vacc_container = container
-
-    #  Actions 
 
     def _open_add_record(self):
         dialog = DialogAddRecord(self.patient_id)

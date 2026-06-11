@@ -17,11 +17,11 @@ class PageProfile(QWidget):
         self.contact_service = PatientContactService()
         self.settings = AppSettings()
 
-        self.active_patient = self.patient_service.get_patient_by_code(self.settings.get_active_patient_code())
+        self.active_patient = self.patient_service.get_patient_by_code(
+            self.settings.get_active_patient_code()
+        ) if self.settings.get_active_patient_code() else None
+        self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
-        self.patient_id = self.active_patient.patient_id
-
-        # keep track of current contact row
         self.contact_id = None
 
         self.load_patient()
@@ -35,6 +35,8 @@ class PageProfile(QWidget):
         )
 
     def load_patient(self):
+        if not self.patient_id:
+            return
 
         patient = self.patient_service.get_patient_by_id(
             self.patient_id
@@ -55,7 +57,6 @@ class PageProfile(QWidget):
             patient.sex
         )
 
-        # STRING -> QDate
         birthdate = QDate.fromString(
             patient.birthdate,
             "yyyy-MM-dd"
@@ -64,10 +65,6 @@ class PageProfile(QWidget):
         self.inputDob.setDate(
             birthdate
         )
-
-        # =========================
-        # LOAD CONTACT NUMBER
-        # =========================
 
         contacts = self.contact_service.get_contacts_by_patient_id(
             self.patient_id
@@ -86,10 +83,6 @@ class PageProfile(QWidget):
             self.contact_id = None
 
             self.inputContact.setText("")
-
-        # =========================
-        # HERO SECTION
-        # =========================
 
         self.heroName.setText(
             f"{patient.first_name} {patient.last_name}"
@@ -111,6 +104,8 @@ class PageProfile(QWidget):
             )
 
     def save_profile(self):
+        if not self.patient_id:
+            return
 
         first_name = self.inputFirstName.text()
 
@@ -122,14 +117,9 @@ class PageProfile(QWidget):
 
         email = self.inputEmail.text().strip() if hasattr(self, "inputEmail") else ""
 
-        # QDate -> STRING
         birthdate = self.inputDob.date().toString(
             "yyyy-MM-dd"
         )
-
-        # =========================
-        # UPDATE PATIENT
-        # =========================
 
         self.patient_service.update_patient(
             patient_id=self.patient_id,
@@ -139,13 +129,8 @@ class PageProfile(QWidget):
             sex=sex
         )
 
-        # =========================
-        # UPDATE / CREATE CONTACT
-        # =========================
-
         if contact_number:
 
-            # update existing
             if self.contact_id is not None:
 
                 self.contact_service.update_contact(
@@ -154,7 +139,6 @@ class PageProfile(QWidget):
                     contact_number=contact_number
                 )
 
-            # create new
             else:
 
                 contact = self.contact_service.add_contact(
@@ -163,10 +147,6 @@ class PageProfile(QWidget):
                 )
 
                 self.contact_id = contact.contact_id
-
-        # =========================
-        # UPDATE HERO
-        # =========================
 
         self.heroName.setText(
             f"{first_name} {last_name}"

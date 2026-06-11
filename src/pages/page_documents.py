@@ -210,9 +210,6 @@ class DocCard(QFrame):
         self.clicked.emit(self.doc)
         super().mousePressEvent(event)
 
-
-# Main page 
-
 class PageDocuments(QWidget):
 
     TAB_ALL          = 0
@@ -235,8 +232,8 @@ class PageDocuments(QWidget):
 
         self.active_patient = self.patient_service.get_patient_by_code(
             self.settings.get_active_patient_code()
-        )
-        self.patient_id = self.active_patient.patient_id
+        ) if self.settings.get_active_patient_code() else None
+        self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
         os.makedirs(DOCS_DIR, exist_ok=True)
 

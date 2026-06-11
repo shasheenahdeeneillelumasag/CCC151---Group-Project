@@ -27,14 +27,14 @@ class PageReminders(QWidget):
 
         self.active_patient = self.patient_service.get_patient_by_code(
             self.settings.get_active_patient_code()
-        )
-        self.patient_id = self.active_patient.patient_id
+        ) if self.settings.get_active_patient_code() else None
+        self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
         self.load_reminders()
 
-    #  Load 
-
     def load_reminders(self):
+        if not self.patient_id:
+            return
         appointments = self.appointment_service.get_appointments_by_patient_id(
             self.patient_id
         )
@@ -66,8 +66,6 @@ class PageReminders(QWidget):
         self._populate_banner(flagged)
         self._populate_list(all_reminders)
         self._update_count_badge(len(flagged))
-
-    # Active banner 
 
     def _populate_banner(self, flagged: list[Appointment]):
         if hasattr(self, "_banner_widget"):
@@ -173,8 +171,6 @@ class PageReminders(QWidget):
         self.scrollContent.layout().insertWidget(0, banner)
         self._banner_widget = banner
 
-    # Reminders list 
-
     def _populate_list(self, appointments: list[Appointment]):
         if hasattr(self, "_list_container"):
             self._list_container.deleteLater()
@@ -214,8 +210,6 @@ class PageReminders(QWidget):
         self.scrollContent.layout().insertWidget(idx, list_frame)
         self._list_container = list_frame
 
-    # Count badge 
-
     def _update_count_badge(self, count: int):
         if hasattr(self, "countBadge"):
             if count > 0:
@@ -223,8 +217,6 @@ class PageReminders(QWidget):
                 self.countBadge.show()
             else:
                 self.countBadge.hide()
-
-    # Detail popup 
 
     def _show_detail(self, appt: Appointment):
         from widgets.reminder_card import compute_remind_on, _fmt_date
@@ -241,8 +233,6 @@ class PageReminders(QWidget):
             f"Remind on:   {_fmt_date(remind_on)}\n"
             f"Code:        {appt.appointment_code}"
         )
-
-    # Dismiss 
 
     def _dismiss(self, appt: Appointment):
         reply = QMessageBox.question(

@@ -6,12 +6,14 @@ from PyQt6.QtGui import QIcon
 
 from database.init_db import init_db
 from login_window import AuthWindow
+from services.user_service import UserService
 
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), '..', 'assets')
 
 
 def main():
     init_db()
+    UserService().init_users_table()
     app = QApplication(sys.argv)
     app.setStyle("Fusion")
 

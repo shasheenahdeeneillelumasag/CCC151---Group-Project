@@ -10,6 +10,10 @@ from PyQt6.QtGui import QIcon, QPixmap, QPainter, QBrush, QColor, QFont
 from PyQt6.QtCore import Qt, QSize, pyqtSignal
 
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), '..', 'assets')
+
+def _user_service():
+    from services.user_service import UserService
+    return UserService()
 PRIMARY      = "#1A9E78"
 PRIMARY_DARK = "#157A5E"
 SURFACE      = "#F2F7F5"
@@ -195,6 +199,11 @@ class LoginForm(QWidget):
         self.username_field.returnPressed.connect(lambda: self.password_field.setFocus())
         self.password_field.returnPressed.connect(self._on_login)
 
+    def show_error(self, message: str):
+        """Display an error banner (called externally, e.g. from AuthWindow)."""
+        self.error_label.setText(message)
+        self.error_label.show()
+
     def _on_login(self):
         u = self.username_field.text().strip()
         p = self.password_field.text()
@@ -312,6 +321,11 @@ class SignUpForm(QWidget):
         self.btn_signup.clicked.connect(self._on_signup)
         self.btn_go_login.clicked.connect(self.login_requested)
 
+    def show_error(self, message: str):
+        """Display an error banner (called externally, e.g. from AuthWindow)."""
+        self.error_label.setText(message)
+        self.error_label.show()
+
     def _on_signup(self):
         fields = {
             "first_name": self.first_name.text().strip(),
@@ -380,10 +394,37 @@ class AuthWindow(QMainWindow):
         self.setFixedSize(560, 700 if index == 1 else 600)
 
     def _handle_login(self, username: str, password: str):
-        self.authenticated.emit(username)
-        self._open_main_app(username)
+        user = _user_service().login(username, password)
+        if user is None:
+            self.login_form.show_error("Incorrect username or password.")
+            return
+        from core.app_settings import AppSettings
+        AppSettings().set_active_patient_code(user.patient_code or "")
+        self.authenticated.emit(user.username)
+        self._open_main_app(user)
 
     def _handle_signup(self, data: dict):
+        svc = _user_service()
+        ok, error = svc.register(
+            first_name=data["first_name"],
+            last_name=data["last_name"],
+            email=data["email"],
+            username=data["username"],
+            password=data["password"],
+        )
+        if not ok:
+            self.signup_form.show_error(error)
+            return
+
+        from services.patient_service import PatientService
+        patient = PatientService().register_patient(
+            first_name=data["first_name"],
+            last_name=data["last_name"],
+            birthdate="2000-01-01",
+            sex="Male",
+        )
+        svc.link_patient(data["username"], patient.patient_code)
+
         QMessageBox.information(
             self, "Account created",
             f"Welcome, {data['first_name']}!\n\nYour account has been created. You can now sign in.",
@@ -391,10 +432,10 @@ class AuthWindow(QMainWindow):
         self._switch(0)
         self.login_form.username_field.setText(data["username"])
 
-    def _open_main_app(self, username: str):
+    def _open_main_app(self, user):
         """Opens the main HealthLink window and closes the auth window."""
         from main_window import MainWindow
-        self.main_window = MainWindow()
+        self.main_window = MainWindow(user=user)
         self.main_window.show()
         self.close()
 

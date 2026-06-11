@@ -28,8 +28,9 @@ from widgets.reminder_card import reminder_status, _parse_date
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, user=None):
         super().__init__()
+        self._logged_in_user = user
         uic.loadUi("ui/main_window.ui", self)
 
         icon_path = os.path.join(os.path.dirname(__file__), '..', 'assets', 'logo.png')
@@ -89,18 +90,17 @@ class MainWindow(QMainWindow):
         self.settings        = AppSettings()
         self.patient_service = PatientService()
 
-        if not self.settings.get_active_patient_code():
-            self.settings.set_active_patient_code("P001")
+        patient_code = None
+        if self._logged_in_user and self._logged_in_user.patient_code:
+            patient_code = self._logged_in_user.patient_code
+            self.settings.set_active_patient_code(patient_code)
+        elif self.settings.get_active_patient_code():
+            patient_code = self.settings.get_active_patient_code()
 
-        self.active_patient = self.patient_service.get_patient_by_code(
-            self.settings.get_active_patient_code()
+        self.active_patient = (
+            self.patient_service.get_patient_by_code(patient_code)
+            if patient_code else None
         )
-
-        if self.active_patient is None:
-            raise RuntimeError(
-                f"No patient found for code '{self.settings.get_active_patient_code()}'. "
-                "Make sure init_db() has been called and the database is seeded."
-            )
 
         self.page_dashboard   = PageDashboard()
         self.page_profile     = PageProfile()
@@ -184,6 +184,12 @@ class MainWindow(QMainWindow):
     def _load_patient_chip(self):
         p = self.active_patient
         if not p:
+            if self._logged_in_user:
+                full_name = f"{self._logged_in_user.first_name} {self._logged_in_user.last_name}"
+                self.patientName.setText(full_name)
+                self.patientId.setText("No profile yet")
+                initials = f"{self._logged_in_user.first_name[0]}{self._logged_in_user.last_name[0]}".upper()
+                self.patientAvatar.setText(initials)
             return
 
         full_name = f"{p.first_name} {p.last_name}"
@@ -217,6 +223,8 @@ class MainWindow(QMainWindow):
 
 
     def _update_badges(self):
+        if not self.active_patient:
+            return
         patient_id = self.active_patient.patient_id
         today      = date.today()
 

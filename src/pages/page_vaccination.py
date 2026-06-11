@@ -30,9 +30,6 @@ def _fmt_date(value) -> str:
     d = _parse_date(value)
     return d.strftime("%B %d, %Y") if d else "—"
 
-
-# Dose row inside a vaccine card 
-
 def _build_dose_row(shot: VaccinationShot, show_divider: bool) -> QFrame:
     row = QFrame()
     if show_divider:
@@ -76,9 +73,6 @@ def _build_dose_row(shot: VaccinationShot, show_divider: bool) -> QFrame:
 
     return row
 
-
-# Scheduled next-dose row 
-
 def _build_scheduled_row(schedule_date, dose_number: int, show_divider: bool) -> QFrame:
     row = QFrame()
     if show_divider:
@@ -113,9 +107,6 @@ def _build_scheduled_row(schedule_date, dose_number: int, show_divider: bool) ->
     layout.addWidget(badge)
 
     return row
-
-
-#  Vaccine group card 
 
 class VaccineCard(QFrame):
 
@@ -229,7 +220,6 @@ class VaccineCard(QFrame):
         pips.addStretch()
         outer.addLayout(pips)
 
-        #  Dose schedule table 
         schedule_frame = QFrame()
         schedule_frame.setObjectName("scheduleFrame")
         header_color = "#E8F5EB" if all_complete else "#E3F5EE"
@@ -313,16 +303,16 @@ class PageVaccinations(QWidget):
 
         self.active_patient = self.patient_service.get_patient_by_code(
             self.settings.get_active_patient_code()
-        )
-        self.patient_id = self.active_patient.patient_id
+        ) if self.settings.get_active_patient_code() else None
+        self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
         self.btnLogVax.clicked.connect(self._open_add_dialog)
 
         self.load_vaccinations()
 
-    # Load 
-
     def load_vaccinations(self):
+        if not self.patient_id:
+            return
         shots = self.vaccination_service.get_vaccinations_by_patient_id(
             self.patient_id
         )
@@ -375,14 +365,10 @@ class PageVaccinations(QWidget):
         scroll_layout.insertWidget(0, container)
         self._cards_container = container
 
-    #  Dialog
-
     def _open_add_dialog(self):
         dialog = DialogAddVaccination(self.patient_id)
         if dialog.exec():
             self.load_vaccinations()
-
-    #  Delete 
 
     def _delete_shots(self, shots: list[VaccinationShot]):
         name = shots[0].vaccination_name if shots else "this vaccination"
