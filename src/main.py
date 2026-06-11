@@ -7,7 +7,6 @@ from PyQt6.QtGui import QIcon
 from database.init_db import init_db
 from login_window import AuthWindow
 
-# Base path for the assets folder (one level up from src/)
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), '..', 'assets')
 
 

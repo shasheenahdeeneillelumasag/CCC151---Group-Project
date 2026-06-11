@@ -153,8 +153,6 @@ class MainWindow(QMainWindow):
         self.navDocuments.clicked.connect(
             lambda: self._navigate(6))
 
-        self.btnBell.clicked.connect(lambda: self._navigate(5))
-
         self._load_patient_chip()
 
         self._update_badges()
