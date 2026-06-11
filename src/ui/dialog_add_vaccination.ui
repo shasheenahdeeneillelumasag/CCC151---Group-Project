@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>DialogAddVaccination</class>
  <widget class="QDialog" name="DialogAddVaccination">
@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>520</width>
+    <width>924</width>
     <height>560</height>
    </rect>
   </property>
@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string>
-    QDialog { background: #FFFFFF; font-family: "Segoe UI", sans-serif; }
+    QDialog { background: #FFFFFF; font-family: &quot;Segoe UI&quot;, sans-serif; }
     QLabel { background: transparent; color: #1C2B25; }
     QLineEdit, QComboBox, QDateEdit { border: 1px solid #C8D9D2; border-radius: 9px; padding: 9px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF; }
     QLineEdit:focus, QDateEdit:focus { border-color: #1A9E78; }
@@ -71,7 +71,7 @@
       <item>
        <spacer>
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -98,7 +98,9 @@
         <property name="styleSheet">
          <string>QPushButton { background: #F1EFE8; color: #546860; border: none; border-radius: 15px; font-size: 13px; } QPushButton:hover { background: #DDE8E3; }</string>
         </property>
-        <property name="text"><string></string></property>
+        <property name="text">
+         <string/>
+        </property>
        </widget>
       </item>
      </layout>
@@ -113,6 +115,14 @@
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="widget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>903</width>
+        <height>437</height>
+       </rect>
+      </property>
       <layout class="QVBoxLayout">
        <property name="spacing">
         <number>14</number>
@@ -130,113 +140,47 @@
         <number>20</number>
        </property>
        <item>
-        <layout class="QGridLayout">
+        <layout class="QGridLayout" name="_2">
          <property name="spacing">
           <number>12</number>
          </property>
-         <item row="0" column="0" colspan="2">
+         <item row="4" column="1">
           <layout class="QVBoxLayout">
            <property name="spacing">
             <number>5</number>
            </property>
            <item>
-            <widget class="QLabel" name="label">
+            <widget class="QLabel" name="label_2">
              <property name="styleSheet">
               <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
              </property>
              <property name="text">
-              <string>VACCINE NAME</string>
+              <string>STATUS</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="inputVaccineName">
-             <property name="placeholderText">
-              <string>e.g. Hepatitis B, Influenza, COVID-19</string>
-             </property>
+            <widget class="QComboBox" name="inputVaccineStatus">
+             <item>
+              <property name="text">
+               <string>Completed</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Pending</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Missed</string>
+              </property>
+             </item>
             </widget>
            </item>
           </layout>
          </item>
-         <item row="1" column="0">
-          <layout class="QVBoxLayout">
-           <property name="spacing">
-            <number>5</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="styleSheet">
-              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
-             </property>
-             <property name="text">
-              <string>VACCINE ID</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="inputVaccineId">
-             <property name="placeholderText">
-              <string>e.g. VAX-HEP-001</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="1">
-          <layout class="QVBoxLayout">
-           <property name="spacing">
-            <number>5</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="styleSheet">
-              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
-             </property>
-             <property name="text">
-              <string>DATE ADMINISTERED</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QDateEdit" name="inputDateAdmin">
-             <property name="locale">
-              <locale language="English" country="AmericanSamoa" />
-             </property>
-             <property name="displayFormat">
-              <string>MMMM d, yyyy</string>
-             </property>
-             <property name="calendarPopup">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="2" column="0" colspan="2">
-          <layout class="QVBoxLayout">
-           <property name="spacing">
-            <number>5</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="styleSheet">
-              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
-             </property>
-             <property name="text">
-              <string>FACILITY</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="inputFacility">
-             <property name="placeholderText">
-              <string>e.g. Barangay Health Center No. 5</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="0">
+         <item row="4" column="0">
           <layout class="QVBoxLayout">
            <property name="spacing">
             <number>5</number>
@@ -285,7 +229,7 @@
            </item>
           </layout>
          </item>
-         <item row="3" column="1">
+         <item row="3" column="0" colspan="2">
           <layout class="QVBoxLayout">
            <property name="spacing">
             <number>5</number>
@@ -296,91 +240,67 @@
               <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
              </property>
              <property name="text">
-              <string>TOTAL DOSES IN SERIES</string>
+              <string>FACILITY</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="inputTotalDoses">
-             <property name="styleSheet">
-              <string>QComboBox { border: 1px solid #C8D9D2; border-radius: 9px; padding: 9px 13px; font-size: 13px; background: #FFF; } QComboBox::drop-down { border: none; width: 24px; }</string>
+            <widget class="QLineEdit" name="inputFacility">
+             <property name="placeholderText">
+              <string>e.g. Barangay Health Center No. 5</string>
              </property>
-             <item>
-              <property name="text">
-               <string>1 (Single dose)</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>2 doses</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>3 doses</string>
-              </property>
-             </item>
             </widget>
            </item>
           </layout>
          </item>
+         <item row="0" column="0" colspan="2">
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="styleSheet">
+              <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+             </property>
+             <property name="text">
+              <string>VACCINE NAME</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="inputVaccineName">
+             <property name="placeholderText">
+              <string>e.g. Hepatitis B, Influenza, COVID-19</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <widget class="QDateEdit" name="inputDate">
+           <property name="locale">
+            <locale language="English" country="AmericanSamoa"/>
+           </property>
+           <property name="displayFormat">
+            <string>MMMM d, yyyy</string>
+           </property>
+           <property name="calendarPopup">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QLabel" name="dateLabel">
+           <property name="styleSheet">
+            <string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string>
+           </property>
+           <property name="text">
+            <string>DATE ADMINISTERED</string>
+           </property>
+          </widget>
+         </item>
         </layout>
-       </item>
-       <item>
-        <widget class="QFrame" name="autoBox">
-         <layout class="QHBoxLayout">
-          <property name="spacing">
-           <number>10</number>
-          </property>
-          <property name="leftMargin">
-           <number>14</number>
-          </property>
-          <property name="topMargin">
-           <number>11</number>
-          </property>
-          <property name="rightMargin">
-           <number>14</number>
-          </property>
-          <property name="bottomMargin">
-           <number>11</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="label">
-            <property name="minimumSize">
-             <size>
-              <width>28</width>
-              <height>28</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>28</width>
-              <height>28</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string>QLabel { background: #9FE1CB; border-radius: 7px;
-    }</string>
-            </property>
-            <property name="pixmap"><pixmap><normaloff>:/assets/ic_auto.svg</normaloff>:/assets/ic_auto.svg</pixmap></property>
-     <property name="scaledContents"><bool>true</bool></property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="autoScheduleLabel">
-            <property name="styleSheet">
-             <string>QLabel { font-size: 12px; color: #0D6B52; line-height: 1.5; }</string>
-            </property>
-            <property name="text">
-             <string>&lt;b&gt;Auto-schedule enabled:&lt;/b&gt; Next dose date will be automatically calculated based on the standard interval for this vaccine series.</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
        </item>
        <item>
         <widget class="QLabel" name="label">
@@ -407,8 +327,12 @@
              <string>QLabel {
     color: #1A9E78; }</string>
             </property>
-            <property name="pixmap"><pixmap><normaloff>:/assets/ic_upload.svg</normaloff>:/assets/ic_upload.svg</pixmap></property>
-     <property name="scaledContents"><bool>true</bool></property>
+            <property name="pixmap">
+             <pixmap>:/assets/ic_upload.svg</pixmap>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
+            </property>
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignCenter</set>
             </property>
@@ -455,7 +379,7 @@
       <item>
        <spacer>
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -490,6 +414,6 @@
    </item>
   </layout>
  </widget>
- <resources />
- <connections />
+ <resources/>
+ <connections/>
 </ui>

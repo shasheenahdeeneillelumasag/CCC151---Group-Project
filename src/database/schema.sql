@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS vaccination_shots (
     vaccine_code        VARCHAR(10) NOT NULL UNIQUE, -- V001
 
     vaccination_name    VARCHAR(100) NOT NULL,
-    date_administered   DATE NOT NULL,
+    date_administered   DATE,
     facility            VARCHAR(100) NOT NULL,
     dose_number         INTEGER NOT NULL,
 
