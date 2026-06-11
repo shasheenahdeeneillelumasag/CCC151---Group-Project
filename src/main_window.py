@@ -73,11 +73,11 @@ class MainWindow(QMainWindow):
     def apply_navigation_icons(self):
         self.load_icon(self.navDashboard, "dashboard.svg")
         self.load_icon(self.navProfile, "account_circle.svg")
-        self.load_icon(self.navRecords, "description.svg")
+        self.load_icon(self.navRecords, "record.svg")
         self.load_icon(self.navVaccinations, "vaccines.svg")
         self.load_icon(self.navAppointments, "calendar_month.svg")
         self.load_icon(self.navReminders, "notifications.svg")
-        self.load_icon(self.navDocuments, "draft.svg")
+        self.load_icon(self.navDocuments, "document.svg")
 
         self.setStyleSheet("""
             QPushButton {
