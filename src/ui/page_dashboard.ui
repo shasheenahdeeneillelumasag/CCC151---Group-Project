@@ -34,7 +34,7 @@
    <item>
     <widget class="QFrame" name="topbar">
      <property name="styleSheet">
-      <string>QFrame#topbar { background: #FFFFFF; border-bottom: 1px solid #DDE8E3; border-radius: 0px; }</string>
+      <string>QFrame { background: #FFFFFF; border-bottom: 1px solid #DDE8E3; }</string>
      </property>
      <property name="minimumHeight"><number>62</number></property>
      <property name="maximumHeight"><number>62</number></property>
