@@ -652,7 +652,7 @@
          <number>14</number>
         </property>
         <item>
-         <widget class="QPushButton" name="settingsBtn">
+         <widget class="QPushButton" name="logOutBtn">
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
@@ -660,7 +660,7 @@
            <string>QPushButton { background: transparent; color: rgba(255,255,255,0.38); font-size: 12px; border: none; border-radius: 8px; padding: 8px 10px; text-align: left; } QPushButton:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); }</string>
           </property>
           <property name="text">
-           <string> Settings</string>
+           <string>Log Out</string>
           </property>
          </widget>
         </item>
