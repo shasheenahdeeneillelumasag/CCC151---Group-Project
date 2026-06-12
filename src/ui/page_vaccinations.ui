@@ -98,6 +98,16 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="btnEditVax">
+        <property name="styleSheet">
+         <string>QPushButton { background: #FFFFFF; color: #1A9E78; font-size: 12px; font-weight: 600; border: 1px solid #1A9E78; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #E3F5EE; }</string>
+        </property>
+        <property name="text">
+         <string>Edit Vaccination</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btnDeleteVax">
         <property name="styleSheet">
          <string>QPushButton { background: #FFFFFF; color: #C0392B; font-size: 12px; font-weight: 600; border: 1px solid #C0392B; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #FDECEB; }</string>

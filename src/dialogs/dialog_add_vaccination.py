@@ -7,6 +7,7 @@ from PyQt6.QtCore import QDate
 from PyQt6 import uic
 
 from services.container import vaccination_shot_service, document_service
+from models.vaccination_shot import VaccinationShot
 from widgets.date_picker import init_date_picker, set_date_picker, get_date_str_from_picker
 
 DOCS_DIR = os.path.normpath(
@@ -16,7 +17,7 @@ DOCS_DIR = os.path.normpath(
 
 class DialogAddVaccination(QDialog):
 
-    def __init__(self, patient_id: int):
+    def __init__(self, patient_id: int, current_vaccine:VaccinationShot | None = None):
         super().__init__()
         uic.loadUi("ui/dialog_add_vaccination.ui", self)
         self.setFixedSize(self.size())
@@ -26,11 +27,20 @@ class DialogAddVaccination(QDialog):
 
         self.patient_id = patient_id
         self._attached_file = None
-
-        self.inputVaccineStatus.currentIndexChanged.connect(self._update_fields)
+        self.current_vaccine = current_vaccine
 
         init_date_picker(self.inputDateMonth, self.inputDateDay, self.inputDateYear)
         set_date_picker(self.inputDateMonth, self.inputDateDay, self.inputDateYear, QDate.currentDate())
+
+        if self.current_vaccine:
+            self.uploadZone.setEnabled(False)
+            self.uploadZone.hide()
+            self.lblUploadZone.hide()
+
+        if self.current_vaccine:
+            self._load_vaccination()
+
+        self.inputVaccineStatus.currentIndexChanged.connect(self._update_fields)
 
 
 
@@ -92,16 +102,29 @@ class DialogAddVaccination(QDialog):
             QMessageBox.warning(self, "Missing Field", "Facility name is required.")
             self.inputFacility.setFocus()
             return
+        
+        if self.current_vaccine is None:
+            vaccination = self.vaccination_service.create_vaccination(
+                vaccination_name=vaccination_name,
+                date_administered=date_administered,
+                facility=facility,
+                dose_number=self._dose_number(),
+                schedule_date=schedule_date,
+                status=status,
+                patient_id=self.patient_id
+            )
+        else:   
+            vaccination = self.vaccination_service.update_vaccination(
+                vaccine_id=self.current_vaccine.vaccine_id,
+                vaccination_name=vaccination_name,
+                date_administered=date_administered,
+                facility=facility,
+                dose_number=self._dose_number(),
+                schedule_date=schedule_date,
+                status=status,
+                patient_id=self.patient_id
+            )
 
-        vaccination = self.vaccination_service.create_vaccination(
-            vaccination_name=vaccination_name,
-            date_administered=date_administered,
-            facility=facility,
-            dose_number=self._dose_number(),
-            schedule_date=schedule_date,
-            status=status,
-            patient_id=self.patient_id
-        )
 
         if self._attached_file and os.path.exists(self._attached_file):
             os.makedirs(DOCS_DIR, exist_ok=True)
@@ -125,7 +148,14 @@ class DialogAddVaccination(QDialog):
                 vaccine_id=vaccination.vaccine_id
             )
 
-        QMessageBox.information(self, "Success", "Vaccination saved successfully.")
+        success_message = None 
+
+        if self.current_vaccine:
+           success_message = "Vaccination updated successfully"
+        else:
+           success_message = "Vaccination saved successfully" 
+        
+        QMessageBox.information(self, "Success", f"{success_message}")
         self.accept()
 
     def _confirm_cancel(self):
@@ -148,3 +178,40 @@ class DialogAddVaccination(QDialog):
         }
 
         self.dateLabel.setText(labels.get(status, "DATE"))
+
+
+    def _load_vaccination(self):
+        v = self.current_vaccine
+
+        self.inputVaccineName.setText(v.vaccination_name)
+        self.inputFacility.setText(v.facility)
+
+        self.inputVaccineStatus.setCurrentText(v.status)
+
+        date_value = (
+            v.date_administered
+            if v.status == "Completed"
+            else v.schedule_date
+        )
+
+        if date_value:
+            qdate = QDate.fromString(str(date_value), "yyyy-MM-dd")
+            set_date_picker(
+                self.inputDateMonth,
+                self.inputDateDay,
+                self.inputDateYear,
+                qdate
+            )
+
+        dose_map = {
+            1: "Dose 1",
+            2: "Dose 2",
+            3: "Dose 3",
+            0: "Booster"
+        }
+
+        self.inputDoseNum.setCurrentText(
+            dose_map.get(v.dose_number, "Dose 1")
+        )
+
+        self.btnSave.setText("Update")

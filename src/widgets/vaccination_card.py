@@ -5,9 +5,7 @@ from PyQt6.QtCore import pyqtSignal
 from PyQt6 import uic
 
 from models.vaccination_shot import VaccinationShot
-from services.document_service import DocumentService
-
-document_service = DocumentService()
+from services.container import document_service 
 
 def _fmt_date(value) -> str:
     if isinstance(value, date):
@@ -26,19 +24,17 @@ def _fmt_date(value) -> str:
 
 class VaccinationCard(QFrame):
     clicked = pyqtSignal()
-    edit_requested = pyqtSignal(object)
-    delete_requested = pyqtSignal(object)
 
     def __init__(self, shot: VaccinationShot):
         super().__init__()
 
         uic.loadUi("ui/card_vaccination.ui", self)
 
+
+        self.document_service = document_service
         self.selected = False
         self.shot = shot
 
-        self.btnEdit.clicked.connect(lambda: self.edit_requested.emit(shot))
-        self.btnDeleteVax.clicked.connect(lambda: self.delete_requested.emit(shot))
         self.populate()
 
     def populate(self):
@@ -56,8 +52,12 @@ class VaccinationCard(QFrame):
             f"{shot.display_date}"
         )
 
-        doc = document_service.get_document_by_code(shot.vaccine_code)
-        self.lblVaxCardPhoto.setText(doc.doc_filename if doc else "No attachment")
+        docs = document_service.get_documents_by_vaccine_id(shot.vaccine_id)
+
+        self.lblVaxCardPhoto.setText(
+            ", ".join(doc.doc_filename for doc in docs) if docs else "No attachment"
+        )
+
 
         self.lblDoseStatus.setText(
             f"{shot.status}"

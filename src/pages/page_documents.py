@@ -65,7 +65,7 @@ def _resolve_link(doc: Document,
     """Return (link_text, link_type) describing what this document is linked to."""
     if doc.vaccine_id is not None:
         v = vaccine_service.get_vaccination_by_id(doc.vaccine_id)
-        text = f"{v.vaccination_name} — Dose {v.dose_number}" if v else f"Vaccine #{doc.vaccine_id}"
+        text = f"{v.vaccination_name} — Dose {v.display_dose}" if v else f"Vaccine #{doc.vaccine_id}"
         return text, "vaccine"
     if doc.record_id is not None:
         r = visit_service.get_visit_record_by_id(doc.record_id)
@@ -245,7 +245,14 @@ class PageDocuments(QWidget):
         self._setup_tabs()
         self._current_tab = self.TAB_ALL
 
-        self.tabBar.currentChanged.connect(self._on_tab_changed)
+
+        self.tabBar.currentChanged.connect(self._on_tab_changed)        
+
+        self.doc_service.changed.connect(self.load_documents)
+        self.vaccine_service.changed.connect(self.load_documents)
+        self.diagnosis_service.changed.connect(self.load_documents)
+        self.visit_service.changed.connect(self.load_documents)
+        self.prescription_service.changed.connect(self.load_documents)
 
         self.load_documents()
 

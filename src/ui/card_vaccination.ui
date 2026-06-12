@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>vaxCard</class>
  <widget class="QFrame" name="vaxCard">
@@ -131,27 +131,7 @@ QFrame {
        </property>
       </spacer>
      </item>
-      <item>
-       <widget class="QPushButton" name="btnEdit">
-        <property name="styleSheet">
-         <string>QPushButton { background: transparent; color: #546860; font-size: 11px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 8px; padding: 6px 14px; } QPushButton:hover { background: #E3F5EE; }</string>
-        </property>
-        <property name="text">
-         <string>Edit</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnDeleteVax">
-        <property name="styleSheet">
-         <string>QPushButton { background: transparent; color: #C0392B; font-size: 11px; font-weight: 600; border: 1px solid #C0392B; border-radius: 8px; padding: 6px 14px; } QPushButton:hover { background: #FDECEB; }</string>
-        </property>
-        <property name="text">
-         <string>Delete</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+    </layout>
    </item>
    <item>
     <widget class="QFrame" name="doseSchedule">

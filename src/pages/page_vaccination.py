@@ -50,10 +50,15 @@ class PageVaccinations(QWidget):
 
         self.btnLogVax.clicked.connect(self._open_add_dialog)
         self.btnDeleteVax.clicked.connect(self.delete_vaccination)
+        self.btnEditVax.clicked.connect(self._edit_selected_vaccination)
 
         self.load_vaccinations()
 
     def load_vaccinations(self):
+        self.selected_card = None
+        self.selected_shot = None
+
+
         if not self.patient_id:
             return
 
@@ -142,6 +147,25 @@ class PageVaccinations(QWidget):
 
         if dialog.exec():
             self.load_vaccinations()
+
+    def _edit_selected_vaccination(self):
+        if not self.selected_shot:
+            QMessageBox.warning(
+                self,
+                "No Vaccine Selected",
+                "Please select a vaccine first."
+            )
+            return
+
+        dialog = DialogAddVaccination(
+            self.patient_id,
+            current_vaccine=self.selected_shot
+        )
+
+        if dialog.exec():
+            self.load_vaccinations()
+
+
 
     def select_vaccination(self, card, shot):
 
