@@ -24,107 +24,128 @@ def _parse_date(value) -> date | None:
     return None
 
 
-def _status_badge_style(status: str) -> tuple[str, str]:
+def _status_badge_style(status: str) -> tuple[str, str, str]:
     return {
-        "Scheduled":  ("#FBDF9E", "#7A4D0A"),
-        "Completed":  ("#E8F5EB", "#1F5C2E"),
-        "Cancelled":  ("#FAE8E8", "#8A1F1F"),
-    }.get(status, ("#F0F0F0", "#555555"))
+        "Scheduled":  ("#FBDF9E", "#7A4D0A", "Scheduled"),
+        "Completed":  ("#D4EDDA", "#155724", "Completed"),
+        "Cancelled":  ("#F8D7DA", "#721C24", "Cancelled"),
+    }.get(status, ("#F0F0F0", "#555555", status))
 
 
 class ApptCard(QFrame):
-    delete_requested = pyqtSignal(object)
+    clicked = pyqtSignal(object)
     reminder_clicked = pyqtSignal(object)
 
-    def __init__(self, appt: Appointment, show_divider: bool = False):
+    def __init__(self, appt: Appointment, past: bool = False):
         super().__init__()
         self.appt = appt
+        self._selected = False
+        self._past = past
 
         appt_date = _parse_date(appt.appt_date)
-        day   = appt_date.strftime("%d")   if appt_date else "—"
-        month = appt_date.strftime("%b %Y").upper() if appt_date else "—"
+        date_str = appt_date.strftime("%B %d, %Y") if appt_date else "—"
 
-        badge_bg, badge_fg = _status_badge_style(appt.status)
+        badge_bg, badge_fg, badge_label = _status_badge_style(appt.status)
 
         remind_on = (appt_date - timedelta(days=2)) if appt_date else None
         today = date.today()
-        reminder_active = remind_on and today >= remind_on and today < appt_date if appt_date else False
+        reminder_active = remind_on and today >= remind_on and appt_date and today < appt_date
 
-        outer = QVBoxLayout(self)
-        outer.setContentsMargins(0, 0, 0, 0)
-        outer.setSpacing(0)
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setObjectName("apptCard")
+        self.setMinimumHeight(90)
 
-        if show_divider:
-            divider = QFrame()
-            divider.setFrameShape(QFrame.Shape.HLine)
-            divider.setStyleSheet("QFrame { color: #DDE8E3; margin: 0 20px; }")
-            outer.addWidget(divider)
+        base = (
+            "QFrame#apptCard { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 16px; }"
+            "QFrame#apptCard:hover { border-color: #9FE1CB; }"
+        )
+        past_bg = (
+            "QFrame#apptCard { background: #FAFCFB; border: 1px solid #DDE8E3; border-radius: 16px; }"
+            "QFrame#apptCard:hover { border-color: #9FE1CB; }"
+        )
+        self.setStyleSheet(past_bg if past else base)
 
-        row = QHBoxLayout()
-        row.setContentsMargins(20, 14, 20, 14)
-        row.setSpacing(14)
+        margin = (18, 22, 18, 22)
+        layout = QHBoxLayout(self)
+        layout.setContentsMargins(*margin)
+        layout.setSpacing(18)
 
-        date_col = QVBoxLayout()
-        date_col.setSpacing(0)
-        lbl_day = QLabel(day)
-        lbl_day.setStyleSheet("font-size: 22px; font-weight: 800; color: #1C2B25;")
-        lbl_mon = QLabel(month)
-        lbl_mon.setStyleSheet("font-size: 9px; color: #8FA89F;")
-        date_col.addWidget(lbl_day)
-        date_col.addWidget(lbl_mon)
-        row.addLayout(date_col)
+        date_color = "#8FA89F" if past else "#1C2B25"
+        lbl_date = QLabel(date_str)
+        lbl_date.setStyleSheet(f"font-size: 13px; font-weight: 600; color: {date_color}; border: none; background: transparent;")
+        layout.addWidget(lbl_date)
 
         info_col = QVBoxLayout()
-        info_col.setSpacing(3)
+        info_col.setSpacing(4)
+        clinic_color = "#546860" if past else "#1C2B25"
+        text_color   = "#8FA89F" if past else "#546860"
         lbl_clinic = QLabel(appt.clinic_name)
-        lbl_clinic.setStyleSheet("font-size: 13px; font-weight: bold; color: #1C2B25;")
+        lbl_clinic.setStyleSheet(f"font-size: 16px; font-weight: 700; color: {clinic_color}; border: none; background: transparent;")
         lbl_details = QLabel(f"{appt.purpose}  ·  {appt.appt_time}")
-        lbl_details.setStyleSheet("font-size: 11px; color: #546860;")
+        lbl_details.setStyleSheet(f"font-size: 13px; color: {text_color}; border: none; background: transparent;")
         info_col.addWidget(lbl_clinic)
         info_col.addWidget(lbl_details)
-        row.addLayout(info_col)
-
-        row.addStretch()
+        layout.addLayout(info_col, stretch=1)
 
         right_col = QVBoxLayout()
-        right_col.setSpacing(6)
+        right_col.setSpacing(8)
         right_col.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
-        if appt.status == "Scheduled":
+        if appt.status == "Scheduled" and not past:
             bell_color = "#C47B12" if reminder_active else "#C8D9D2"
             bell_bg = "#FEF3DC" if reminder_active else "transparent"
-            rem_lbl = QLabel("[!]" if reminder_active else "[]")
+            bell_text = "[!]" if reminder_active else "[]"
+            rem_lbl = QLabel(bell_text)
             rem_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
-            rem_lbl.setStyleSheet(f"font-size: 13px; color: {bell_color}; background: {bell_bg}; padding: 1px 6px; border-radius: 4px;")
+            rem_lbl.setStyleSheet(f"font-size: 15px; color: {bell_color}; background: {bell_bg}; padding: 2px 8px; border-radius: 6px; border: none;")
             rem_lbl.setToolTip("Reminder: " + (remind_on.strftime("%b %d, %Y") if remind_on else "—"))
             rem_lbl.setAlignment(Qt.AlignmentFlag.AlignRight)
             rem_lbl.mousePressEvent = lambda e, a=appt: self.reminder_clicked.emit(a)
             right_col.addWidget(rem_lbl)
 
-        badge = QLabel(f"  {appt.status}  ")
+        badge = QLabel(f"  {badge_label}  ")
         badge.setStyleSheet(f"""
             QLabel {{
-                background: {badge_bg};
+                background: transparent;
                 color: {badge_fg};
-                font-size: 10px;
-                font-weight: bold;
-                border-radius: 20px;
-                padding: 2px 10px;
+                font-size: 11px;
+                font-weight: 700;
+                border-radius: 30px;
+                padding: 4px 14px;
+                border: 2px solid {badge_fg};
             }}
         """)
         badge.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         right_col.addWidget(badge)
 
-        del_lbl = QLabel("[Del]")
-        del_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
-        del_lbl.setStyleSheet("font-size: 13px; color: #C0C0C0;")
-        del_lbl.setToolTip("Delete appointment")
-        del_lbl.setAlignment(Qt.AlignmentFlag.AlignRight)
-        del_lbl.mousePressEvent = lambda e, a=appt: self.delete_requested.emit(a)
-        right_col.addWidget(del_lbl)
+        layout.addLayout(right_col)
 
-        row.addLayout(right_col)
-        outer.addLayout(row)
+    def set_selected(self, selected: bool):
+        self._selected = selected
+        if selected:
+            self.setStyleSheet("""
+                QFrame#apptCard {
+                    background: #E3F5EE;
+                    border: 2px solid #1A9E78;
+                    border-radius: 16px;
+                }
+            """)
+        else:
+            bg = "#FAFCFB" if self._past else "#FFFFFF"
+            self.setStyleSheet(f"""
+                QFrame#apptCard {{
+                    background: {bg};
+                    border: 1px solid #DDE8E3;
+                    border-radius: 16px;
+                }}
+                QFrame#apptCard:hover {{
+                    border-color: #9FE1CB;
+                }}
+            """)
+
+    def mousePressEvent(self, event):
+        self.clicked.emit(self)
+        super().mousePressEvent(event)
 
 
 class PageAppointments(QWidget):
@@ -137,15 +158,22 @@ class PageAppointments(QWidget):
         self.patient_service     = patient_service
         self.settings            = AppSettings()
 
+        self.selected_card = None
+        self.selected_appt = None
+
         self.active_patient = self.patient_service.get_patient_by_code(
             self.settings.get_active_patient_code()
         ) if self.settings.get_active_patient_code() else None
         self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
         self.btnAddAppt.clicked.connect(self._open_add_dialog)
+        self.btnEditAppt.clicked.connect(self._edit_selected)
+        self.btnDeleteAppt.clicked.connect(self._delete_selected)
         self.load_appointments()
 
     def load_appointments(self):
+        self.selected_card = None
+        self.selected_appt = None
         if not self.patient_id:
             return
         appointments = self.appointment_service.get_appointments_by_patient_id(
@@ -167,10 +195,10 @@ class PageAppointments(QWidget):
             reverse=True
         )
 
-        self._populate_section("UPCOMING", upcoming, 1)
-        self._populate_section("PAST APPOINTMENTS", past, 3)
+        self._populate_section("UPCOMING", upcoming, 1, past=False)
+        self._populate_section("PAST APPOINTMENTS", past, 3, past=True)
 
-    def _populate_section(self, title: str, appointments: list[Appointment], insert_pos: int):
+    def _populate_section(self, title: str, appointments: list[Appointment], insert_pos: int, past: bool = False):
         if hasattr(self, f"_container_{title}"):
             getattr(self, f"_container_{title}").deleteLater()
 
@@ -178,42 +206,36 @@ class PageAppointments(QWidget):
         container = _W()
         container_layout = QVBoxLayout(container)
         container_layout.setContentsMargins(0, 0, 0, 0)
-        container_layout.setSpacing(12 if title == "UPCOMING" else 0)
+        container_layout.setSpacing(10)
 
         if not appointments:
             empty = QLabel(f"No {title.lower().replace(' appointments', '')} appointments.")
             empty.setStyleSheet("font-size: 13px; color: #8FA89F; padding: 12px 0;")
             container_layout.addWidget(empty)
         else:
-            card = QFrame()
-            card.setStyleSheet("""
-                QFrame {
-                    background: #FFFFFF;
-                    border: 1px solid #DDE8E3;
-                    border-radius: 14px;
-                }
-            """)
-            card_layout = QVBoxLayout(card)
-            card_layout.setContentsMargins(0, 0, 0, 0)
-            card_layout.setSpacing(0)
-
-            for i, appt in enumerate(appointments):
-                row = ApptCard(appt, show_divider=(i > 0))
-                row.delete_requested.connect(self._delete_appointment)
-                row.reminder_clicked.connect(self._show_reminder_info)
-                card_layout.addWidget(row)
-
-            container_layout.addWidget(card)
+            for appt in appointments:
+                card = ApptCard(appt, past=past)
+                card.clicked.connect(self._select_card)
+                if not past:
+                    card.reminder_clicked.connect(self._show_reminder_info)
+                container_layout.addWidget(card)
 
         layout = self.scrollContent.layout()
         layout.insertWidget(insert_pos, container)
         setattr(self, f"_container_{title}", container)
 
+    def _select_card(self, card: ApptCard):
+        if self.selected_card:
+            self.selected_card.set_selected(False)
+        self.selected_card = card
+        self.selected_appt = card.appt
+        card.set_selected(True)
+
     def _show_reminder_info(self, appt: Appointment):
         appt_date = _parse_date(appt.appt_date)
         remind_on = (appt_date - timedelta(days=2)) if appt_date else None
         today = date.today()
-        status = "Active" if (remind_on and today >= remind_on and today < appt_date if appt_date else False) else "Pending"
+        status = "Active" if (remind_on and today >= remind_on and appt_date and today < appt_date) else "Pending"
         info = (
             f"Appointment: {appt.purpose}\n"
             f"Clinic: {appt.clinic_name}\n"
@@ -229,15 +251,34 @@ class PageAppointments(QWidget):
         if dialog.exec():
             self.load_appointments()
 
-    def _delete_appointment(self, appt: Appointment):
+    def _edit_selected(self):
+        if not self.selected_appt:
+            QMessageBox.warning(
+                self, "No Appointment Selected",
+                "Please select an appointment to edit."
+            )
+            return
+        dialog = DialogAddAppointment(self.patient_id, appointment=self.selected_appt)
+        if dialog.exec():
+            self.load_appointments()
+
+    def _delete_selected(self):
+        if not self.selected_appt:
+            QMessageBox.warning(
+                self, "No Appointment Selected",
+                "Please select an appointment to delete."
+            )
+            return
+
+        a = self.selected_appt
         reply = QMessageBox.question(
             self,
             "Delete Appointment",
-            f"Delete the appointment at {appt.clinic_name} on {appt.appt_date}?",
+            f"Delete the appointment at {a.clinic_name} on {a.appt_date}?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
         if reply != QMessageBox.StandardButton.Yes:
             return
 
-        self.appointment_service.delete_appointment(appt.appointment_id)
+        self.appointment_service.delete_appointment(a.appointment_id)
         self.load_appointments()

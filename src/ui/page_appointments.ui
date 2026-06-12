@@ -18,7 +18,9 @@
        <item><widget class="QLabel"><property name="text"><string>Schedule &amp; manage your medical visits</string></property><property name="styleSheet"><string>QLabel { font-size: 11px; color: #8FA89F; }</string></property></widget></item>
       </layout></item>
       <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
-      <item><widget class="QPushButton" name="btnAddAppt"><property name="text"><string>Add Appointment</string></property><property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property></widget></item>
+       <item><widget class="QPushButton" name="btnEditAppt"><property name="text"><string>Edit</string></property><property name="styleSheet"><string>QPushButton { background: transparent; color: #1C2B25; font-size: 12px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #F2F7F5; border-color: #1A9E78; color: #1A9E78; }</string></property></widget></item>
+       <item><widget class="QPushButton" name="btnDeleteAppt"><property name="text"><string>Delete</string></property><property name="styleSheet"><string>QPushButton { background: transparent; color: #B91C1C; font-size: 12px; font-weight: 600; border: 1px solid #FECACA; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #FEE2E2; border-color: #F87171; }</string></property></widget></item>
+       <item><widget class="QPushButton" name="btnAddAppt"><property name="text"><string>Add Appointment</string></property><property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property></widget></item>
      </layout>
     </widget>
    </item>

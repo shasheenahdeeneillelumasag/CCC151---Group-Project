@@ -70,21 +70,39 @@
          </item>
         </layout>
        </item>
-       <item>
-        <layout class="QVBoxLayout" name="formGroupType">
-         <property name="spacing"><number>6</number></property>
-         <item><widget class="QLabel" name="labelType"><property name="text"><string>APPOINTMENT TYPE</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; }</string></property></widget></item>
-         <item>
-          <widget class="QComboBox" name="inputType">
-           <item><property name="text"><string>General Checkup</string></property></item>
-           <item><property name="text"><string>Specialist Consultation</string></property></item>
-           <item><property name="text"><string>Diagnostic / Lab Test</string></property></item>
-           <item><property name="text"><string>Dental</string></property></item>
-           <item><property name="text"><string>Follow-up</string></property></item>
-          </widget>
-         </item>
-        </layout>
-       </item>
+        <item>
+         <layout class="QHBoxLayout" name="formGroupRow2">
+          <property name="spacing"><number>8</number></property>
+          <item>
+           <layout class="QVBoxLayout" name="formGroupType">
+            <property name="spacing"><number>6</number></property>
+            <item><widget class="QLabel" name="labelType"><property name="text"><string>APPOINTMENT TYPE</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; }</string></property></widget></item>
+            <item>
+             <widget class="QComboBox" name="inputType">
+              <item><property name="text"><string>General Checkup</string></property></item>
+              <item><property name="text"><string>Specialist Consultation</string></property></item>
+              <item><property name="text"><string>Diagnostic / Lab Test</string></property></item>
+              <item><property name="text"><string>Dental</string></property></item>
+              <item><property name="text"><string>Follow-up</string></property></item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="formGroupStatus">
+            <property name="spacing"><number>6</number></property>
+            <item><widget class="QLabel" name="labelStatus"><property name="text"><string>STATUS</string></property><property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; }</string></property></widget></item>
+            <item>
+             <widget class="QComboBox" name="inputStatus">
+              <item><property name="text"><string>Scheduled</string></property></item>
+              <item><property name="text"><string>Completed</string></property></item>
+              <item><property name="text"><string>Cancelled</string></property></item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
        <item>
         <widget class="QFrame" name="reminderBox">
          <layout class="QHBoxLayout" name="reminderLayout">
