@@ -106,5 +106,8 @@ class VaccinationShotService(QObject):
         vaccine_id: int
     ):
 
+        from services.container import document_service
+        for doc in document_service.get_documents_by_vaccine_id(vaccine_id):
+            document_service.delete_document(doc.doc_id)
         self.repo.delete(vaccine_id)
         self.changed.emit()
