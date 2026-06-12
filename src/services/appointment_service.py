@@ -1,10 +1,13 @@
 from repositories.appointment_repository import AppointmentRepository
 from models.appointment import Appointment
 
+from PyQt6.QtCore import QObject, pyqtSignal
 
-class AppointmentService:
+class AppointmentService(QObject):
+    changed = pyqtSignal()
 
     def __init__(self):
+        super().__init__()
         self.repo = AppointmentRepository()
 
     def get_appointment_by_code(
@@ -37,7 +40,9 @@ class AppointmentService:
             patient_id=patient_id
         )
 
-        return self.repo.create(appointment)
+        self.repo.create(appointment)
+        self.changed.emit()
+        return appointment
 
     def get_appointment_by_id(
         self,
@@ -86,7 +91,9 @@ class AppointmentService:
             patient_id=patient_id
         )
 
-        return self.repo.update(appointment)
+        self.repo.update(appointment)
+        self.changed.emit()
+        return appointment
 
     def delete_appointment(
         self,
@@ -94,3 +101,4 @@ class AppointmentService:
     ):
 
         self.repo.delete(appointment_id)
+        self.changed.emit()

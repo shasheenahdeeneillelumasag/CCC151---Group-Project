@@ -2,11 +2,12 @@ from datetime import date
 
 from models.document import Document
 from repositories.document_repository import DocumentRepository
+from PyQt6.QtCore import QObject, pyqtSignal
 
-
-class DocumentService:
-
+class DocumentService(QObject):
+    changed = pyqtSignal()
     def __init__(self):
+        super().__init__()
         self.repo = DocumentRepository()
 
 
@@ -32,7 +33,9 @@ class DocumentService:
             prescription_id=prescription_id
         )
 
-        return self.repo.create(document)
+        self.repo.create(document)
+        self.changed.emit()
+        return document
 
     def create_vaccine_document(
         self,
@@ -163,7 +166,10 @@ class DocumentService:
             prescription_id=prescription_id
         )
 
-        return self.repo.update(document)
+        self.repo.update(document)
+        self.changed.emit()
+        return document
+
 
 
     def delete_document(
@@ -172,3 +178,4 @@ class DocumentService:
     ):
 
         self.repo.delete(doc_id)
+        self.changed.emit()

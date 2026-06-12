@@ -3,11 +3,14 @@ from repositories.patient_contact_repository import (
 )
 
 from models.patient_contact import PatientContact
+from PyQt6.QtCore import QObject, pyqtSignal
 
 
-class PatientContactService:
+class PatientContactService(QObject):
+    changed = pyqtSignal()
 
     def __init__(self):
+        super().__init__()
         self.repo = PatientContactRepository()
 
     def add_contact(
@@ -22,7 +25,9 @@ class PatientContactService:
             contact_number=contact_number
         )
 
-        return self.repo.create(contact)
+        self.repo.create(contact)
+        self.changed.emit()
+        return contact
 
     def get_contact_by_id(
         self,
@@ -57,7 +62,9 @@ class PatientContactService:
             contact_number=contact_number
         )
 
-        return self.repo.update(contact)
+        self.repo.update(contact)
+        self.changed.emit()
+        return contact
 
     def delete_contact(
         self,
@@ -65,3 +72,4 @@ class PatientContactService:
     ):
 
         self.repo.delete(contact_id)
+        self.changed.emit()

@@ -2,11 +2,12 @@ from repositories.vaccination_shot_repository import (
     VaccinationShotRepository
 )
 from models.vaccination_shot import VaccinationShot
+from PyQt6.QtCore import QObject, pyqtSignal
 
-
-class VaccinationShotService:
-
+class VaccinationShotService(QObject):
+    changed = pyqtSignal()
     def __init__(self):
+        super().__init__()
         self.repo = VaccinationShotRepository()
 
     def get_vaccination_by_code(
@@ -39,7 +40,9 @@ class VaccinationShotService:
             patient_id=patient_id
         )
 
-        return self.repo.create(vaccination)
+        self.repo.create(vaccination)
+        self.changed.emit()
+        return vaccination
 
     def get_vaccination_by_id(
         self,
@@ -92,7 +95,9 @@ class VaccinationShotService:
             patient_id=patient_id
         )
 
-        return self.repo.update(vaccination)
+        self.repo.update(vaccination)
+        self.changed.emit()
+        return vaccination
 
     def delete_vaccination(
         self,
@@ -100,3 +105,4 @@ class VaccinationShotService:
     ):
 
         self.repo.delete(vaccine_id)
+        self.changed.emit()

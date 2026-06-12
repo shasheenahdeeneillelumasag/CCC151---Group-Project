@@ -1,9 +1,12 @@
 from repositories.diagnosis_repository import DiagnosisRepository
 from models.diagnosis import Diagnosis
+from PyQt6.QtCore import QObject, pyqtSignal
 
-class DiagnosisService:
 
+class DiagnosisService(QObject):
+    changed = pyqtSignal()
     def __init__(self):
+        super().__init__()
         self.repo = DiagnosisRepository()
 
     def get_diagnosis_by_code(
@@ -30,7 +33,9 @@ class DiagnosisService:
             record_id=record_id
         )
 
-        return self.repo.create(diagnosis)
+        self.repo.create(diagnosis)
+        self.changed.emit()
+        return diagnosis
 
     def get_diagnosis_by_id(
         self,
@@ -75,7 +80,9 @@ class DiagnosisService:
             record_id=record_id
         )
 
-        return self.repo.update(diagnosis)
+        self.repo.update(diagnosis)
+        self.signal.emit()
+        return diagnosis
 
     def delete_diagnosis(
         self,
@@ -83,3 +90,4 @@ class DiagnosisService:
     ):
 
         self.repo.delete(diagnosis_id)
+        self.signal.emit()

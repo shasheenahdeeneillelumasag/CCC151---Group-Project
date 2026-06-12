@@ -61,7 +61,6 @@ class PageDashboard(QWidget):
             self.settings.get_active_patient_code()
         ) if self.settings.get_active_patient_code() else None
         self.patient_id = self.active_patient.patient_id if self.active_patient else None
-        self.patient_service.changed.connect(self.load)
         self.btnAddRecord.clicked.connect(self._open_add_record)
         self.btnCloseBanner.clicked.connect(self._close_banner)
         self.btnViewAppt.clicked.connect(self._view_flagged_appt)
@@ -70,6 +69,12 @@ class PageDashboard(QWidget):
         self.btnViewAllAppt.clicked.connect(lambda: self.navigate_requested.emit(4))
 
         self._make_stat_cards_clickable()
+
+
+        self.patient_service.changed.connect(self.load)
+        self.visit_service.changed.connect(self.load)
+        self.vaccination_service.changed.connect(self.load)
+        self.appointment_service.changed.connect(self.load)
 
         self.load()
 

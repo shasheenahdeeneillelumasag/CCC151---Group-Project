@@ -1,11 +1,14 @@
 from repositories.prescription_repository import PrescriptionRepository
 from models.prescription import Prescription
+from PyQt6.QtCore import QObject, pyqtSignal
 
-class PrescriptionService:
+
+class PrescriptionService(QObject):
+    changed = pyqtSignal()
 
     def __init__(self):
+        super().__init__()
         self.repo = PrescriptionRepository()
-
 
     def get_prescription_by_code(
         self,
@@ -33,7 +36,9 @@ class PrescriptionService:
             record_id=record_id
         )
 
-        return self.repo.create(prescription)
+        self.repo.create(prescription)
+        self.changed.emit()
+        return prescription
 
     def get_prescription_by_id(
         self,
@@ -80,7 +85,9 @@ class PrescriptionService:
             record_id=record_id
         )
 
-        return self.repo.update(prescription)
+        self.repo.update(prescription)
+        self.changed.emit()
+        return prescription
 
     def delete_prescription(
         self,
@@ -88,3 +95,4 @@ class PrescriptionService:
     ):
 
         self.repo.delete(prescription_id)
+        self.changed.emit()

@@ -13,6 +13,11 @@ from PyQt6 import uic
 from core.app_settings import AppSettings
 from models.document import Document
 from services.container import diagnosis_service, document_service, patient_service, prescription_service, vaccination_shot_service, visit_record_service
+from services.visit_record_service import VisitRecordService
+from services.prescription_service import PrescriptionService
+from services.diagnosis_service import DiagnosisService
+from services.vaccination_shot_service import VaccinationShotService
+
 
 DOCS_DIR = os.path.normpath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "documents")

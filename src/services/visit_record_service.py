@@ -1,9 +1,13 @@
 from repositories.visit_record_repository import VisitRecordRepository
 from models.visit_record import VisitRecord
+from PyQt6.QtCore import QObject, pyqtSignal
 
-class VisitRecordService:
+
+class VisitRecordService(QObject):
+    changed = pyqtSignal()
 
     def __init__(self):
+        super().__init__()
         self.repo = VisitRecordRepository()
 
     def get_record_by_code(
@@ -31,7 +35,9 @@ class VisitRecordService:
             patient_id=patient_id
         )
 
-        return self.repo.create(visit_record)
+        self.repo.create(visit_record)
+        self.changed.emit()
+        return visit_record
 
     def get_visit_record_by_id(
         self,
@@ -76,7 +82,9 @@ class VisitRecordService:
             patient_id=patient_id
         )
 
-        return self.repo.update(visit_record)
+        self.repo.update(visit_record)
+        self.changed.emit()
+        return visit_record
 
     def delete_visit_record(
         self,
@@ -84,3 +92,4 @@ class VisitRecordService:
     ):
 
         self.repo.delete(record_id)
+        self.changed.emit()
