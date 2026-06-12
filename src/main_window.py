@@ -9,12 +9,9 @@ from PyQt6.QtCore import QSize, Qt
 
 from database.init_db import init_db
 from core.app_settings import AppSettings
-from services.patient_service import PatientService
-from services.visit_record_service import VisitRecordService
-from services.appointment_service import AppointmentService
-from services.vaccination_shot_service import VaccinationShotService
-from services.document_service import DocumentService
-from services.diagnosis_service import DiagnosisService
+
+from services.container import patient_service, visit_record_service, diagnosis_service, appointment_service, vaccination_shot_service, prescription_service, document_service
+
 
 from pages.page_dashboard import PageDashboard
 from pages.page_profile import PageProfile
@@ -60,7 +57,15 @@ class MainWindow(QMainWindow):
  
         layout.setStretch(0, 0)
         layout.setStretch(1, 1) 
-    
+
+
+        patient_service.changed.connect(self._update_badges)
+        visit_record_service.changed.connect(self._update_badges)
+        vaccination_shot_service.changed.connect(self._update_badges)
+        appointment_service.changed.connect(self._update_badges)
+        document_service.changed.connect(self._update_badges)
+   
+
     def load_icon(self, button, icon_name):
         icon_path = os.path.join(os.path.dirname(__file__), '..', 'assets', icon_name)
         
@@ -82,7 +87,7 @@ class MainWindow(QMainWindow):
         self.load_icon(self.logOutBtn, "ic_logout.svg")
 
         self.settings        = AppSettings()
-        self.patient_service = PatientService()
+        self.patient_service = patient_service
 
         patient_code = None
         if self._logged_in_user and self._logged_in_user.patient_code:
@@ -227,13 +232,13 @@ class MainWindow(QMainWindow):
         patient_id = self.active_patient.patient_id
         today      = date.today()
 
-        records = VisitRecordService().get_visit_records_by_patient_id(patient_id)
+        records = visit_record_service.get_visit_records_by_patient_id(patient_id)
         self._set_badge(self.badgeRecords, len(records))
 
-        shots = VaccinationShotService().get_vaccinations_by_patient_id(patient_id)
+        shots = vaccination_shot_service.get_vaccinations_by_patient_id(patient_id)
         self._set_badge(self.badgeVaccinations, len(shots))
 
-        appointments = AppointmentService().get_appointments_by_patient_id(patient_id)
+        appointments = appointment_service.get_appointments_by_patient_id(patient_id)
         upcoming = [
             a for a in appointments
             if a.status == "Scheduled" and _parse_date(a.appt_date) and _parse_date(a.appt_date) >= today
@@ -245,7 +250,7 @@ class MainWindow(QMainWindow):
 
         record_ids = {r.record_id for r in records}
         shot_ids   = {s.vaccine_id for s in shots}
-        doc_svc    = DocumentService()
+        doc_svc    = document_service
         seen       = set()
         for rid in record_ids:
             for d in doc_svc.get_documents_by_record_id(rid):

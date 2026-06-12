@@ -7,8 +7,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6 import uic
 
-from services.appointment_service import AppointmentService
-from services.patient_service import PatientService
+from services.container import patient_service, appointment_service
 from core.app_settings import AppSettings
 from models.appointment import Appointment
 from dialogs.dialog_add_appointment import DialogAddAppointment
@@ -134,8 +133,8 @@ class PageAppointments(QWidget):
         super().__init__()
         uic.loadUi("ui/page_appointments.ui", self)
 
-        self.appointment_service = AppointmentService()
-        self.patient_service     = PatientService()
+        self.appointment_service = appointment_service
+        self.patient_service     = patient_service
         self.settings            = AppSettings()
 
         self.active_patient = self.patient_service.get_patient_by_code(

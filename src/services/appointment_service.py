@@ -102,3 +102,4 @@ class AppointmentService(QObject):
 
         self.repo.delete(appointment_id)
         self.changed.emit()
+        return appointment_id
