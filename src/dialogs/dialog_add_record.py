@@ -8,14 +8,14 @@ from datetime import date
 
 from PyQt6.QtCore import Qt, QDate
 from PyQt6.QtWidgets import (
-    QDialog, QWidget, QHBoxLayout, QVBoxLayout,
+    QDialog, QHBoxLayout, QVBoxLayout,
     QLabel, QPushButton, QFrame, QMessageBox,
     QFileDialog,
 )
 from PyQt6 import uic
 
 from services.container import *
-from widgets.date_picker import init_date_picker, set_date_picker, get_date_from_picker, get_date_str_from_picker
+from widgets.date_picker import init_date_picker, set_date_picker, get_date_from_picker
 
 _ROW_STYLE = (
     "QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; "
@@ -32,14 +32,6 @@ _DEL_STYLE   = (
 
 
 def _make_entry_row(primary: str, secondary: str) -> QFrame:
-    """
-    Returns a styled QFrame with:
-      • primary text (bold, main line)
-      • secondary text (muted, sub-line)
-      • a Delete button on the right
-
-    The Delete button emits clicked; callers connect to it to remove the row.
-    """
     frame = QFrame()
     frame.setStyleSheet(_ROW_STYLE)
 
@@ -70,9 +62,23 @@ def _make_entry_row(primary: str, secondary: str) -> QFrame:
     btn_del.setCursor(Qt.CursorShape.PointingHandCursor)
     outer.addWidget(btn_del, alignment=Qt.AlignmentFlag.AlignVCenter)
 
-    frame.btn_delete = btn_del 
-
+    frame.btn_delete = btn_del
     return frame
+
+
+def _copy_file(filepath: str) -> str:
+    os.makedirs(DOCS_DIR, exist_ok=True)
+    filename = os.path.basename(filepath)
+    dest = os.path.join(DOCS_DIR, filename)
+    base, ext = os.path.splitext(filename)
+    counter = 1
+    while os.path.exists(dest):
+        filename = f"{base}_{counter}{ext}"
+        dest = os.path.join(DOCS_DIR, filename)
+        counter += 1
+    shutil.copy2(filepath, dest)
+    return filename
+
 
 class DialogAddRecord(QDialog):
 
@@ -89,9 +95,10 @@ class DialogAddRecord(QDialog):
         self.prescription_service  = prescription_service
         self.document_service      = document_service
 
-        self._diagnoses:     list[dict] = []   
-        self._prescriptions: list[dict] = []   
-        self._files:         list[str]  = []  
+        self._diagnoses:     list[dict] = []
+        self._prescriptions: list[dict] = []
+        self._diag_files:    list[str]  = []
+        self._rx_files:      list[str]  = []
 
         today = QDate.currentDate()
         init_date_picker(self.inputVisitDateMonth, self.inputVisitDateDay, self.inputVisitDateYear)
@@ -101,14 +108,36 @@ class DialogAddRecord(QDialog):
         set_date_picker(self.inputDiagnosisDateMonth, self.inputDiagnosisDateDay, self.inputDiagnosisDateYear, today)
         set_date_picker(self.inputRxDateMonth, self.inputRxDateDay, self.inputRxDateYear, today)
 
-
-
         self.btnCancel.clicked.connect(self._confirm_cancel)
         self.btnSave.clicked.connect(self._save)
-
         self.btnAddDiagnosis.clicked.connect(self._add_diagnosis)
         self.btnAddRx.clicked.connect(self._add_rx)
-        self.uploadZone.mousePressEvent = lambda _e: self._pick_files()
+
+        self.chkShowDiagnosis.toggled.connect(self.diagContainer.setVisible)
+        self.chkShowPrescription.toggled.connect(self.rxContainer.setVisible)
+
+        self.uploadZoneDiag.mousePressEvent = lambda _e: self._pick_diag_files()
+        self.uploadZoneRx.mousePressEvent = lambda _e: self._pick_rx_files()
+
+    def _pick_diag_files(self):
+        paths, _ = QFileDialog.getOpenFileNames(
+            self, "Select files to attach to diagnosis", "", "All files (*.*)",
+        )
+        for path in paths:
+            if path and path not in self._diag_files:
+                self._diag_files.append(path)
+        count = len(self._diag_files)
+        self.lblUploadHintDiag.setText(f"{count} file(s) selected" if count else "Click to upload")
+
+    def _pick_rx_files(self):
+        paths, _ = QFileDialog.getOpenFileNames(
+            self, "Select files to attach to prescription", "", "All files (*.*)",
+        )
+        for path in paths:
+            if path and path not in self._rx_files:
+                self._rx_files.append(path)
+        count = len(self._rx_files)
+        self.lblUploadHintRx.setText(f"{count} file(s) selected" if count else "Click to upload")
 
     def _add_diagnosis(self):
         name = self.inputDiagnosisName.text().strip()
@@ -119,7 +148,10 @@ class DialogAddRecord(QDialog):
         desc = self.inputDiagnosisDescription.toPlainText().strip()
         d    = get_date_from_picker(self.inputDiagnosisDateMonth, self.inputDiagnosisDateDay, self.inputDiagnosisDateYear).toPyDate()
 
-        entry = {"name": name, "description": desc, "date": d}
+        entry = {
+            "name": name, "description": desc, "date": d,
+            "files": list(self._diag_files),
+        }
         self._diagnoses.append(entry)
 
         primary   = name
@@ -133,6 +165,8 @@ class DialogAddRecord(QDialog):
         self.inputDiagnosisName.clear()
         self.inputDiagnosisDescription.clear()
         set_date_picker(self.inputDiagnosisDateMonth, self.inputDiagnosisDateDay, self.inputDiagnosisDateYear, QDate.currentDate())
+        self._diag_files.clear()
+        self.lblUploadHintDiag.setText("Click to upload")
 
     def _remove_diagnosis(self, entry: dict, row: QFrame):
         self._diagnoses.remove(entry)
@@ -155,6 +189,7 @@ class DialogAddRecord(QDialog):
         entry = {
             "name": name, "dosage": dosage,
             "prescribed_by": prescribed_by, "date": d,
+            "files": list(self._rx_files),
         }
         self._prescriptions.append(entry)
 
@@ -169,37 +204,11 @@ class DialogAddRecord(QDialog):
         self.inputRxDosage.clear()
         self.inputRxPrescribedBy.clear()
         set_date_picker(self.inputRxDateMonth, self.inputRxDateDay, self.inputRxDateYear, QDate.currentDate())
+        self._rx_files.clear()
+        self.lblUploadHintRx.setText("Click to upload")
 
     def _remove_rx(self, entry: dict, row: QFrame):
         self._prescriptions.remove(entry)
-        row.deleteLater()
-
-    def _pick_files(self):
-        paths, _ = QFileDialog.getOpenFileNames(
-            self,
-            "Select files to attach",
-            "",
-            "All files (*.*)",
-        )
-        for path in paths:
-            if path and path not in self._files:
-                self._files.append(path)
-                self._add_file_row(path)
-
-    def _add_file_row(self, path: str):
-        filename  = os.path.basename(path)
-        size_kb   = os.path.getsize(path) // 1024
-        secondary = f"{size_kb} KB  ·  {path}"
-
-        row = _make_entry_row(filename, secondary)
-        row.btn_delete.clicked.connect(
-            lambda _checked, p=path, r=row: self._remove_file(p, r)
-        )
-        self.uploadedFilesLayout.addWidget(row)
-
-    def _remove_file(self, path: str, row: QFrame):
-        if path in self._files:
-            self._files.remove(path)
         row.deleteLater()
 
     def _save(self):
@@ -223,35 +232,51 @@ class DialogAddRecord(QDialog):
         )
         record_id = record.record_id
 
+        today = date.today()
+
         for d in self._diagnoses:
-            self.diagnosis_service.create_diagnosis(
+            diag = self.diagnosis_service.create_diagnosis(
                 record_id      = record_id,
                 diagnosis_name = d["name"],
                 description    = d["description"] or None,
                 diagnosed_date = d["date"],
             )
+            diag_id = diag.diagnosis_id
+            for filepath in d["files"]:
+                filename = _copy_file(filepath)
+                self.document_service.create_diagnosis_document(
+                    doc_filename  = filename,
+                    date_uploaded = today,
+                    diagnosis_id  = diag_id,
+                )
 
         for rx in self._prescriptions:
-            self.prescription_service.create_prescription(
+            rx_obj = self.prescription_service.create_prescription(
                 record_id       = record_id,
                 medication_name = rx["name"],
                 dosage          = rx["dosage"],
                 prescribed_date = rx["date"],
                 prescribed_by   = rx["prescribed_by"],
             )
+            rx_id = rx_obj.prescription_id
+            for filepath in rx["files"]:
+                filename = _copy_file(filepath)
+                self.document_service.create_prescription_document(
+                    doc_filename    = filename,
+                    date_uploaded   = today,
+                    prescription_id = rx_id,
+                )
 
-        today = date.today()
-        os.makedirs(DOCS_DIR, exist_ok=True)
-        for filepath in self._files:
-            filename = os.path.basename(filepath)
-            dest = os.path.join(DOCS_DIR, filename)
-            base, ext = os.path.splitext(filename)
-            counter = 1
-            while os.path.exists(dest):
-                filename = f"{base}_{counter}{ext}"
-                dest = os.path.join(DOCS_DIR, filename)
-                counter += 1
-            shutil.copy2(filepath, dest)
+        # Orphan files — uploaded but no entry was added — attach to record
+        for filepath in self._diag_files:
+            filename = _copy_file(filepath)
+            self.document_service.create_record_document(
+                doc_filename  = filename,
+                date_uploaded = today,
+                record_id     = record_id,
+            )
+        for filepath in self._rx_files:
+            filename = _copy_file(filepath)
             self.document_service.create_record_document(
                 doc_filename  = filename,
                 date_uploaded = today,

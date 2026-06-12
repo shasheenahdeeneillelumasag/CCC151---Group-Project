@@ -253,8 +253,18 @@ class PageDocuments(QWidget):
         self.diagnosis_service.changed.connect(self.load_documents)
         self.visit_service.changed.connect(self.load_documents)
         self.prescription_service.changed.connect(self.load_documents)
+        self.patient_service.changed.connect(self._on_patient_changed)
 
         self.load_documents()
+
+    def _on_patient_changed(self):
+        self._refresh_patient()
+        self.load_documents()
+
+    def _refresh_patient(self):
+        code = self.settings.get_active_patient_code()
+        self.active_patient = self.patient_service.get_patient_by_code(code) if code else None
+        self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
     def _setup_tabs(self):
         for label in ("All", "Vaccinations", "Visits", "Diagnoses", "Prescriptions"):

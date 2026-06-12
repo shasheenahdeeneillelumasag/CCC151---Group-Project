@@ -11,21 +11,26 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>New Health Record</string>
+   <string>New Visit Record</string>
   </property>
   <property name="styleSheet">
    <string>
     QDialog { background: #FFFFFF; font-family: "Segoe UI", sans-serif; }
     QLabel { background: transparent; color: #1C2B25; }
     QLineEdit, QComboBox, QTextEdit, QDateEdit {
-     border: 1px solid #C8D9D2; border-radius: 9px;
+     border: 1px solid #D0DDD8; border-radius: 9px;
      padding: 9px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF;
     }
     QLineEdit:focus, QTextEdit:focus, QDateEdit:focus { border-color: #1A9E78; }
-    QFrame#uploadZone { border: 2px dashed #C8D9D2; border-radius: 9px; background: #F8FBFA; }
-    QFrame#uploadZone:hover { border-color: #1A9E78; background: #E3F5EE; }
-    QFrame#subFormBox { border: 1px solid #DDE8E3; border-radius: 9px; background: #F8FBFA; }
+    QFrame#uploadZoneDiag, QFrame#uploadZoneRx {
+     border: 2px dashed #C8D9D2; border-radius: 9px; background: #FFFFFF;
+    }
+    QFrame#uploadZoneDiag:hover, QFrame#uploadZoneRx:hover {
+     border-color: #1A9E78; background: #F2FCF8;
+    }
+    QFrame#subFormBox { border: 1px solid #DDE8E3; border-radius: 9px; background: #FFFFFF; }
     QFrame#entryListContainer { background: transparent; border: none; }
+    QFrame#diagContainer, QFrame#rxContainer { background: transparent; border: none; }
    </string>
   </property>
 
@@ -35,6 +40,8 @@
    <property name="topMargin"><number>0</number></property>
    <property name="rightMargin"><number>0</number></property>
    <property name="bottomMargin"><number>0</number></property>
+
+   <!-- Header -->
    <item>
     <widget class="QFrame" name="dialogHead">
      <property name="styleSheet"><string>QFrame { border-bottom: 1px solid #DDE8E3; }</string></property>
@@ -46,7 +53,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="styleSheet"><string>QLabel { font-size: 16px; font-weight: bold; color: #1C2B25; }</string></property>
-        <property name="text"><string>New Health Record</string></property>
+        <property name="text"><string>New Visit Record</string></property>
        </widget>
       </item>
       <item>
@@ -55,371 +62,457 @@
         <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
        </spacer>
       </item>
-
      </layout>
     </widget>
    </item>
+
+   <!-- Fixed top section: vitals + checkboxes -->
+   <item>
+    <widget class="QFrame" name="topFixedFrame">
+     <property name="styleSheet"><string>QFrame { background: #FFFFFF; }</string></property>
+     <layout class="QVBoxLayout">
+      <property name="spacing"><number>10</number></property>
+      <property name="leftMargin"><number>24</number></property>
+      <property name="topMargin"><number>16</number></property>
+      <property name="rightMargin"><number>24</number></property>
+      <property name="bottomMargin"><number>12</number></property>
+      <item>
+       <layout class="QVBoxLayout">
+        <property name="spacing"><number>5</number></property>
+        <item>
+         <widget class="QLabel">
+          <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
+          <property name="text"><string>VISIT DATE</string></property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout"><property name="spacing"><number>6</number></property>
+          <item><widget class="QComboBox" name="inputVisitDateMonth"><property name="editable"><bool>true</bool></property></widget></item>
+          <item><widget class="QComboBox" name="inputVisitDateDay"><property name="editable"><bool>true</bool></property><property name="sizePolicy"><sizepolicy hsizetype="Maximum" vsizetype="Preferred"><horstretch>0</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
+          <item><widget class="QComboBox" name="inputVisitDateYear"><property name="editable"><bool>true</bool></property></widget></item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout">
+        <property name="spacing"><number>12</number></property>
+        <item>
+         <layout class="QVBoxLayout">
+          <property name="spacing"><number>5</number></property>
+          <item>
+           <widget class="QLabel">
+            <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
+            <property name="text"><string>BLOOD PRESSURE</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="inputBP">
+            <property name="placeholderText"><string>e.g. 120/80 mmHg</string></property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QVBoxLayout">
+          <property name="spacing"><number>5</number></property>
+          <item>
+           <widget class="QLabel">
+            <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
+            <property name="text"><string>WEIGHT (kg)</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="inputWeight">
+            <property name="placeholderText"><string>e.g. 58</string></property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+
+      <!-- Checkboxes always visible at top -->
+      <item>
+       <layout class="QHBoxLayout">
+        <property name="spacing"><number>20</number></property>
+        <item>
+         <widget class="QCheckBox" name="chkShowDiagnosis">
+          <property name="text"><string>Add Diagnosis</string></property>
+          <property name="styleSheet"><string>QCheckBox { font-size: 12px; font-weight: 600; color: #1C2B25; spacing: 6px; } QCheckBox::indicator { width: 16px; height: 16px; }</string></property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="chkShowPrescription">
+          <property name="text"><string>Add Prescription</string></property>
+          <property name="styleSheet"><string>QCheckBox { font-size: 12px; font-weight: 600; color: #1C2B25; spacing: 6px; } QCheckBox::indicator { width: 16px; height: 16px; }</string></property>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation"><enum>Qt::Horizontal</enum></property>
+          <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- Separator -->
+   <item>
+    <widget class="QFrame" name="separator">
+     <property name="fixedHeight"><number>1</number></property>
+     <property name="styleSheet"><string>QFrame { background: #DDE8E3; }</string></property>
+    </widget>
+   </item>
+
+   <!-- Scrollable content: diagnosis / prescription sections -->
    <item>
     <widget class="QScrollArea" name="bodyScroll">
-      <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
-      <property name="widgetResizable"><bool>true</bool></property>
-      <property name="horizontalScrollBarPolicy"><enum>Qt::ScrollBarAlwaysOff</enum></property>
-      <property name="verticalScrollBarPolicy"><enum>Qt::ScrollBarAlwaysOff</enum></property>
+     <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
+     <property name="widgetResizable"><bool>true</bool></property>
+     <property name="horizontalScrollBarPolicy"><enum>Qt::ScrollBarAlwaysOff</enum></property>
+     <property name="verticalScrollBarPolicy"><enum>Qt::ScrollBarAlwaysOff</enum></property>
      <widget class="QWidget" name="bodyContent">
       <layout class="QVBoxLayout">
-       <property name="spacing"><number>16</number></property>
+       <property name="spacing"><number>10</number></property>
        <property name="leftMargin"><number>24</number></property>
-       <property name="topMargin"><number>20</number></property>
+       <property name="topMargin"><number>16</number></property>
        <property name="rightMargin"><number>24</number></property>
-       <property name="bottomMargin"><number>20</number></property>
+       <property name="bottomMargin"><number>16</number></property>
+
        <item>
-        <layout class="QVBoxLayout">
-         <property name="spacing"><number>5</number></property>
-         <item>
-          <widget class="QLabel">
-           <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
-           <property name="text"><string>VISIT DATE</string></property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout"><property name="spacing"><number>6</number></property>
-           <item><widget class="QComboBox" name="inputVisitDateMonth"><property name="editable"><bool>true</bool></property></widget></item>
-           <item><widget class="QComboBox" name="inputVisitDateDay"><property name="editable"><bool>true</bool></property><property name="sizePolicy"><sizepolicy hsizetype="Maximum" vsizetype="Preferred"><horstretch>0</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
-           <item><widget class="QComboBox" name="inputVisitDateYear"><property name="editable"><bool>true</bool></property></widget></item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout">
-         <property name="spacing"><number>12</number></property>
-
-         <item>
-          <layout class="QVBoxLayout">
-           <property name="spacing"><number>5</number></property>
-           <item>
-            <widget class="QLabel">
-             <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
-             <property name="text"><string>BLOOD PRESSURE</string></property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="inputBP">
-             <property name="placeholderText"><string>e.g. 120/80 mmHg</string></property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-
-         <item>
-          <layout class="QVBoxLayout">
-           <property name="spacing"><number>5</number></property>
-           <item>
-            <widget class="QLabel">
-             <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
-             <property name="text"><string>WEIGHT (kg)</string></property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="inputWeight">
-             <property name="placeholderText"><string>e.g. 58</string></property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout">
-         <property name="spacing"><number>8</number></property>
-
-         <item>
-          <widget class="QLabel">
-           <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
-           <property name="text"><string>DIAGNOSIS</string></property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QFrame" name="subFormBox" objectName="subFormBox">
-           <property name="frameShape"><enum>QFrame::Shape::StyledPanel</enum></property>
-           <layout class="QVBoxLayout">
-            <property name="spacing"><number>8</number></property>
-            <property name="leftMargin"><number>12</number></property>
-            <property name="topMargin"><number>12</number></property>
-            <property name="rightMargin"><number>12</number></property>
-            <property name="bottomMargin"><number>12</number></property>
-            <item>
-             <layout class="QVBoxLayout">
-              <property name="spacing"><number>4</number></property>
-              <item>
-               <widget class="QLabel">
-                <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
-                <property name="text"><string>Diagnosis name *</string></property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="inputDiagnosisName">
-                <property name="placeholderText"><string>e.g. Acute Pharyngitis</string></property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout">
-              <property name="spacing"><number>4</number></property>
-              <item>
-               <widget class="QLabel">
-                <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
-                <property name="text"><string>Description (optional)</string></property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QTextEdit" name="inputDiagnosisDescription">
-                <property name="placeholderText"><string>Clinical notes or details</string></property>
-                <property name="maximumHeight"><number>70</number></property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout">
-              <property name="spacing"><number>8</number></property>
-              <item>
-               <layout class="QVBoxLayout">
-                <property name="spacing"><number>4</number></property>
-                <item>
-                 <widget class="QLabel">
-                  <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
-                  <property name="text"><string>Diagnosed date *</string></property>
-                 </widget>
-                </item>
-                <item>
+        <widget class="QFrame" name="diagContainer">
+         <property name="visible"><bool>false</bool></property>
+         <layout class="QVBoxLayout">
+          <property name="spacing"><number>8</number></property>
+          <property name="leftMargin"><number>0</number></property>
+          <property name="topMargin"><number>0</number></property>
+          <property name="rightMargin"><number>0</number></property>
+          <property name="bottomMargin"><number>0</number></property>
+          <item>
+           <widget class="QLabel">
+            <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
+            <property name="text"><string>DIAGNOSIS</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="subFormBox">
+            <property name="frameShape"><enum>QFrame::Shape::StyledPanel</enum></property>
+            <layout class="QVBoxLayout">
+             <property name="spacing"><number>8</number></property>
+             <property name="leftMargin"><number>12</number></property>
+             <property name="topMargin"><number>12</number></property>
+             <property name="rightMargin"><number>12</number></property>
+             <property name="bottomMargin"><number>12</number></property>
+             <item>
+              <layout class="QVBoxLayout">
+               <property name="spacing"><number>4</number></property>
+               <item>
+                <widget class="QLabel">
+                 <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
+                 <property name="text"><string>Diagnosis name *</string></property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="inputDiagnosisName">
+                 <property name="placeholderText"><string>e.g. Acute Pharyngitis</string></property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout">
+               <property name="spacing"><number>4</number></property>
+               <item>
+                <widget class="QLabel">
+                 <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
+                 <property name="text"><string>Description (optional)</string></property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QTextEdit" name="inputDiagnosisDescription">
+                 <property name="placeholderText"><string>Clinical notes or details</string></property>
+                 <property name="maximumHeight"><number>70</number></property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout">
+               <property name="spacing"><number>8</number></property>
+               <item>
+                <layout class="QVBoxLayout">
+                 <property name="spacing"><number>4</number></property>
+                 <item>
+                  <widget class="QLabel">
+                   <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
+                   <property name="text"><string>Diagnosed date *</string></property>
+                  </widget>
+                 </item>
+                 <item>
                   <layout class="QHBoxLayout"><property name="spacing"><number>6</number></property>
                    <item><widget class="QComboBox" name="inputDiagnosisDateMonth"><property name="editable"><bool>true</bool></property></widget></item>
                    <item><widget class="QComboBox" name="inputDiagnosisDateDay"><property name="editable"><bool>true</bool></property><property name="sizePolicy"><sizepolicy hsizetype="Maximum" vsizetype="Preferred"><horstretch>0</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
                    <item><widget class="QComboBox" name="inputDiagnosisDateYear"><property name="editable"><bool>true</bool></property></widget></item>
                   </layout>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation"><enum>Qt::Horizontal</enum></property>
-                <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnAddDiagnosis">
-                <property name="text"><string>Add Diagnosis</string></property>
-                <property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 14px; } QPushButton:hover { background: #0D6B52; }</string></property>
-                <property name="minimumHeight"><number>36</number></property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QFrame" name="entryListContainer" objectName="entryListContainer">
-           <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
-           <layout class="QVBoxLayout" name="diagnosisEntriesLayout">
-            <property name="spacing"><number>6</number></property>
-            <property name="leftMargin"><number>0</number></property>
-            <property name="topMargin"><number>0</number></property>
-            <property name="rightMargin"><number>0</number></property>
-            <property name="bottomMargin"><number>0</number></property>
-           </layout>
-          </widget>
-         </item>
-
-        </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <spacer>
+                 <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                 <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnAddDiagnosis">
+                 <property name="text"><string>Add Diagnosis</string></property>
+                 <property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 14px; } QPushButton:hover { background: #0D6B52; }</string></property>
+                 <property name="minimumHeight"><number>36</number></property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="uploadZoneDiag">
+            <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+            <property name="minimumHeight"><number>60</number></property>
+            <layout class="QVBoxLayout">
+             <property name="spacing"><number>4</number></property>
+             <item>
+              <layout class="QHBoxLayout">
+               <property name="spacing"><number>6</number></property>
+               <item>
+                <spacer>
+                 <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                 <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="lblUploadIconDiag">
+                 <property name="styleSheet"><string>QLabel { color: #1A9E78; }</string></property>
+                 <property name="pixmap"><pixmap><normaloff>../assets/ic_upload.svg</normaloff>../assets/ic_upload.svg</pixmap></property>
+                 <property name="scaledContents"><bool>true</bool></property>
+                 <property name="fixedSize"><size><width>20</width><height>20</height></size></property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="lblUploadHintDiag">
+                 <property name="styleSheet"><string>QLabel { font-size: 12px; color: #546860; }</string></property>
+                 <property name="text"><string>Click to upload</string></property>
+                </widget>
+               </item>
+               <item>
+                <spacer>
+                 <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                 <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="entryListContainer">
+            <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
+            <layout class="QVBoxLayout" name="diagnosisEntriesLayout">
+             <property name="spacing"><number>6</number></property>
+             <property name="leftMargin"><number>0</number></property>
+             <property name="topMargin"><number>0</number></property>
+             <property name="rightMargin"><number>0</number></property>
+             <property name="bottomMargin"><number>0</number></property>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
+
        <item>
-        <layout class="QVBoxLayout">
-         <property name="spacing"><number>8</number></property>
-
-         <item>
-          <widget class="QLabel">
-           <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
-           <property name="text"><string>PRESCRIPTIONS</string></property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QFrame" name="rxSubFormBox" objectName="subFormBox">
-           <property name="frameShape"><enum>QFrame::Shape::StyledPanel</enum></property>
-           <layout class="QVBoxLayout">
-            <property name="spacing"><number>8</number></property>
-            <property name="leftMargin"><number>12</number></property>
-            <property name="topMargin"><number>12</number></property>
-            <property name="rightMargin"><number>12</number></property>
-            <property name="bottomMargin"><number>12</number></property>
-            <item>
-             <layout class="QHBoxLayout">
-              <property name="spacing"><number>10</number></property>
-
-              <item>
-               <layout class="QVBoxLayout">
-                <property name="spacing"><number>4</number></property>
-                <item>
-                 <widget class="QLabel">
-                  <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
-                  <property name="text"><string>Medication name *</string></property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="inputRxName">
-                  <property name="placeholderText"><string>e.g. Amoxicillin</string></property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-
-              <item>
-               <layout class="QVBoxLayout">
-                <property name="spacing"><number>4</number></property>
-                <item>
-                 <widget class="QLabel">
-                  <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
-                  <property name="text"><string>Dosage *</string></property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="inputRxDosage">
-                  <property name="placeholderText"><string>e.g. 500mg 3x/day</string></property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout">
-              <property name="spacing"><number>4</number></property>
-              <item>
-               <widget class="QLabel">
-                <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
-                <property name="text"><string>Prescribed by *</string></property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="inputRxPrescribedBy">
-                <property name="placeholderText"><string>e.g. Dr. Dela Cruz</string></property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout">
-              <property name="spacing"><number>8</number></property>
-              <item>
-               <layout class="QVBoxLayout">
-                <property name="spacing"><number>4</number></property>
-                <item>
-                 <widget class="QLabel">
-                  <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
-                  <property name="text"><string>Prescribed date *</string></property>
-                 </widget>
-                </item>
-                <item>
+        <widget class="QFrame" name="rxContainer">
+         <property name="visible"><bool>false</bool></property>
+         <layout class="QVBoxLayout">
+          <property name="spacing"><number>8</number></property>
+          <property name="leftMargin"><number>0</number></property>
+          <property name="topMargin"><number>0</number></property>
+          <property name="rightMargin"><number>0</number></property>
+          <property name="bottomMargin"><number>0</number></property>
+          <item>
+           <widget class="QLabel">
+            <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
+            <property name="text"><string>PRESCRIPTIONS</string></property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="rxSubFormBox">
+            <property name="frameShape"><enum>QFrame::Shape::StyledPanel</enum></property>
+            <layout class="QVBoxLayout">
+             <property name="spacing"><number>8</number></property>
+             <property name="leftMargin"><number>12</number></property>
+             <property name="topMargin"><number>12</number></property>
+             <property name="rightMargin"><number>12</number></property>
+             <property name="bottomMargin"><number>12</number></property>
+             <item>
+              <layout class="QHBoxLayout">
+               <property name="spacing"><number>10</number></property>
+               <item>
+                <layout class="QVBoxLayout">
+                 <property name="spacing"><number>4</number></property>
+                 <item>
+                  <widget class="QLabel">
+                   <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
+                   <property name="text"><string>Medication name *</string></property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="inputRxName">
+                   <property name="placeholderText"><string>e.g. Amoxicillin</string></property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout">
+                 <property name="spacing"><number>4</number></property>
+                 <item>
+                  <widget class="QLabel">
+                   <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
+                   <property name="text"><string>Dosage *</string></property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="inputRxDosage">
+                   <property name="placeholderText"><string>e.g. 500mg 3x/day</string></property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout">
+               <property name="spacing"><number>4</number></property>
+               <item>
+                <widget class="QLabel">
+                 <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
+                 <property name="text"><string>Prescribed by *</string></property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="inputRxPrescribedBy">
+                 <property name="placeholderText"><string>e.g. Dr. Dela Cruz</string></property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout">
+               <property name="spacing"><number>8</number></property>
+               <item>
+                <layout class="QVBoxLayout">
+                 <property name="spacing"><number>4</number></property>
+                 <item>
+                  <widget class="QLabel">
+                   <property name="styleSheet"><string>QLabel { font-size: 10px; color: #8FA89E; }</string></property>
+                   <property name="text"><string>Prescribed date *</string></property>
+                  </widget>
+                 </item>
+                 <item>
                   <layout class="QHBoxLayout"><property name="spacing"><number>6</number></property>
                    <item><widget class="QComboBox" name="inputRxDateMonth"><property name="editable"><bool>true</bool></property></widget></item>
                    <item><widget class="QComboBox" name="inputRxDateDay"><property name="editable"><bool>true</bool></property><property name="sizePolicy"><sizepolicy hsizetype="Maximum" vsizetype="Preferred"><horstretch>0</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
                    <item><widget class="QComboBox" name="inputRxDateYear"><property name="editable"><bool>true</bool></property></widget></item>
                   </layout>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation"><enum>Qt::Horizontal</enum></property>
-                <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnAddRx">
-                <property name="text"><string>Add Prescription</string></property>
-                <property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 14px; } QPushButton:hover { background: #0D6B52; }</string></property>
-                <property name="minimumHeight"><number>36</number></property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QFrame" name="rxEntryListContainer" objectName="entryListContainer">
-           <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
-           <layout class="QVBoxLayout" name="rxEntriesLayout">
-            <property name="spacing"><number>6</number></property>
-            <property name="leftMargin"><number>0</number></property>
-            <property name="topMargin"><number>0</number></property>
-            <property name="rightMargin"><number>0</number></property>
-            <property name="bottomMargin"><number>0</number></property>
-           </layout>
-          </widget>
-         </item>
-
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout">
-         <property name="spacing"><number>6</number></property>
-         <item>
-          <widget class="QLabel">
-           <property name="styleSheet"><string>QLabel { font-size: 10px; font-weight: bold; color: #546860; letter-spacing: 0.4px; }</string></property>
-           <property name="text"><string>ATTACH DOCUMENTS</string></property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QFrame" name="uploadZone">
-           <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
-           <property name="minimumHeight"><number>80</number></property>
-           <layout class="QVBoxLayout">
-            <property name="spacing"><number>5</number></property>
-            <item>
-             <widget class="QLabel" name="lblUploadIcon">
-              <property name="styleSheet"><string>QLabel { color: #1A9E78; }</string></property>
-              <property name="pixmap"><pixmap><normaloff>../assets/ic_upload.svg</normaloff>../assets/ic_upload.svg</pixmap></property>
-              <property name="scaledContents"><bool>true</bool></property>
-              <property name="alignment"><set>Qt::AlignmentFlag::AlignCenter</set></property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="lblUploadHint">
-              <property name="styleSheet"><string>QLabel { font-size: 12px; color: #546860; }</string></property>
-              <property name="text"><string>Click to upload â€” images, PDFs, or any file</string></property>
-              <property name="alignment"><set>Qt::AlignmentFlag::AlignCenter</set></property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QFrame" name="uploadedFilesContainer" objectName="entryListContainer">
-           <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
-           <layout class="QVBoxLayout" name="uploadedFilesLayout">
-            <property name="spacing"><number>4</number></property>
-            <property name="leftMargin"><number>0</number></property>
-            <property name="topMargin"><number>0</number></property>
-            <property name="rightMargin"><number>0</number></property>
-            <property name="bottomMargin"><number>0</number></property>
-           </layout>
-          </widget>
-         </item>
-
-        </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <spacer>
+                 <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                 <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnAddRx">
+                 <property name="text"><string>Add Prescription</string></property>
+                 <property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 14px; } QPushButton:hover { background: #0D6B52; }</string></property>
+                 <property name="minimumHeight"><number>36</number></property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="uploadZoneRx">
+            <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+            <property name="minimumHeight"><number>60</number></property>
+            <layout class="QVBoxLayout">
+             <property name="spacing"><number>4</number></property>
+             <item>
+              <layout class="QHBoxLayout">
+               <property name="spacing"><number>6</number></property>
+               <item>
+                <spacer>
+                 <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                 <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="lblUploadIconRx">
+                 <property name="styleSheet"><string>QLabel { color: #1A9E78; }</string></property>
+                 <property name="pixmap"><pixmap><normaloff>../assets/ic_upload.svg</normaloff>../assets/ic_upload.svg</pixmap></property>
+                 <property name="scaledContents"><bool>true</bool></property>
+                 <property name="fixedSize"><size><width>20</width><height>20</height></size></property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="lblUploadHintRx">
+                 <property name="styleSheet"><string>QLabel { font-size: 12px; color: #546860; }</string></property>
+                 <property name="text"><string>Click to upload</string></property>
+                </widget>
+               </item>
+               <item>
+                <spacer>
+                 <property name="orientation"><enum>Qt::Horizontal</enum></property>
+                 <property name="sizeHint" stdset="0"><size><width>0</width><height>0</height></size></property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="rxEntryListContainer">
+            <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
+            <layout class="QVBoxLayout" name="rxEntriesLayout">
+             <property name="spacing"><number>6</number></property>
+             <property name="leftMargin"><number>0</number></property>
+             <property name="topMargin"><number>0</number></property>
+             <property name="rightMargin"><number>0</number></property>
+             <property name="bottomMargin"><number>0</number></property>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
 
       </layout>
      </widget>
     </widget>
    </item>
+
+   <!-- Footer -->
    <item>
     <widget class="QFrame" name="dialogFoot">
      <property name="styleSheet"><string>QFrame { border-top: 1px solid #DDE8E3; }</string></property>
