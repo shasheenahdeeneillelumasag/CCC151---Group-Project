@@ -6,8 +6,7 @@ from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from PyQt6.QtCore import QDate
 from PyQt6 import uic
 
-from services.vaccination_shot_service import VaccinationShotService
-from services.document_service import DocumentService
+from services.container import vaccination_shot_service, document_service
 from widgets.date_picker import init_date_picker, set_date_picker, get_date_str_from_picker
 
 DOCS_DIR = os.path.normpath(
@@ -22,8 +21,8 @@ class DialogAddVaccination(QDialog):
         uic.loadUi("ui/dialog_add_vaccination.ui", self)
         self.setFixedSize(self.size())
 
-        self.vaccination_service = VaccinationShotService()
-        self.document_service = DocumentService()
+        self.vaccination_service = vaccination_shot_service
+        self.document_service = document_service
 
         self.patient_id = patient_id
         self._attached_file = None

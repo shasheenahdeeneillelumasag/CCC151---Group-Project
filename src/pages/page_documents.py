@@ -10,14 +10,9 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtGui import QPixmap
 from PyQt6 import uic
 
-from services.document_service import DocumentService
-from services.visit_record_service import VisitRecordService
-from services.vaccination_shot_service import VaccinationShotService
-from services.diagnosis_service import DiagnosisService
-from services.prescription_service import PrescriptionService
-from services.patient_service import PatientService
 from core.app_settings import AppSettings
 from models.document import Document
+from services.container import diagnosis_service, document_service, patient_service, prescription_service, vaccination_shot_service, visit_record_service
 
 DOCS_DIR = os.path.normpath(
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "documents")
@@ -221,12 +216,12 @@ class PageDocuments(QWidget):
         super().__init__()
         uic.loadUi("ui/page_documents.ui", self)
 
-        self.doc_service          = DocumentService()
-        self.visit_service        = VisitRecordService()
-        self.vaccine_service      = VaccinationShotService()
-        self.diagnosis_service    = DiagnosisService()
-        self.prescription_service = PrescriptionService()
-        self.patient_service      = PatientService()
+        self.doc_service          = document_service
+        self.visit_service        = visit_record_service
+        self.vaccine_service      = vaccination_shot_service
+        self.diagnosis_service    = diagnosis_service
+        self.prescription_service = prescription_service
+        self.patient_service      = patient_service
         self.settings             = AppSettings()
 
         self.active_patient = self.patient_service.get_patient_by_code(

@@ -1,9 +1,8 @@
 from PyQt6.QtWidgets import QWidget, QMessageBox
 from PyQt6 import uic
 
-from services.medical_history_service import MedicalHistoryService
-from services.patient_service import PatientService
-from services.visit_record_service import VisitRecordService
+from services.container import patient_service, visit_record_service, medical_history_service
+
 from core.app_settings import AppSettings
 from dialogs.dialog_add_record import DialogAddRecord
 from dialogs.dialog_edit_record import DialogEditRecord
@@ -20,8 +19,8 @@ class PageRecords(QWidget):
         self.selected_record = None
         self.selected_card   = None
 
-        self.patient_service      = PatientService()
-        self.visit_record_service = VisitRecordService()
+        self.patient_service      = patient_service
+        self.visit_record_service = visit_record_service
         self.settings             = AppSettings()
 
         self.active_patient = self.patient_service.get_patient_by_code(
@@ -29,7 +28,7 @@ class PageRecords(QWidget):
         ) if self.settings.get_active_patient_code() else None
         self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
-        self.history_service = MedicalHistoryService()
+        self.history_service = medical_history_service
 
         self.load_records()
 

@@ -2,6 +2,7 @@ from services.visit_record_service import VisitRecordService
 from services.diagnosis_service import DiagnosisService
 from services.prescription_service import PrescriptionService
 
+
 from models.medical_history_item import (
     MedicalHistoryItem
 )
@@ -9,15 +10,13 @@ from models.medical_history_item import (
 
 class MedicalHistoryService:
 
-    def __init__(self):
+    def __init__(self, visit_record_service, diagnosis_service, prescription_service):
 
-        self.record_service = VisitRecordService()
+        self.record_service = visit_record_service
 
-        self.diagnosis_service = DiagnosisService()
+        self.diagnosis_service = diagnosis_service
 
-        self.prescription_service = (
-            PrescriptionService()
-        )
+        self.prescription_service = prescription_service
 
     def get_patient_history(
         self,

@@ -13,10 +13,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6 import uic
 
-from services.visit_record_service import VisitRecordService
-from services.diagnosis_service import DiagnosisService
-from services.prescription_service import PrescriptionService
-from services.document_service import DocumentService
+from services.container import *
 from widgets.date_picker import init_date_picker, set_date_picker, get_date_from_picker
 
 
@@ -93,10 +90,10 @@ class DialogEditRecord(QDialog):
         self.history_item = history_item
         self.record       = history_item.record
 
-        self.visit_record_service = VisitRecordService()
-        self.diagnosis_service    = DiagnosisService()
-        self.prescription_service = PrescriptionService()
-        self.document_service     = DocumentService()
+        self.visit_record_service = visit_record_service
+        self.diagnosis_service    = diagnosis_service
+        self.prescription_service = prescription_service
+        self.document_service     = document_service
 
     
         self._diagnoses:     list[dict] = []

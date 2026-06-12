@@ -10,14 +10,7 @@ from PyQt6.QtCore import Qt, QSize, pyqtSignal
 from PyQt6.QtGui import QIcon
 from PyQt6 import uic
 
-from services.patient_service import PatientService
-from services.visit_record_service import VisitRecordService
-from services.appointment_service import AppointmentService
-from services.vaccination_shot_service import VaccinationShotService
-from services.document_service import DocumentService
-from services.medical_history_service import MedicalHistoryService
-from services.diagnosis_service import DiagnosisService
-from services.prescription_service import PrescriptionService
+from services.container import *
 from core.app_settings import AppSettings
 
 from widgets.reminder_card import reminder_status, compute_remind_on, _parse_date
@@ -54,21 +47,21 @@ class PageDashboard(QWidget):
         super().__init__()
         uic.loadUi("ui/page_dashboard.ui", self)
 
-        self.patient_service      = PatientService()
-        self.visit_service        = VisitRecordService()
-        self.appointment_service  = AppointmentService()
-        self.vaccination_service  = VaccinationShotService()
-        self.document_service     = DocumentService()
-        self.history_service      = MedicalHistoryService()
-        self.diagnosis_service    = DiagnosisService()
-        self.prescription_service = PrescriptionService()
+        self.patient_service      = patient_service
+        self.visit_service        = visit_record_service
+        self.appointment_service  = appointment_service
+        self.vaccination_service  = vaccination_shot_service
+        self.document_service     = document_service
+        self.history_service      = medical_history_service
+        self.diagnosis_service    = diagnosis_service
+        self.prescription_service = prescription_service
         self.settings             = AppSettings()
 
         self.active_patient = self.patient_service.get_patient_by_code(
             self.settings.get_active_patient_code()
         ) if self.settings.get_active_patient_code() else None
         self.patient_id = self.active_patient.patient_id if self.active_patient else None
-
+        self.patient_service.changed.connect(self.load)
         self.btnAddRecord.clicked.connect(self._open_add_record)
         self.btnCloseBanner.clicked.connect(self._close_banner)
         self.btnViewAppt.clicked.connect(self._view_flagged_appt)

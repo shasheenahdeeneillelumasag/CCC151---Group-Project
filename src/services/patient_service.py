@@ -1,9 +1,12 @@
 from repositories.patient_repository import PatientRepository
 from models.patient import Patient
+from PyQt6.QtCore import QObject, pyqtSignal
 
+class PatientService(QObject):
+    changed = pyqtSignal()
 
-class PatientService:
     def __init__(self):
+        super().__init__()
         self.repo = PatientRepository()
 
     def get_patient_by_code(
@@ -71,11 +74,13 @@ class PatientService:
             sex=sex
         )
 
-        return self.repo.update(patient)
+        self.repo.update(patient)
+        self.changed.emit()
+        return patient
 
     def delete_patient(
         self,
         patient_id: int
     ):
-
         self.repo.delete(patient_id)
+        self.changed.emit()

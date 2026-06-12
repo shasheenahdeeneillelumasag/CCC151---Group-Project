@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QDialog, QMessageBox
 from PyQt6.QtCore import QDate
 from PyQt6 import uic
 
-from services.appointment_service import AppointmentService
+from services.container import appointment_service
 from widgets.date_picker import init_date_picker, set_date_picker, get_date_str_from_picker
 
 
@@ -13,7 +13,7 @@ class DialogAddAppointment(QDialog):
         uic.loadUi("ui/dialog_add_appointment.ui", self)
         self.setFixedSize(700, 480)
 
-        self.appointment_service = AppointmentService()
+        self.appointment_service = appointment_service
         self.patient_id = patient_id
 
         init_date_picker(self.inputDateMonth, self.inputDateDay, self.inputDateYear)

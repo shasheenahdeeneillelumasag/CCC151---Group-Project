@@ -5,8 +5,7 @@ from PyQt6.QtCore import Qt
 
 from widgets.date_picker import init_date_picker, set_date_picker, get_date_str_from_picker
 
-from services.patient_service import PatientService
-from services.patient_contact_service import PatientContactService
+from services.container import patient_service, patient_contact_service
 from core.app_settings import AppSettings
 
 class PageProfile(QWidget):
@@ -16,8 +15,8 @@ class PageProfile(QWidget):
 
         uic.loadUi("ui/page_profile.ui", self)
 
-        self.patient_service = PatientService()
-        self.contact_service = PatientContactService()
+        self.patient_service = patient_service
+        self.contact_service = patient_contact_service
         self.settings = AppSettings()
 
         self.active_patient = self.patient_service.get_patient_by_code(
