@@ -125,19 +125,19 @@ CREATE TABLE IF NOT EXISTS document (
 
     FOREIGN KEY (vaccine_id)
         REFERENCES vaccination_shots(vaccine_id)
-        ON DELETE SET NULL,
+        ON DELETE CASCADE,
 
     FOREIGN KEY (record_id)
         REFERENCES visit_record(record_id)
-        ON DELETE SET NULL,
+        ON DELETE CASCADE,
 
     FOREIGN KEY (diagnosis_id)
         REFERENCES diagnosis(diagnosis_id)
-        ON DELETE SET NULL,
+        ON DELETE CASCADE,
 
     FOREIGN KEY (prescription_id)
         REFERENCES prescription(prescription_id)
-        ON DELETE SET NULL,
+        ON DELETE CASCADE,
 
     CHECK (
         (

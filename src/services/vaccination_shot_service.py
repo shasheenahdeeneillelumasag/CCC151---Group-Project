@@ -4,6 +4,8 @@ from repositories.vaccination_shot_repository import (
 from models.vaccination_shot import VaccinationShot
 from PyQt6.QtCore import QObject, pyqtSignal
 
+
+
 class VaccinationShotService(QObject):
     changed = pyqtSignal()
     def __init__(self):

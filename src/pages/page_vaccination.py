@@ -7,7 +7,7 @@ from PyQt6.QtCore import Qt
 from PyQt6 import uic
 
 
-from services.container import vaccination_shot_service, patient_service
+from services.container import vaccination_shot_service, patient_service, document_service
 from core.app_settings import AppSettings
 
 from dialogs.dialog_add_vaccination import DialogAddVaccination
@@ -28,6 +28,7 @@ class PageVaccinations(QWidget):
 
         self.vaccination_service = vaccination_shot_service
         self.patient_service = patient_service
+        self.document_service = document_service
         self.settings = AppSettings()
 
         self.selected_card = None
