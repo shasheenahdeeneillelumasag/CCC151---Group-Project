@@ -12,32 +12,12 @@ QFrame#HistoryCard { border-bottom: 1px solid #DDE8E3; }
 QFrame#HistoryCard:hover { background: #F8FBFA; }
    </string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
-   <property name="spacing"><number>14</number></property>
-   <property name="leftMargin"><number>20</number></property>
-   <property name="topMargin"><number>14</number></property>
-   <property name="rightMargin"><number>20</number></property>
-   <property name="bottomMargin"><number>14</number></property>
-   <item>
-    <widget class="QFrame" name="selectionIndicator">
-     <property name="minimumSize"><size><width>4</width><height>0</height></size></property>
-     <property name="maximumSize"><size><width>4</width><height>16777215</height></size></property>
-     <property name="styleSheet">
-      <string>QFrame { background: transparent; border-radius: 2px; }</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="rec1Icon">
-     <property name="minimumSize"><size><width>42</width><height>42</height></size></property>
-     <property name="maximumSize"><size><width>42</width><height>42</height></size></property>
-     <property name="styleSheet">
-      <string>QLabel { background: #EAF3FC; border-radius: 10px; padding: 4px; }</string>
-     </property>
-     <property name="pixmap"><pixmap><normaloff>../assets/ic_records.svg</normaloff>../assets/ic_records.svg</pixmap></property>
-     <property name="scaledContents"><bool>true</bool></property>
-    </widget>
-   </item>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing"><number>14</number></property>
+    <property name="leftMargin"><number>20</number></property>
+    <property name="topMargin"><number>14</number></property>
+    <property name="rightMargin"><number>20</number></property>
+    <property name="bottomMargin"><number>14</number></property>
    <item>
     <layout class="QVBoxLayout" name="contentLayout">
      <property name="spacing"><number>3</number></property>

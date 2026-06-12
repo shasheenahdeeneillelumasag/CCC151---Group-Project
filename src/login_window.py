@@ -155,8 +155,8 @@ class LoginForm(QWidget):
         lay.addWidget(sub)
         lay.addSpacing(28)
 
-        self.username_field = HealthField("Username or Patient ID")
-        self.password_field = HealthField("Password", password=True)
+        self.username_field = HealthField("Enter username")
+        self.password_field = HealthField("Enter password", password=True)
 
         lay.addWidget(field_label("Username"))
         lay.addSpacing(5)

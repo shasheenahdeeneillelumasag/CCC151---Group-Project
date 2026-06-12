@@ -30,108 +30,113 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="topbar">
-     <property name="styleSheet">
-      <string>QFrame { background: #FFFFFF; border-bottom: 1px solid #DDE8E3; }</string>
-     </property>
-     <layout class="QHBoxLayout">
-      <property name="leftMargin">
-       <number>28</number>
+     <widget class="QFrame" name="topbar">
+      <property name="styleSheet">
+       <string>QFrame#topbar { background: #FFFFFF; border-bottom: 1px solid #1A9E78; }</string>
       </property>
-      <property name="topMargin">
-       <number>0</number>
+      <property name="minimumHeight"><number>72</number></property>
+      <property name="maximumHeight"><number>72</number></property>
+      <layout class="QHBoxLayout">
+        <property name="leftMargin">
+         <number>28</number>
+        </property>
+        <property name="topMargin">
+         <number>12</number>
+        </property>
+        <property name="rightMargin">
+         <number>28</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       <item>
+        <layout class="QVBoxLayout">
+         <property name="spacing">
+          <number>1</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="styleSheet">
+            <string>QLabel { font-size: 22px; font-weight: bold; color: #0D1B16; }</string>
+           </property>
+           <property name="text">
+            <string>Vaccinations</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="styleSheet">
+            <string>QLabel { font-size: 13px; color: #5A7A6A; }</string>
+           </property>
+           <property name="text">
+            <string>Immunization records &amp; dose schedules</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="toolbar">
+      <property name="styleSheet">
+       <string>QFrame#toolbar { background: #F8FBFA; border-bottom: 1px solid #DDE8E3; border-top: 1px solid #E4EDE9; }</string>
       </property>
-      <property name="rightMargin">
-       <number>28</number>
+      <property name="minimumHeight"><number>48</number></property>
+      <property name="maximumHeight"><number>48</number></property>
+      <layout class="QHBoxLayout">
+       <property name="leftMargin"><number>28</number></property>
+       <property name="topMargin"><number>10</number></property>
+       <property name="rightMargin"><number>28</number></property>
+       <property name="bottomMargin"><number>0</number></property>
+       <item>
+        <widget class="QPushButton" name="btnLogVax">
+         <property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property>
+         <property name="text"><string>Log Vaccination</string></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnEditVax">
+         <property name="styleSheet"><string>QPushButton { background: #FFFFFF; color: #1A9E78; font-size: 12px; font-weight: 600; border: 1px solid #1A9E78; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #E3F5EE; }</string></property>
+         <property name="text"><string>Edit Vaccination</string></property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnDeleteVax">
+         <property name="styleSheet"><string>QPushButton { background: #FFFFFF; color: #C0392B; font-size: 12px; font-weight: 600; border: 1px solid #C0392B; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #FDECEB; }</string></property>
+         <property name="text"><string>Delete Vaccination</string></property>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="styleSheet">
+       <string>QScrollArea { background: #F2F7F5; border: none; }</string>
       </property>
-      <property name="bottomMargin">
-       <number>0</number>
+      <property name="frameShape">
+       <enum>QFrame::Shape::NoFrame</enum>
       </property>
-      <item>
-       <layout class="QVBoxLayout">
-        <property name="spacing">
-         <number>1</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="styleSheet">
-           <string>QLabel { font-size: 18px; font-weight: bold; color: #1C2B25; }</string>
-          </property>
-          <property name="text">
-           <string>Vaccinations</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="styleSheet">
-           <string>QLabel { font-size: 11px; color: #8FA89F; }</string>
-          </property>
-          <property name="text">
-           <string>Immunization records &amp; dose schedules</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnLogVax">
-        <property name="styleSheet">
-         <string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string>
-        </property>
-        <property name="text">
-         <string>Log Vaccination</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnEditVax">
-        <property name="styleSheet">
-         <string>QPushButton { background: #FFFFFF; color: #1A9E78; font-size: 12px; font-weight: 600; border: 1px solid #1A9E78; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #E3F5EE; }</string>
-        </property>
-        <property name="text">
-         <string>Edit Vaccination</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnDeleteVax">
-        <property name="styleSheet">
-         <string>QPushButton { background: #FFFFFF; color: #C0392B; font-size: 12px; font-weight: 600; border: 1px solid #C0392B; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #FDECEB; }</string>
-        </property>
-        <property name="text">
-         <string>Delete Vaccination</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QScrollArea" name="scrollArea">
-     <property name="styleSheet">
-      <string>QScrollArea { background: #F2F7F5; border: none; }</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollContent">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollContent">
       <property name="geometry">
        <rect>
         <x>0</x>

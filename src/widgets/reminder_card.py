@@ -4,7 +4,8 @@ from PyQt6.QtWidgets import (
     QFrame, QLabel, QHBoxLayout, QVBoxLayout,
     QPushButton, QSizePolicy
 )
-from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtCore import Qt, pyqtSignal, QSize
+from PyQt6.QtGui import QIcon
 
 from models.appointment import Appointment
 
@@ -34,7 +35,7 @@ def compute_remind_on(appt_date) -> date | None:
 def reminder_status(appt: Appointment) -> str:
     """
     Returns one of: 'flagged', 'upcoming', 'completed', 'dismissed'
-    based on today's date vs the appointment.
+    based on the appointment's stored status and date.
     """
     appt_date   = _parse_date(appt.appt_date)
     remind_on   = compute_remind_on(appt_date)
@@ -42,8 +43,10 @@ def reminder_status(appt: Appointment) -> str:
 
     if appt.status == "Cancelled":
         return "dismissed"
-    if appt_date and today > appt_date:
+    if appt.status == "Completed":
         return "completed"
+    if appt_date and today > appt_date:
+        return "flagged"
     if remind_on and today >= remind_on:
         return "flagged"
     return "upcoming"
@@ -91,29 +94,6 @@ class ReminderCard(QFrame):
         layout = QHBoxLayout(self)
         layout.setContentsMargins(20, 15, 20, 15)
         layout.setSpacing(14)
-
-        # Icon 
-        if status == "flagged":
-            icon_text, icon_bg = "[!]", "#FEF3DC"
-        elif status == "completed":
-            icon_text, icon_bg = "[v]", "#E8F5EB"
-        elif status == "dismissed":
-            icon_text, icon_bg = "[x]", "#FAE8E8"
-        else:
-            icon_text, icon_bg = "[Cal]", "#EAF3FC"
-
-        icon = QLabel(icon_text)
-        icon.setFixedSize(40, 40)
-        icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        icon.setStyleSheet(f"""
-            QLabel {{
-                background: {icon_bg};
-                border-radius: 10px;
-                font-size: 17px;
-                padding: 4px;
-            }}
-        """)
-        layout.addWidget(icon)
 
         # Info 
         info = QVBoxLayout()
@@ -179,13 +159,14 @@ class ReminderCard(QFrame):
         badge.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         right.addWidget(badge)
 
-        view_btn = QPushButton(">")
+        view_btn = QPushButton()
         view_btn.setFixedSize(30, 30)
+        icon = QIcon("assets/right.svg")
+        view_btn.setIcon(icon)
+        view_btn.setIconSize(QSize(20, 20))
         view_btn.setStyleSheet("""
             QPushButton {
                 background: transparent;
-                color: #546860;
-                font-size: 18px;
                 border: 1px solid #DDE8E3;
                 border-radius: 7px;
             }

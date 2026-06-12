@@ -7,6 +7,7 @@ from core.app_settings import AppSettings
 from dialogs.dialog_add_record import DialogAddRecord
 from dialogs.dialog_edit_record import DialogEditRecord
 from widgets.history_card import HistoryCard
+from widgets.pagination_bar import PaginationBar
 
 
 class PageRecords(QWidget):
@@ -30,6 +31,14 @@ class PageRecords(QWidget):
 
         self.history_service = medical_history_service
 
+        self._all_items = []
+        self._filtered_items = []
+
+        self.pagination = PaginationBar()
+        self.pagination.page_changed.connect(self._on_page_changed)
+        scroll_layout = self.scrollContent.layout()
+        scroll_layout.addWidget(self.pagination)
+
         self.load_records()
 
         self.searchInput.textChanged.connect(self.search_records)
@@ -40,15 +49,23 @@ class PageRecords(QWidget):
     def load_records(self):
         if not self.patient_id:
             return
-        history = self.history_service.get_patient_history(self.patient_id)
-        self.populate_records(history)
+        self._all_items = self.history_service.get_patient_history(self.patient_id)
+        self._filtered_items = list(self._all_items)
+        self.pagination.set_total_items(len(self._filtered_items))
+        self._show_page(0)
 
-    def populate_records(self, history):
+    def _on_page_changed(self, page: int):
+        self._show_page(page)
+
+    def _show_page(self, page: int):
         self.selected_card   = None
         self.selected_record = None
         self.clear_records()
 
-        for item in history:
+        start = page * self.pagination.page_size()
+        items = self._filtered_items[start:start + self.pagination.page_size()]
+
+        for item in items:
             card = self.create_history_card(item)
             self.recordsLayout.addWidget(card)
 
@@ -63,39 +80,40 @@ class PageRecords(QWidget):
 
     def search_records(self):
         keyword = self.searchInput.text().strip().lower()
-        history = self.history_service.get_patient_history(self.patient_id)
 
         if not keyword:
-            self.populate_records(history)
-            return
+            self._filtered_items = list(self._all_items)
+        else:
+            filtered = []
 
-        filtered = []
+            for item in self._all_items:
+                record = item.record
 
-        for item in history:
-            record = item.record
+                diagnosis_text = " ".join(
+                    f"{d.diagnosis_name} {d.description or ''}"
+                    for d in item.diagnoses
+                )
 
-            diagnosis_text = " ".join(
-                f"{d.diagnosis_name} {d.description or ''}"
-                for d in item.diagnoses
-            )
+                rx_text = " ".join(
+                    f"{p.medication_name} {p.dosage} {p.prescribed_by}"
+                    for p in item.prescriptions
+                )
 
-            rx_text = " ".join(
-                f"{p.medication_name} {p.dosage} {p.prescribed_by}"
-                for p in item.prescriptions
-            )
+                haystack = (
+                    f"{record.record_code} "
+                    f"{record.visit_date} "
+                    f"{record.blood_pressure or ''} "
+                    f"{diagnosis_text} "
+                    f"{rx_text}"
+                ).lower()
 
-            haystack = (
-                f"{record.record_code} "
-                f"{record.visit_date} "
-                f"{record.blood_pressure or ''} "
-                f"{diagnosis_text} "
-                f"{rx_text}"
-            ).lower()
+                if keyword in haystack:
+                    filtered.append(item)
 
-            if keyword in haystack:
-                filtered.append(item)
+            self._filtered_items = filtered
 
-        self.populate_records(filtered)
+        self.pagination.set_total_items(len(self._filtered_items))
+        self._show_page(0)
 
     def clear_records(self):
         while self.recordsLayout.count():

@@ -12,6 +12,7 @@ from core.app_settings import AppSettings
 
 from dialogs.dialog_add_vaccination import DialogAddVaccination
 from widgets.vaccination_card import VaccinationCard
+from widgets.pagination_bar import PaginationBar
 
 from models.vaccination_shot import VaccinationShot
 
@@ -48,6 +49,13 @@ class PageVaccinations(QWidget):
             else None
         )
 
+        self._all_shots = []
+
+        self.pagination = PaginationBar()
+        self.pagination.page_changed.connect(self._on_page_changed)
+        scroll_layout = self.scrollContent.layout()
+        scroll_layout.addWidget(self.pagination)
+
         self.btnLogVax.clicked.connect(self._open_add_dialog)
         self.btnDeleteVax.clicked.connect(self.delete_vaccination)
         self.btnEditVax.clicked.connect(self._edit_selected_vaccination)
@@ -62,19 +70,25 @@ class PageVaccinations(QWidget):
         if not self.patient_id:
             return
 
-        shots = (
+        self._all_shots = (
             self.vaccination_service
             .get_vaccinations_by_patient_id(
                 self.patient_id
             )
         )
 
-        self._populate(shots)
+        self._all_shots.sort(
+            key=lambda s: s.display_date or date.min,
+            reverse=True
+        )
 
-    def _populate(
-        self,
-        shots: list[VaccinationShot]
-    ):
+        self.pagination.set_total_items(len(self._all_shots))
+        self._show_page(0)
+
+    def _on_page_changed(self, page: int):
+        self._show_page(page)
+
+    def _show_page(self, page: int):
         if hasattr(self, "_cards_container"):
             self._cards_container.deleteLater()
 
@@ -93,6 +107,9 @@ class PageVaccinations(QWidget):
             0
         )
         layout.setSpacing(12)
+
+        start = page * self.pagination.page_size()
+        shots = self._all_shots[start:start + self.pagination.page_size()]
 
         if not shots:
 
@@ -114,20 +131,15 @@ class PageVaccinations(QWidget):
 
         else:
 
-            shots.sort(
-                key=lambda s: s.display_date or date.min,
-                reverse=True
-            )
+            for shot in shots:
 
-        for shot in shots:
+                card = VaccinationCard(shot)
 
-            card = VaccinationCard(shot)
+                card.clicked.connect(
+                    lambda c=card, s=shot: self.select_vaccination(c, s)
+                )
 
-            card.clicked.connect(
-                lambda c=card, s=shot: self.select_vaccination(c, s)
-            )
-
-            layout.addWidget(card)
+                layout.addWidget(card)
 
         layout.addStretch()
 

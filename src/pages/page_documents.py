@@ -17,6 +17,7 @@ from services.visit_record_service import VisitRecordService
 from services.prescription_service import PrescriptionService
 from services.diagnosis_service import DiagnosisService
 from services.vaccination_shot_service import VaccinationShotService
+from widgets.pagination_bar import PaginationBar
 
 
 DOCS_DIR = os.path.normpath(
@@ -242,6 +243,12 @@ class PageDocuments(QWidget):
         scroll_layout = self.scrollContent.layout()
         scroll_layout.insertLayout(1, self.doc_grid)
 
+        self._all_rendered_docs = []
+
+        self.pagination = PaginationBar()
+        self.pagination.page_changed.connect(self._on_page_changed)
+        scroll_layout.addWidget(self.pagination)
+
         self._setup_tabs()
         self._current_tab = self.TAB_ALL
 
@@ -334,9 +341,18 @@ class PageDocuments(QWidget):
     def load_documents(self):
         all_docs = self._get_patient_docs()
         self._heal_all_docs(all_docs)      
-        docs = self._filter_docs(all_docs)
-        self._populate_grid(docs)
+        self._all_rendered_docs = self._filter_docs(all_docs)
+        self.pagination.set_total_items(len(self._all_rendered_docs))
+        self._show_page(0)
         self._update_tab_counts(all_docs)
+
+    def _on_page_changed(self, page: int):
+        self._show_page(page)
+
+    def _show_page(self, page: int):
+        start = page * self.pagination.page_size()
+        docs = self._all_rendered_docs[start:start + self.pagination.page_size()]
+        self._populate_grid(docs)
 
     def _update_tab_counts(self, all_docs: list[Document]):
         counts = [

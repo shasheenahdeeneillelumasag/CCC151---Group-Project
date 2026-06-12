@@ -37,75 +37,26 @@
    <property name="bottomMargin">
     <number>18</number>
    </property>
-   <item>
-    <widget class="QFrame" name="selectionIndicator">
-     <property name="minimumSize">
-      <size>
-       <width>4</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>4</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string>
-QFrame {
-    background: transparent;
-    border-radius: 2px;
-}
-      </string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout">
-     <property name="spacing">
-      <number>14</number>
-     </property>
-     <item>
-      <widget class="QLabel" name="vaxIco">
-       <property name="minimumSize">
-        <size>
-         <width>48</width>
-         <height>48</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>48</width>
-         <height>48</height>
-        </size>
-       </property>
-       <property name="styleSheet">
-        <string>QLabel { background: #E3F5EE; border-radius: 12px; padding: 4px; }</string>
-       </property>
-       <property name="pixmap">
-        <pixmap>../assets/ic_vaccine.svg</pixmap>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QVBoxLayout">
-       <property name="spacing">
-        <number>3</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="lblVaccineName">
-         <property name="styleSheet">
-          <string>QLabel { font-size: 15px; font-weight: bold; color: #1C2B25; }</string>
-         </property>
-         <property name="text">
-          <string>Vaccine</string>
-         </property>
-        </widget>
-       </item>
+    <item>
+     <layout class="QHBoxLayout">
+      <property name="spacing">
+       <number>14</number>
+      </property>
+      <item>
+       <layout class="QVBoxLayout">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lblVaccineName">
+          <property name="styleSheet">
+           <string>QLabel { font-size: 15px; font-weight: bold; color: #1C2B25; }</string>
+          </property>
+          <property name="text">
+           <string>Vaccine</string>
+          </property>
+         </widget>
+        </item>
        <item>
         <widget class="QLabel" name="lblVaccineMeta">
          <property name="styleSheet">

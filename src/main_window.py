@@ -4,6 +4,7 @@ import sys
 from datetime import date
 
 from PyQt6.QtWidgets import QMainWindow, QVBoxLayout, QApplication, QWidget, QMessageBox
+
 from PyQt6 import uic
 from PyQt6.QtCore import QSize, Qt
 
@@ -47,7 +48,8 @@ class MainWindow(QMainWindow):
 
         pages = [
             self.pageDashboard, self.pageAppointments, self.pageVaccinations,
-            self.pageRecords, self.pageProfile, self.pageDocuments, self.pageReminders
+            self.pageRecords, self.pageProfile, self.pageReminders,
+            self.pageDocuments
         ]
         
         for page in pages:

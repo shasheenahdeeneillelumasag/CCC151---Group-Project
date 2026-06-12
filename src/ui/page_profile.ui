@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>PageProfile</class>
  <widget class="QWidget" name="PageProfile">
@@ -42,66 +42,70 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="topbar">
-     <property name="styleSheet">
-      <string>QFrame { background: #FFFFFF; border-bottom: 1px solid #DDE8E3; }</string>
-     </property>
-     <layout class="QHBoxLayout">
-      <property name="spacing">
-       <number>10</number>
+     <widget class="QFrame" name="topbar">
+      <property name="styleSheet">
+       <string>QFrame#topbar { background: #FFFFFF; border-bottom: 1px solid #1A9E78; }</string>
       </property>
-      <property name="leftMargin">
-       <number>28</number>
+      <property name="minimumHeight"><number>72</number></property>
+      <property name="maximumHeight"><number>72</number></property>
+      <layout class="QHBoxLayout">
+       <property name="spacing">
+        <number>10</number>
+       </property>
+        <property name="leftMargin">
+         <number>28</number>
+        </property>
+       <property name="topMargin">
+        <number>12</number>
+       </property>
+       <property name="rightMargin">
+        <number>28</number>
+       </property>
+      <property name="bottomMargin">
+       <number>0</number>
       </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>28</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-      <item>
-       <layout class="QVBoxLayout">
-        <property name="spacing">
-         <number>2</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="pageTitle">
-          <property name="styleSheet">
-           <string>QLabel { font-size: 18px; font-weight: bold; color: #1C2B25; }</string>
-          </property>
-          <property name="text">
-           <string>My Profile</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="pageSub">
-          <property name="styleSheet">
-           <string>QLabel { font-size: 11px; color: #8FA89F; }</string>
-          </property>
-          <property name="text">
-           <string>Your personal health identity</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <spacer>
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>0</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
+       <item>
+        <layout class="QVBoxLayout">
+         <property name="spacing">
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="pageTitle">
+           <property name="styleSheet">
+            <string>QLabel { font-size: 22px; font-weight: bold; color: #0D1B16; }</string>
+           </property>
+           <property name="text">
+            <string>My Profile</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="pageSub">
+           <property name="styleSheet">
+            <string>QLabel { font-size: 13px; color: #5A7A6A; }</string>
+           </property>
+           <property name="text">
+            <string>Your personal health identity</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="toolbar">
+      <property name="styleSheet">
+       <string>QFrame#toolbar { background: #F8FBFA; border-bottom: 1px solid #DDE8E3; border-top: 1px solid #E4EDE9; }</string>
+      </property>
+      <property name="minimumHeight"><number>48</number></property>
+      <property name="maximumHeight"><number>48</number></property>
+      <layout class="QHBoxLayout">
+       <property name="leftMargin"><number>28</number></property>
+       <property name="topMargin"><number>10</number></property>
+       <property name="rightMargin"><number>28</number></property>
+       <property name="bottomMargin"><number>0</number></property>
        <item>
         <widget class="QPushButton" name="btnEdit">
          <property name="cursor">
@@ -135,11 +139,24 @@
          </property>
         </widget>
        </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QScrollArea" name="scrollArea">
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
      <property name="styleSheet">
       <string>QScrollArea { background: #F2F7F5; border: none; }</string>
      </property>
@@ -175,90 +192,79 @@
         <number>40</number>
        </property>
        <item>
-        <widget class="QFrame" name="profileHero">
-         <property name="minimumHeight"><number>100</number></property>
-         <property name="maximumHeight"><number>100</number></property>
-         <property name="styleSheet">
-          <string>QFrame#profileHero {
-            background: #FFFFFF;
-            border: 1px solid #DDE8E3;
-            border-radius: 16px;
-          }</string>
-         </property>
-         <layout class="QHBoxLayout">
-          <property name="spacing"><number>18</number></property>
-          <property name="leftMargin"><number>24</number></property>
-          <property name="topMargin"><number>20</number></property>
-          <property name="rightMargin"><number>28</number></property>
-          <property name="bottomMargin"><number>20</number></property>
+         <widget class="QFrame" name="profileHero">
+          <property name="minimumHeight"><number>120</number></property>
+          <property name="maximumHeight"><number>120</number></property>
+          <property name="styleSheet">
+           <string>QFrame#profileHero {
+             background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #E8F5EE, stop:1 #F0F9F4);
+             border: none;
+             border-radius: 16px;
+           }</string>
+          </property>
+          <layout class="QHBoxLayout">
+           <property name="spacing"><number>18</number></property>
+           <property name="leftMargin"><number>24</number></property>
+           <property name="topMargin"><number>20</number></property>
+           <property name="rightMargin"><number>28</number></property>
+           <property name="bottomMargin"><number>20</number></property>
 
-          
-          <item>
-           <widget class="QFrame" name="avatarFrame">
-            <property name="minimumSize"><size><width>60</width><height>60</height></size></property>
-            <property name="maximumSize"><size><width>60</width><height>60</height></size></property>
-            <property name="styleSheet">
-             <string>QFrame { background: #1A9E78; border-radius: 30px; border: none; }</string>
-            </property>
+           <item>
+            <widget class="QFrame" name="avatarFrame">
+             <property name="minimumSize"><size><width>72</width><height>72</height></size></property>
+             <property name="maximumSize"><size><width>72</width><height>72</height></size></property>
+             <property name="styleSheet">
+              <string>QFrame { background: #1A9E78; border-radius: 36px; border: 3px solid #FFFFFF; }</string>
+             </property>
+             <layout class="QVBoxLayout">
+              <property name="leftMargin"><number>0</number></property>
+              <property name="topMargin"><number>10</number></property>
+              <property name="rightMargin"><number>0</number></property>
+              <property name="bottomMargin"><number>0</number></property>
+              <item>
+               <widget class="QLabel" name="avatarInitials">
+                <property name="alignment"><set>Qt::AlignmentFlag::AlignCenter</set></property>
+                <property name="styleSheet">
+                 <string>QLabel { font-size: 24px; font-weight: bold; color: #FFFFFF; background: transparent; border: none; }</string>
+                </property>
+                <property name="text"><string>JD</string></property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+
+           <item>
             <layout class="QVBoxLayout">
-             <property name="leftMargin"><number>0</number></property>
-             <property name="topMargin"><number>0</number></property>
-             <property name="rightMargin"><number>0</number></property>
-             <property name="bottomMargin"><number>0</number></property>
+             <property name="spacing"><number>4</number></property>
              <item>
-              <widget class="QLabel" name="avatarInitials">
-               <property name="alignment"><set>Qt::AlignmentFlag::AlignCenter</set></property>
+              <widget class="QLabel" name="heroName">
                <property name="styleSheet">
-                <string>QLabel { font-size: 20px; font-weight: bold; color: #FFFFFF; background: transparent; border: none; }</string>
+                <string>QLabel { font-size: 22px; font-weight: bold; color: #0D6B52; }</string>
                </property>
-               <property name="text"><string>JD</string></property>
+               <property name="text"><string>Juan Dela Cruz</string></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="heroEmail">
+               <property name="styleSheet">
+                <string>QLabel { font-size: 13px; color: #546860; background: transparent; border: none; padding: 0; }</string>
+               </property>
+               <property name="text"><string>juan.delacruz@gmail.com</string></property>
               </widget>
              </item>
             </layout>
-           </widget>
-          </item>
+           </item>
 
-          
-          <item>
-           <widget class="QFrame" name="heroDivider">
-            <property name="minimumSize"><size><width>1</width><height>40</height></size></property>
-            <property name="maximumSize"><size><width>1</width><height>40</height></size></property>
-            <property name="styleSheet"><string>QFrame { background: #DDE8E3; border: none; }</string></property>
-           </widget>
-          </item>
+           <item>
+            <spacer>
+             <property name="orientation"><enum>Qt::Orientation::Horizontal</enum></property>
+             <property name="sizeHint" stdset="0"><size><width>40</width><height>0</height></size></property>
+            </spacer>
+           </item>
 
-          
-          <item>
-           <layout class="QVBoxLayout">
-            <property name="spacing"><number>5</number></property>
-            <item>
-             <widget class="QLabel" name="heroName">
-              <property name="styleSheet">
-               <string>QLabel { font-size: 18px; font-weight: bold; color: #1C2B25; }</string>
-              </property>
-              <property name="text"><string>Juan Dela Cruz</string></property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="heroEmail">
-              <property name="styleSheet">
-               <string>QLabel { font-size: 12px; color: #8FA89F; background: transparent; border: none; padding: 0; }</string>
-              </property>
-              <property name="text"><string>juan.delacruz@gmail.com</string></property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-
-          <item>
-           <spacer>
-            <property name="orientation"><enum>Qt::Orientation::Horizontal</enum></property>
-            <property name="sizeHint" stdset="0"><size><width>40</width><height>0</height></size></property>
-           </spacer>
-          </item>
-
-         </layout>
-        </widget>
+          </layout>
+         </widget>
        </item>
        <item>
         <spacer>

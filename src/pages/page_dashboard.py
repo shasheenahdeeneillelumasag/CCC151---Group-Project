@@ -14,7 +14,7 @@ from services.container import *
 from core.app_settings import AppSettings
 
 from widgets.reminder_card import reminder_status, compute_remind_on, _parse_date
-from dialogs.dialog_add_record import DialogAddRecord
+
 
 
 def _fmt_short(value) -> str:
@@ -61,7 +61,6 @@ class PageDashboard(QWidget):
             self.settings.get_active_patient_code()
         ) if self.settings.get_active_patient_code() else None
         self.patient_id = self.active_patient.patient_id if self.active_patient else None
-        self.btnAddRecord.clicked.connect(self._open_add_record)
         self.btnCloseBanner.clicked.connect(self._close_banner)
         self.btnViewAppt.clicked.connect(self._view_flagged_appt)
         self.btnDismissReminder.clicked.connect(self._dismiss_reminder)
@@ -90,7 +89,16 @@ class PageDashboard(QWidget):
                 frame.setCursor(Qt.CursorShape.PointingHandCursor)
                 frame.mousePressEvent = lambda e, idx=page_idx: self.navigate_requested.emit(idx)
 
+    def _refresh_patient(self):
+        self.active_patient = self.patient_service.get_patient_by_code(
+            self.settings.get_active_patient_code()
+        ) if self.settings.get_active_patient_code() else None
+        new_id = self.active_patient.patient_id if self.active_patient else None
+        if new_id != self.patient_id:
+            self.patient_id = new_id
+
     def load(self):
+        self._refresh_patient()
         if not self.patient_id:
             if hasattr(self, 'topSub'):
                 self.topSub.setText("Welcome! Please fill in your profile to get started.")
@@ -296,7 +304,7 @@ class PageDashboard(QWidget):
         bp_status, bp_color = _bp_status(latest.blood_pressure)
         rows.append(("Blood Pressure", latest.blood_pressure or "—", bp_status, bp_color))
 
-        if latest.weight_kg:
+        if latest.weight_kg is not None:
             rows.append(("Weight", f"{latest.weight_kg} kg", "Recorded", "#1A9E78"))
 
         for d in diagnoses:
@@ -341,14 +349,16 @@ class PageDashboard(QWidget):
         )
 
         if not upcoming:
-            self.apptDay.setText("—")
-            self.apptMonth.setText("")
+            self.apptDay.hide()
+            self.apptMonth.hide()
             self.apptDoctor.setStyleSheet("font-size: 12px; color: #8FA89F; padding: 14px 20px;")
             self.apptDoctor.setText("No upcoming appointments")
             self.apptNote.setText("")
             self.apptRemind.setText("")
             self.apptTime.setText("")
             return
+        self.apptDay.show()
+        self.apptMonth.show()
         self.apptDoctor.setStyleSheet("font-size: 13px; font-weight: bold; color: #1C2B25;")
 
         appt      = upcoming[0]
@@ -372,21 +382,24 @@ class PageDashboard(QWidget):
             key = s.vaccination_name.strip().lower()
             groups.setdefault(key, []).append(s)
 
+        card_layout = self.cardVaccine.layout()
         if hasattr(self, "_vacc_container"):
+            card_layout.removeWidget(self._vacc_container)
             self._vacc_container.deleteLater()
 
         from PyQt6.QtWidgets import QWidget as _W
         container = _W()
+        container.setStyleSheet("background: transparent;")
         layout = QVBoxLayout(container)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
 
         if not groups:
             empty = QLabel("No vaccinations logged yet.")
-            empty.setStyleSheet("font-size: 12px; color: #8FA89F; padding: 14px 20px;")
+            empty.setStyleSheet("font-size: 12px; color: #8FA89F; background: transparent; padding: 16px 20px;")
             layout.addWidget(empty)
         else:
-            entries = list(groups.values())[:3] 
+            entries = list(groups.values())[:3]
             for i, group_shots in enumerate(entries):
                 name     = group_shots[0].vaccination_name
                 total    = max(s.dose_number for s in group_shots)
@@ -394,29 +407,14 @@ class PageDashboard(QWidget):
                 complete = done >= total
 
                 row = QHBoxLayout()
-                row.setContentsMargins(20, 12, 20, 12)
-                row.setSpacing(12)
-
-                icon = QLabel()
-                icon.setFixedSize(36, 36)
-                icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                color = "#E8F5EB" if complete else "#E3F5EE"
-                icon.setStyleSheet(f"QLabel {{ background: {color}; border-radius: 9px; padding: 4px; }}")
-                
-                icon_path = self._get_icon_path("vaccines.svg")
-                if os.path.exists(icon_path):
-                    pixmap = QIcon(icon_path).pixmap(QSize(20, 20))
-                    icon.setPixmap(pixmap)
-
-                row.addWidget(icon)
+                row.setContentsMargins(20, 10, 20, 10)
+                row.setSpacing(10)
 
                 info = QVBoxLayout()
                 info.setSpacing(2)
                 lbl_name = QLabel(name)
                 lbl_name.setStyleSheet("font-size: 12px; font-weight: bold; color: #1C2B25;")
                 meta_text = f"{'Single dose' if total == 1 else f'{total}-dose series'}  ·  {'Complete' if complete else f'Dose {done} done'}"
-                lbl_meta = QLabel(meta_text)
-                lbl_meta.setStyleSheet("font-size: 10px; color: #546860;")
 
                 pip_row = QHBoxLayout()
                 pip_row.setSpacing(3)
@@ -430,11 +428,14 @@ class PageDashboard(QWidget):
                 pip_row.addStretch()
 
                 info.addWidget(lbl_name)
-                info.addWidget(lbl_meta)
+                meta_label = QLabel(meta_text)
+                meta_label.setStyleSheet("font-size: 10px; color: #546860;")
+                info.addWidget(meta_label)
                 info.addLayout(pip_row)
                 row.addLayout(info)
 
                 row_widget = QWidget()
+                row_widget.setStyleSheet("background: transparent;")
                 row_widget.setLayout(row)
                 layout.addWidget(row_widget)
 
@@ -444,14 +445,13 @@ class PageDashboard(QWidget):
                     div.setStyleSheet("QFrame { color: #DDE8E3; margin: 0 20px; }")
                     layout.addWidget(div)
 
-        card_layout = self.cardVaccine.layout()
-        card_layout.insertWidget(2, container)
+        for i in range(card_layout.count()):
+            item = card_layout.itemAt(i)
+            if item and item.spacerItem():
+                card_layout.removeItem(item)
+                break
+        card_layout.addWidget(container)
         self._vacc_container = container
-
-    def _open_add_record(self):
-        dialog = DialogAddRecord(self.patient_id)
-        if dialog.exec():
-            self.load()
 
     def _close_banner(self):
         self.reminderBanner.hide()

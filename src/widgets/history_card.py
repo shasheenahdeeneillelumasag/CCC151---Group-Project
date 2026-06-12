@@ -54,12 +54,10 @@ class HistoryCard(QFrame):
             self.setStyleSheet("""
                 QFrame#HistoryCard {
                     background: #EAF7F3;
-                    border-bottom: 1px solid #DDE8E3;
+                    border: 1px solid #1A9E78;
+                    border-radius: 14px;
                 }
             """)
-            self.selectionIndicator.setStyleSheet(
-                "background: #1A9E78;"
-            )
         else:
             self.setStyleSheet("""
                 QFrame#HistoryCard {
@@ -67,9 +65,6 @@ class HistoryCard(QFrame):
                     border-bottom: 1px solid #DDE8E3;
                 }
             """)
-            self.selectionIndicator.setStyleSheet(
-                "background: transparent;"
-            )
 
     def mousePressEvent(self, event):
         self.clicked.emit()
