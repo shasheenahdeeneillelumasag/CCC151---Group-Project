@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from datetime import date, time
 
-
 @dataclass
 class Appointment:
     appointment_id: int

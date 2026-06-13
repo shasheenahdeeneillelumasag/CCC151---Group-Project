@@ -29,7 +29,6 @@ class PageReminders(QWidget):
         ) if self.settings.get_active_patient_code() else None
         self.patient_id = self.active_patient.patient_id if self.active_patient else None
 
-        self.appointment_service.changed.connect(self.load_reminders)
         self.patient_service.changed.connect(self._on_patient_changed)
 
         self.load_reminders()

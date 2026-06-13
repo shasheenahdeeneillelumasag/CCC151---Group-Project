@@ -5,7 +5,7 @@ from cli.patient_contact_commands import patient_contact_app
 from cli.diagnosis_commands import diagnosis_app
 from cli.document_commands import document_app
 from cli.vaccine_commands import vaccine_shot_app
-
+from cli.reminder_commands import reminder_app
 
 from database.init_db import init_db
 
@@ -39,6 +39,11 @@ app.add_typer(
 app.add_typer(
     vaccine_shot_app,
     name="vaccine"
+)
+
+app.add_typer(
+    reminder_app,
+    name="reminder"
 )
 
 if __name__ == "__main__":

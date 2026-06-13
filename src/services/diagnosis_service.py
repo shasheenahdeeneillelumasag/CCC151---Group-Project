@@ -81,7 +81,7 @@ class DiagnosisService(QObject):
         )
 
         self.repo.update(diagnosis)
-        self.signal.emit()
+        self.changed.emit()
         return diagnosis
 
     def delete_diagnosis(
@@ -90,4 +90,4 @@ class DiagnosisService(QObject):
     ):
 
         self.repo.delete(diagnosis_id)
-        self.signal.emit()
+        self.changed.emit()
