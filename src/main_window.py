@@ -11,7 +11,7 @@ from PyQt6.QtCore import QSize, Qt
 from database.init_db import init_db
 from core.app_settings import AppSettings
 
-from services.container import patient_service, visit_record_service, diagnosis_service, appointment_service, vaccination_shot_service, prescription_service, document_service
+from services.container import patient_service, visit_record_service, diagnosis_service, appointment_service, vaccination_shot_service, prescription_service, document_service, reminder_service
 
 
 from pages.page_dashboard import PageDashboard
@@ -22,7 +22,6 @@ from pages.page_appointments import PageAppointments
 from pages.page_reminder import PageReminders
 from pages.page_documents import PageDocuments
 
-from widgets.reminder_card import reminder_status, _parse_date
 
 
 class MainWindow(QMainWindow):
@@ -66,7 +65,7 @@ class MainWindow(QMainWindow):
         vaccination_shot_service.changed.connect(self._update_badges)
         appointment_service.changed.connect(self._update_badges)
         document_service.changed.connect(self._update_badges)
-   
+        reminder_service.changed.connect(self._update_badges) 
 
     def load_icon(self, button, icon_name):
         icon_path = os.path.join(os.path.dirname(__file__), '..', 'assets', icon_name)
@@ -240,15 +239,23 @@ class MainWindow(QMainWindow):
         shots = vaccination_shot_service.get_vaccinations_by_patient_id(patient_id)
         self._set_badge(self.badgeVaccinations, len(shots))
 
-        appointments = appointment_service.get_appointments_by_patient_id(patient_id)
-        upcoming = [
-            a for a in appointments
-            if a.status == "Scheduled" and _parse_date(a.appt_date) and _parse_date(a.appt_date) >= today
-        ]
-        self._set_badge(self.badgeAppointments, len(upcoming))
+        reminders = reminder_service.get_patient_reminders(patient_id)
 
-        flagged = [a for a in appointments if reminder_status(a) == "flagged"]
-        self._set_badge(self.badgeReminders, len(flagged), amber=bool(flagged))
+        self._set_badge(
+            self.badgeReminders,
+            sum(1 for r in reminders if r.status == "Flagged"),
+            amber=any(r.status == "Flagged" for r in reminders)
+        )
+
+        self._set_badge(
+            self.badgeAppointments,
+            sum(
+                1
+                for r in reminders
+                if r.source_type == "appointment"
+                and r.status in ("Upcoming", "Flagged")
+            )
+        )
 
         record_ids = {r.record_id for r in records}
         shot_ids   = {s.vaccine_id for s in shots}

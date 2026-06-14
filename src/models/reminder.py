@@ -8,6 +8,7 @@ class Reminder:
 
     title: str
     subtitle: str
+    subtitle_2: str
 
     schedule_date: date
     remind_on: date

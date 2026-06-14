@@ -1,134 +1,138 @@
-from datetime import date, datetime, timedelta
+from datetime import date
 
-from PyQt6.QtWidgets import (
-    QFrame, QLabel, QHBoxLayout, QVBoxLayout,
-    QSizePolicy
-)
-from PyQt6.QtCore import Qt, pyqtSignal
-from PyQt6.QtGui import QMouseEvent
+from PyQt6 import uic
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import QFrame
 
-from models.appointment import Appointment
+from models.reminder import Reminder
 
 
-def _parse_date(value) -> date | None:
-    if isinstance(value, date):
-        return value
-    if isinstance(value, str):
-        try:
-            return datetime.strptime(value, "%Y-%m-%d").date()
-        except ValueError:
-            return None
-    return None
-
-
-def _fmt_date(value) -> str:
-    d = _parse_date(value)
-    return d.strftime("%B %d, %Y") if d else "—"
-
-
-def compute_remind_on(appt_date) -> date | None:
-    d = _parse_date(appt_date)
-    return (d - timedelta(days=2)) if d else None
-
-
-def reminder_status(appt: Appointment) -> str:
-    appt_date   = _parse_date(appt.appt_date)
-    remind_on   = compute_remind_on(appt_date)
-    today       = date.today()
-
-    if appt.status == "Cancelled":
-        return "dismissed"
-    if appt.status == "Completed":
-        return "completed"
-    if appt_date and today > appt_date:
-        return "flagged"
-    if remind_on and today >= remind_on:
-        return "flagged"
-    return "upcoming"
+def fmt_date(value):
+    return value.strftime("%B %d, %Y") if value else "—"
 
 
 class ReminderCard(QFrame):
-
     clicked = pyqtSignal(object)
 
-    def __init__(self, appt: Appointment, show_divider: bool = True):
+    def __init__(self, reminder: Reminder):
         super().__init__()
-        self.appt = appt
 
-        status      = reminder_status(appt)
-        appt_date   = _parse_date(appt.appt_date)
-        remind_on   = compute_remind_on(appt_date)
-        today       = date.today()
+        uic.loadUi("ui/card_reminder.ui", self)
 
-        days_away   = (appt_date - today).days if appt_date else None
+        self.reminder = reminder
 
-        obj_name = f"remCard_{id(self)}"
-        self.setObjectName(obj_name)
+        self.populate(reminder)
 
-        border = "border-bottom: 1px solid #DDE8E3;" if show_divider else ""
-        self.setStyleSheet(f"""
-            QFrame#{obj_name} {{
-                background: transparent;
-                {border}
-            }}
-            QFrame#{obj_name}:hover {{
-                background: #F8FBFA;
-            }}
-        """)
+    def populate(self, reminder: Reminder):
+        self.lblTitle.setText(reminder.title)
 
-        layout = QHBoxLayout(self)
-        layout.setContentsMargins(20, 15, 20, 15)
-        layout.setSpacing(14)
+        if reminder.subtitle_2:
+            self.lblSubtitle.setText(f"{reminder.subtitle} - {reminder.subtitle_2}")
+        else:
+            self.lblSubtitle.setText(f"{reminder.subtitle}")
 
-        info = QVBoxLayout()
-        info.setSpacing(3)
+        today = date.today()
+        days_away = (reminder.schedule_date - today).days
 
-        lbl_title = QLabel(appt.purpose)
-        lbl_title.setStyleSheet("font-size: 13px; font-weight: bold; color: #1C2B25;")
-        info.addWidget(lbl_title)
+        status = reminder.status.lower()
 
-        lbl_meta = QLabel(f"{appt.clinic_name}  ·  {appt.appt_time}")
-        lbl_meta.setStyleSheet("font-size: 11px; color: #546860;")
-        info.addWidget(lbl_meta)
+        if status == "flagged":
+            self.lblReminderMessage.show()
 
-        lbl_dates = QLabel(
-            f"remind_on: {_fmt_date(remind_on)}   ·   "
-            f"appointment_date: {_fmt_date(appt_date)}"
+            self.lblReminderMessage.setText(
+                f"⚠ Flagged today — "
+                f"{'scheduled today' if days_away == 0 else f'{days_away} day(s) away'}"
+            )
+
+            self.lblReminderMessage.setStyleSheet("""
+                QLabel {
+                    font-size: 10px;
+                    color: #C47B12;
+                    font-weight: 600;
+                }
+            """)
+
+        elif status == "upcoming":
+            self.lblReminderMessage.show()
+
+            self.lblReminderMessage.setText(
+                f"Reminder will flag on {fmt_date(reminder.remind_on)}"
+            )
+
+            self.lblReminderMessage.setStyleSheet("""
+                QLabel {
+                    font-size: 10px;
+                    color: #8FA89F;
+                }
+            """)
+
+        else:
+            self.lblReminderMessage.hide()
+
+        self.lblDates.setText(
+            f"Remind on: {fmt_date(reminder.remind_on)}"
+            f"  ·  Scheduled: {fmt_date(reminder.schedule_date)}"
         )
-        lbl_dates.setStyleSheet("font-size: 10px; color: #8FA89F; font-style: italic;")
-        info.addWidget(lbl_dates)
 
-        layout.addLayout(info)
-        layout.addStretch()
+        self._apply_status_style(status)
 
-        right = QVBoxLayout()
-        right.setSpacing(8)
-        right.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
-
+    def _apply_status_style(self, status: str):
         badge_styles = {
-            "flagged":   ("#FBDF9E", "#7A4D0A", "Flagged"),
-            "completed": ("#E8F5EB", "#1F5C2E", "Completed"),
-            "dismissed": ("#FAE8E8", "#8A1F1F", "Dismissed"),
-            "upcoming":  ("#EAF3FC", "#1A4F8A", "Upcoming"),
+            "flagged": (
+                "#FBDF9E",
+                "#7A4D0A",
+                "Flagged"
+            ),
+            "completed": (
+                "#E8F5EB",
+                "#1F5C2E",
+                "Completed"
+            ),
+            "dismissed": (
+                "#FAE8E8",
+                "#8A1F1F",
+                "Dismissed"
+            ),
+            "upcoming": (
+                "#EAF3FC",
+                "#1A4F8A",
+                "Upcoming"
+            ),
         }
-        bg, fg, label = badge_styles.get(status, ("#F0F0F0", "#555", status.title()))
 
-        badge = QLabel(f"  {label}  ")
-        badge.setAlignment(Qt.AlignmentFlag.AlignRight)
-        badge.setStyleSheet(f"""
+        bg, fg, text = badge_styles.get(
+            status,
+            ("#F0F0F0", "#555555", status.title())
+        )
+
+        self.lblStatus.setText(text)
+
+        self.lblStatus.setStyleSheet(f"""
             QLabel {{
                 background: {bg};
                 color: {fg};
+                border-radius: 12px;
+                padding: 4px 10px;
                 font-size: 10px;
                 font-weight: bold;
-                border-radius: 20px;
-                padding: 2px 4px;
             }}
         """)
-        badge.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        right.addWidget(badge)
-        layout.addLayout(right)
 
-    def mousePressEvent(self, event: QMouseEvent):
-        self.clicked.emit(self.appt)
+        if status == "Flagged":
+            self.setStyleSheet("""
+                QFrame#ReminderCard {
+                    background: #FFFBF0;
+                    border-bottom: 1px solid #DDE8E3;
+                }
+            """)
+        else:
+            self.setStyleSheet("""
+                QFrame#ReminderCard {
+                    background: white;
+                    border-bottom: 1px solid #DDE8E3;
+                }
+            """)
+
+    def mousePressEvent(self, event):
+        self.clicked.emit(self.reminder)
         super().mousePressEvent(event)

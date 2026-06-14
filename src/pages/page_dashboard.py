@@ -13,9 +13,18 @@ from PyQt6 import uic
 from services.container import *
 from core.app_settings import AppSettings
 
-from widgets.reminder_card import reminder_status, compute_remind_on, _parse_date
+from widgets.reminder_card import ReminderCard
 
 
+def _parse_date(value) -> date | None:
+    if isinstance(value, date):
+        return value
+    if isinstance(value, str):
+        try:
+            return datetime.strptime(value, "%Y-%m-%d").date()
+        except ValueError:
+            return None
+    return None
 
 def _fmt_short(value) -> str:
     d = _parse_date(value)
@@ -210,14 +219,22 @@ class PageDashboard(QWidget):
             items.append((_parse_date(s.display_date),
                           f"{s.vaccination_name} Dose {s.display_dose}  ·  {_fmt_short(s.display_date)}", "vaccines.svg"))
 
-        appointments = self.appointment_service.get_appointments_by_patient_id(self.patient_id)
-        for a in appointments:
-            items.append((_parse_date(a.appt_date),
-                          f"{a.purpose}  ·  {_fmt_short(a.appt_date)}", "calendar_month.svg"))
-            remind_on = compute_remind_on(a.appt_date)
-            if remind_on:
-                items.append((remind_on,
-                               f"Reminder for {a.purpose}  ·  Remind: {_fmt_short(remind_on)}", "notifications.svg"))
+        reminders = reminder_service.get_patient_reminders(self.patient_id)
+
+        for r in reminders:
+            items.append((
+                r.schedule_date,
+                f"{r.title}  ·  {r.schedule_date:%b %d, %Y}",
+                "calendar_month.svg"
+            ))
+
+            if r.remind_on:
+                items.append((
+                    r.remind_on,
+                    f"Reminder for {r.title}  ·  Remind: {r.remind_on:%b %d, %Y}",
+                    "notifications.svg"
+                ))
+
 
         items.sort(key=lambda x: x[0] or date.min, reverse=True)
         for _, text, icon_name in items[:8]:

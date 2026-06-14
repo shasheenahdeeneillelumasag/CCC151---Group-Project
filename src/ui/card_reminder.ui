@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>615</width>
+    <width>858</width>
     <height>134</height>
    </rect>
   </property>
@@ -61,7 +61,7 @@ QFrame#HistoryCard:hover { background: #F8FBFA; }
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="lblDateAway">
+      <widget class="QLabel" name="lblReminderMessage">
        <property name="styleSheet">
         <string>QLabel { font-size: 11px; color: #546860; }</string>
        </property>
@@ -101,13 +101,6 @@ QFrame#HistoryCard:hover { background: #F8FBFA; }
       <widget class="QLabel" name="lblStatus">
        <property name="text">
         <string>CURRENT_STATUS</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnDetails">
-       <property name="text">
-        <string>Details</string>
        </property>
       </widget>
      </item>
