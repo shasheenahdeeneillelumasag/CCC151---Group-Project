@@ -103,6 +103,15 @@ class ApptCard(QFrame):
 
         layout.addLayout(right_col)
 
+    def set_selected(self, selected: bool):
+        self._selected = selected
+        border = "#1A9E78" if selected else "#DDE8E3"
+        bg = "#FFFFFF"
+        self.setStyleSheet(
+            f"QFrame#apptCard {{ background: {bg}; border: 2px solid {border}; border-radius: 16px; }}"
+            f"QFrame#apptCard:hover {{ border-color: #9FE1CB; }}"
+        )
+
     def mousePressEvent(self, event):
         self.clicked.emit(self)
         super().mousePressEvent(event)

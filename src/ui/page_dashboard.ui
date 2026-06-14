@@ -38,19 +38,20 @@
      </property>
       <property name="minimumHeight"><number>72</number></property>
       <property name="maximumHeight"><number>72</number></property>
-     <layout class="QHBoxLayout" name="topbarLayout">
-      <property name="leftMargin">
-       <number>28</number>
-      </property>
-       <property name="topMargin">
-        <number>12</number>
-       </property>
-       <property name="rightMargin">
-        <number>28</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
+    <layout class="QHBoxLayout" name="topbarLayout">
+     <property name="spacing"><number>0</number></property>
+     <property name="leftMargin">
+      <number>28</number>
+     </property>
+     <property name="topMargin">
+      <number>12</number>
+     </property>
+     <property name="rightMargin">
+      <number>28</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
       <item>
        <layout class="QVBoxLayout">
         <property name="spacing">
