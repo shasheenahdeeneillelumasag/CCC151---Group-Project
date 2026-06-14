@@ -96,8 +96,6 @@ class PageDashboard(QWidget):
     def load(self):
         self._refresh_patient()
         if not self.patient_id:
-            if hasattr(self, 'topSub'):
-                self.topSub.setText("Welcome! Please fill in your profile to get started.")
             return
         patient = self.patient_service.get_patient_by_id(self.patient_id)
 
@@ -108,9 +106,7 @@ class PageDashboard(QWidget):
             greeting = "Good afternoon"
         else:
             greeting = "Good evening"
-        self.topSub.setText(
-            f"{greeting}, {patient.first_name} — here's your health at a glance"
-        )
+
 
         self._load_stats()
         self._load_activity()
