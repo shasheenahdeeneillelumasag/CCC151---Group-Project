@@ -12,6 +12,9 @@ ASSETS_DIR = os.path.join(os.path.dirname(__file__), '..', 'assets')
 
 
 def main():
+    # Ensure CWD is src/ so all ../assets/ paths in .ui files resolve correctly
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
     init_db()
     UserService().init_users_table()
     app = QApplication(sys.argv)

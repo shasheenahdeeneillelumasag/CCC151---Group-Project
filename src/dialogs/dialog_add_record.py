@@ -119,6 +119,34 @@ class DialogAddRecord(QDialog):
         self.uploadZoneDiag.mousePressEvent = lambda _e: self._pick_diag_files()
         self.uploadZoneRx.mousePressEvent = lambda _e: self._pick_rx_files()
 
+        self.inputBP.setText("/")
+        self.inputBP.textChanged.connect(self._constrain_bp)
+        self.inputWeight.textChanged.connect(self._constrain_weight)
+
+    def _constrain_bp(self, text: str):
+        parts = text.split("/", 1)
+        left = "".join(ch for ch in parts[0] if ch.isdigit())
+        right = "".join(ch for ch in parts[1] if ch.isdigit()) if len(parts) > 1 else ""
+        formatted = f"{left}/{right}"
+        if formatted != text:
+            self.inputBP.blockSignals(True)
+            self.inputBP.setText(formatted)
+            self.inputBP.blockSignals(False)
+
+    def _constrain_weight(self, text: str):
+        filtered = ""
+        dot_seen = False
+        for ch in text:
+            if ch.isdigit():
+                filtered += ch
+            elif ch == "." and not dot_seen:
+                filtered += ch
+                dot_seen = True
+        if filtered != text:
+            self.inputWeight.blockSignals(True)
+            self.inputWeight.setText(filtered)
+            self.inputWeight.blockSignals(False)
+
     def _pick_diag_files(self):
         paths, _ = QFileDialog.getOpenFileNames(
             self, "Select files to attach to diagnosis", "", "All files (*.*)",

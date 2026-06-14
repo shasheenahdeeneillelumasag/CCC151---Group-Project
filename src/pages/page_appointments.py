@@ -34,7 +34,6 @@ def _status_badge_style(status: str) -> tuple[str, str, str]:
 
 class ApptCard(QFrame):
     clicked = pyqtSignal(object)
-    reminder_clicked = pyqtSignal(object)
 
     def __init__(self, appt: Appointment, past: bool = False):
         super().__init__()
@@ -46,10 +45,6 @@ class ApptCard(QFrame):
         date_str = appt_date.strftime("%B %d, %Y") if appt_date else "—"
 
         badge_bg, badge_fg, badge_label = _status_badge_style(appt.status)
-
-        remind_on = (appt_date - timedelta(days=2)) if appt_date else None
-        today = date.today()
-        reminder_active = remind_on and today >= remind_on and appt_date and today < appt_date
 
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setObjectName("apptCard")
@@ -91,18 +86,6 @@ class ApptCard(QFrame):
         right_col.setSpacing(8)
         right_col.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
 
-        if appt.status == "Scheduled" and not past:
-            bell_color = "#C47B12" if reminder_active else "#C8D9D2"
-            bell_bg = "#FEF3DC" if reminder_active else "transparent"
-            bell_text = "[!]" if reminder_active else "[]"
-            rem_lbl = QLabel(bell_text)
-            rem_lbl.setCursor(Qt.CursorShape.PointingHandCursor)
-            rem_lbl.setStyleSheet(f"font-size: 15px; color: {bell_color}; background: {bell_bg}; padding: 2px 8px; border-radius: 6px; border: none;")
-            rem_lbl.setToolTip("Reminder: " + (remind_on.strftime("%b %d, %Y") if remind_on else "—"))
-            rem_lbl.setAlignment(Qt.AlignmentFlag.AlignRight)
-            rem_lbl.mousePressEvent = lambda e, a=appt: self.reminder_clicked.emit(a)
-            right_col.addWidget(rem_lbl)
-
         badge = QLabel(f"  {badge_label}  ")
         badge.setStyleSheet(f"""
             QLabel {{
@@ -119,29 +102,6 @@ class ApptCard(QFrame):
         right_col.addWidget(badge)
 
         layout.addLayout(right_col)
-
-    def set_selected(self, selected: bool):
-        self._selected = selected
-        if selected:
-            self.setStyleSheet("""
-                QFrame#apptCard {
-                    background: #E3F5EE;
-                    border: 2px solid #1A9E78;
-                    border-radius: 16px;
-                }
-            """)
-        else:
-            bg = "#FAFCFB" if self._past else "#FFFFFF"
-            self.setStyleSheet(f"""
-                QFrame#apptCard {{
-                    background: {bg};
-                    border: 1px solid #DDE8E3;
-                    border-radius: 16px;
-                }}
-                QFrame#apptCard:hover {{
-                    border-color: #9FE1CB;
-                }}
-            """)
 
     def mousePressEvent(self, event):
         self.clicked.emit(self)
@@ -216,8 +176,6 @@ class PageAppointments(QWidget):
             for appt in appointments:
                 card = ApptCard(appt, past=past)
                 card.clicked.connect(self._select_card)
-                if not past:
-                    card.reminder_clicked.connect(self._show_reminder_info)
                 container_layout.addWidget(card)
 
         layout = self.scrollContent.layout()
@@ -230,21 +188,6 @@ class PageAppointments(QWidget):
         self.selected_card = card
         self.selected_appt = card.appt
         card.set_selected(True)
-
-    def _show_reminder_info(self, appt: Appointment):
-        appt_date = _parse_date(appt.appt_date)
-        remind_on = (appt_date - timedelta(days=2)) if appt_date else None
-        today = date.today()
-        status = "Active" if (remind_on and today >= remind_on and appt_date and today < appt_date) else "Pending"
-        info = (
-            f"Appointment: {appt.purpose}\n"
-            f"Clinic: {appt.clinic_name}\n"
-            f"Date: {appt.appt_date}\n"
-            f"Time: {appt.appt_time}\n"
-            f"Remind on: {remind_on.strftime('%B %d, %Y') if remind_on else '—'}\n"
-            f"Status: {status}"
-        )
-        QMessageBox.information(self, "Reminder Details", info)
 
     def _open_add_dialog(self):
         dialog = DialogAddAppointment(self.patient_id)

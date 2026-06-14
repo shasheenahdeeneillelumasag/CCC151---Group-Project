@@ -120,6 +120,10 @@ class DialogEditRecord(QDialog):
         set_date_picker(self.inputDiagnosisDateMonth, self.inputDiagnosisDateDay, self.inputDiagnosisDateYear, today)
         set_date_picker(self.inputRxDateMonth, self.inputRxDateDay, self.inputRxDateYear, today)
 
+        self.inputBP.setText("/")
+        self.inputBP.textChanged.connect(self._constrain_bp)
+        self.inputWeight.textChanged.connect(self._constrain_weight)
+
         self._prefill()
 
         self.btnCancel.clicked.connect(self._confirm_cancel)
@@ -159,6 +163,37 @@ class DialogEditRecord(QDialog):
                 self._rx_files.append(path)
         count = len(self._rx_files)
         self.lblUploadHintRx.setText(f"{count} file(s) selected" if count else "Click to upload")
+
+    def _constrain_bp(self, text: str):
+        digits = "".join(ch for ch in text if ch.isdigit())
+        if not digits:
+            if text != "":
+                self.inputBP.blockSignals(True)
+                self.inputBP.setText("")
+                self.inputBP.blockSignals(False)
+            return
+        if len(digits) <= 3:
+            formatted = digits
+        else:
+            formatted = f"{digits[:3]}/{digits[3:]}"
+        if formatted != text:
+            self.inputBP.blockSignals(True)
+            self.inputBP.setText(formatted)
+            self.inputBP.blockSignals(False)
+
+    def _constrain_weight(self, text: str):
+        filtered = ""
+        dot_seen = False
+        for ch in text:
+            if ch.isdigit():
+                filtered += ch
+            elif ch == "." and not dot_seen:
+                filtered += ch
+                dot_seen = True
+        if filtered != text:
+            self.inputWeight.blockSignals(True)
+            self.inputWeight.setText(filtered)
+            self.inputWeight.blockSignals(False)
 
     def _prefill(self):
         r = self.record

@@ -8,7 +8,7 @@
     QLabel { background: transparent; }
     QFrame#card { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }
     QFrame#reminderBanner { background: #FEF3DC; border: 1.5px solid #FBDF9E; border-radius: 14px; }
-    QFrame#statCard { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }
+    QFrame#statCard { background: #FFFFFF; border: none; border-radius: 14px; }
     QFrame#cardActivity:hover, QFrame#cardVitals:hover,
     QFrame#cardAppt:hover, QFrame#cardVaccine:hover,
     QFrame#statCard1:hover, QFrame#statCard2:hover,
@@ -309,7 +309,7 @@
          <item>
           <widget class="QFrame" name="statCard1">
            <property name="styleSheet">
-            <string>QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+            <string>QFrame { background: #FFFFFF; border: none; border-radius: 14px; }</string>
            </property>
            <layout class="QVBoxLayout">
             <property name="spacing">
@@ -388,7 +388,7 @@
          <item>
           <widget class="QFrame" name="statCard2">
            <property name="styleSheet">
-            <string>QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+            <string>QFrame { background: #FFFFFF; border: none; border-radius: 14px; }</string>
            </property>
            <layout class="QVBoxLayout">
             <property name="spacing">
@@ -464,7 +464,7 @@
          <item>
           <widget class="QFrame" name="statCard3">
            <property name="styleSheet">
-            <string>QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+            <string>QFrame { background: #FFFFFF; border: none; border-radius: 14px; }</string>
            </property>
            <layout class="QVBoxLayout">
             <property name="spacing">
@@ -540,7 +540,7 @@
          <item>
           <widget class="QFrame" name="statCard4">
            <property name="styleSheet">
-            <string>QFrame { background: #FFFFFF; border: 1px solid #DDE8E3; border-radius: 14px; }</string>
+            <string>QFrame { background: #FFFFFF; border: none; border-radius: 14px; }</string>
            </property>
            <layout class="QVBoxLayout">
             <property name="spacing">
@@ -682,33 +682,33 @@
                </spacer>
               </item>
 
-             </layout>
-            </item>
-            <item>
-             <widget class="QFrame" name="actDivider">
-              <property name="styleSheet">
-               <string>QFrame { color: #DDE8E3; }</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::Shape::HLine</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QListWidget" name="activityList">
-              <property name="styleSheet">
-               <string>
-                QListWidget { background: transparent; border: none; outline: none; }
-                QListWidget::item { padding: 10px 20px; border-bottom: 1px solid #DDE8E3; color: #1C2B25; font-size: 12px; }
-                QListWidget::item:hover { background: #F8FBFA; }
-                QListWidget::item:selected { background: #E3F5EE; color: #1C2B25; }
-               </string>
-              </property>
+              </layout>
+             </item>
+             <item>
+              <widget class="QFrame" name="actDivider">
+               <property name="styleSheet">
+                <string>QFrame { color: #DDE8E3; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::Shape::HLine</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QListWidget" name="activityList">
+               <property name="styleSheet">
+                <string>
+                 QListWidget { background: transparent; border: none; outline: none; }
+                 QListWidget::item { padding: 10px 20px; border-bottom: 1px solid #DDE8E3; color: #1C2B25; font-size: 12px; }
+                 QListWidget::item:hover { background: #F8FBFA; }
+                 QListWidget::item:selected { background: #E3F5EE; color: #1C2B25; }
+                </string>
+               </property>
               <property name="frameShape">
                <enum>QFrame::Shape::NoFrame</enum>
               </property>
 
-             </widget>
+              </widget>
             </item>
            </layout>
           </widget>
@@ -761,28 +761,28 @@
                 </property>
                </widget>
               </item>
-               </layout>
-            </item>
-            <item>
-             <widget class="QFrame" name="vitalsDivider">
-              <property name="styleSheet">
-               <string>QFrame { color: #DDE8E3; }</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::Shape::HLine</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QTableWidget" name="vitalsTable">
-              <property name="styleSheet">
-               <string>
-                QTableWidget { background: transparent; border: none; font-size: 12px; gridline-color: #DDE8E3; }
-                QTableWidget::item { padding: 8px 20px; border-bottom: 1px solid #DDE8E3; color: #1C2B25; }
-                QHeaderView { display: none; }
-                QHeaderView::section { background: transparent; border: none; font-size: 10px; color: #8FA89F; padding: 6px 20px; }
-               </string>
-              </property>
+                </layout>
+             </item>
+             <item>
+              <widget class="QFrame" name="vitalsDivider">
+               <property name="styleSheet">
+                <string>QFrame { color: #DDE8E3; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::Shape::HLine</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTableWidget" name="vitalsTable">
+               <property name="styleSheet">
+                <string>
+                 QTableWidget { background: transparent; border: none; font-size: 12px; gridline-color: #DDE8E3; }
+                 QTableWidget::item { padding: 8px 20px; border-bottom: 1px solid #DDE8E3; color: #1C2B25; }
+                 QHeaderView { display: none; }
+                 QHeaderView::section { background: transparent; border: none; font-size: 10px; color: #8FA89F; padding: 6px 20px; }
+                </string>
+               </property>
               <property name="frameShape">
                <enum>QFrame::Shape::NoFrame</enum>
               </property>
@@ -874,48 +874,35 @@
                 </property>
                </spacer>
               </item>
-               <item>
-                <widget class="QPushButton" name="btnViewAllAppt">
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="styleSheet">
-                  <string>QPushButton { background: transparent; color: #1A9E78; font-size: 11px; font-weight: 600; border: none; } QPushButton:hover { color: #0D6B52; }</string>
-                 </property>
-                 <property name="text">
-                  <string>View all</string>
-                 </property>
-                </widget>
-               </item>
              </layout>
             </item>
-            <item>
-             <widget class="QFrame" name="frame">
-              <property name="styleSheet">
-               <string>QFrame { color: #DDE8E3; }</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::Shape::HLine</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout">
-              <property name="spacing">
-               <number>14</number>
-              </property>
-              <property name="leftMargin">
-               <number>20</number>
-              </property>
-              <property name="topMargin">
-               <number>14</number>
-              </property>
-              <property name="rightMargin">
-               <number>20</number>
-              </property>
-              <property name="bottomMargin">
-               <number>14</number>
-              </property>
+             <item>
+              <widget class="QFrame" name="frame">
+               <property name="styleSheet">
+                <string>QFrame { color: #DDE8E3; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::Shape::HLine</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout">
+               <property name="spacing">
+                <number>14</number>
+               </property>
+               <property name="leftMargin">
+                <number>20</number>
+               </property>
+               <property name="topMargin">
+                <number>14</number>
+               </property>
+               <property name="rightMargin">
+                <number>20</number>
+               </property>
+               <property name="bottomMargin">
+                <number>14</number>
+               </property>
               <item>
                <layout class="QVBoxLayout">
                 <property name="spacing">
@@ -1082,18 +1069,18 @@
                  </property>
                 </widget>
               </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="QFrame" name="frame">
-              <property name="styleSheet">
-               <string>QFrame { color: #DDE8E3; }</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::Shape::HLine</enum>
-              </property>
-             </widget>
-            </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QFrame" name="frame">
+               <property name="styleSheet">
+                <string>QFrame { color: #DDE8E3; }</string>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::Shape::HLine</enum>
+               </property>
+              </widget>
+             </item>
              <item>
               <spacer>
                <property name="orientation">
@@ -1107,30 +1094,30 @@
                </property>
               </spacer>
              </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
      </widget>
-    </widget>
-   </item>
-  </layout>
- </widget>
- <resources />
- <connections />
-</ui>
+    </item>
+   </layout>
+  </widget>
+  <resources />
+  <connections />
+ </ui>

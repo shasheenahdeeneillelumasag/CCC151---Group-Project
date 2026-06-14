@@ -2,10 +2,10 @@ from datetime import date, datetime, timedelta
 
 from PyQt6.QtWidgets import (
     QFrame, QLabel, QHBoxLayout, QVBoxLayout,
-    QPushButton, QSizePolicy
+    QSizePolicy
 )
-from PyQt6.QtCore import Qt, pyqtSignal, QSize
-from PyQt6.QtGui import QIcon
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QMouseEvent
 
 from models.appointment import Appointment
 
@@ -27,16 +27,11 @@ def _fmt_date(value) -> str:
 
 
 def compute_remind_on(appt_date) -> date | None:
-    """Returns the date 2 days before the appointment."""
     d = _parse_date(appt_date)
     return (d - timedelta(days=2)) if d else None
 
 
 def reminder_status(appt: Appointment) -> str:
-    """
-    Returns one of: 'flagged', 'upcoming', 'completed', 'dismissed'
-    based on the appointment's stored status and date.
-    """
     appt_date   = _parse_date(appt.appt_date)
     remind_on   = compute_remind_on(appt_date)
     today       = date.today()
@@ -53,12 +48,8 @@ def reminder_status(appt: Appointment) -> str:
 
 
 class ReminderCard(QFrame):
-    """
-    A single reminder row for use inside the remList card.
-    Emits view_clicked(appointment) when the > button is pressed.
-    """
 
-    view_clicked = pyqtSignal(object) 
+    clicked = pyqtSignal(object)
 
     def __init__(self, appt: Appointment, show_divider: bool = True):
         super().__init__()
@@ -71,7 +62,6 @@ class ReminderCard(QFrame):
 
         days_away   = (appt_date - today).days if appt_date else None
 
-        #  Row background 
         obj_name = f"remCard_{id(self)}"
         self.setObjectName(obj_name)
 
@@ -95,7 +85,6 @@ class ReminderCard(QFrame):
         layout.setContentsMargins(20, 15, 20, 15)
         layout.setSpacing(14)
 
-        # Info 
         info = QVBoxLayout()
         info.setSpacing(3)
 
@@ -131,7 +120,6 @@ class ReminderCard(QFrame):
         layout.addLayout(info)
         layout.addStretch()
 
-        # Right: badge + view button 
         right = QVBoxLayout()
         right.setSpacing(8)
         right.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter)
@@ -158,21 +146,8 @@ class ReminderCard(QFrame):
         """)
         badge.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         right.addWidget(badge)
-
-        view_btn = QPushButton()
-        view_btn.setFixedSize(30, 30)
-        icon = QIcon("assets/right.svg")
-        view_btn.setIcon(icon)
-        view_btn.setIconSize(QSize(20, 20))
-        view_btn.setStyleSheet("""
-            QPushButton {
-                background: transparent;
-                border: 1px solid #DDE8E3;
-                border-radius: 7px;
-            }
-            QPushButton:hover { background: #E3F5EE; }
-        """)
-        view_btn.clicked.connect(lambda: self.view_clicked.emit(self.appt))
-        right.addWidget(view_btn)
-
         layout.addLayout(right)
+
+    def mousePressEvent(self, event: QMouseEvent):
+        self.clicked.emit(self.appt)
+        super().mousePressEvent(event)

@@ -12,6 +12,7 @@ from services.container import appointment_service, patient_service
 from core.app_settings import AppSettings
 from models.appointment import Appointment
 from widgets.reminder_card import reminder_status, compute_remind_on, _parse_date, _fmt_date, ReminderCard
+from dialogs.dialog_add_appointment import DialogAddAppointment
 
 
 class PageReminders(QWidget):
@@ -210,28 +211,16 @@ class PageReminders(QWidget):
         for i, appt in enumerate(appointments):
             show_div = (i < len(appointments) - 1)
             card = ReminderCard(appt, show_divider=show_div)
-            card.view_clicked.connect(self._show_detail)
+            card.clicked.connect(self._open_appt_dialog)
             list_layout.addWidget(card)
 
         idx = 2 if hasattr(self, "_banner_widget") else 1
         self.scrollContent.layout().insertWidget(idx, list_frame)
         self._list_container = list_frame
 
-    def _show_detail(self, appt: Appointment):
-        from widgets.reminder_card import compute_remind_on, _fmt_date
-        remind_on = compute_remind_on(appt.appt_date)
-
-        QMessageBox.information(
-            self,
-            "Appointment Details",
-            f"Purpose:     {appt.purpose}\n"
-            f"Clinic:      {appt.clinic_name}\n"
-            f"Date:        {_fmt_date(appt.appt_date)}\n"
-            f"Time:        {appt.appt_time}\n"
-            f"Status:      {appt.status}\n"
-            f"Remind on:   {_fmt_date(remind_on)}\n"
-            f"Code:        {appt.appointment_code}"
-        )
+    def _open_appt_dialog(self, appt: Appointment):
+        dialog = DialogAddAppointment(patient_id=appt.patient_id, appointment=appt)
+        dialog.exec()
 
     def _dismiss(self, appt: Appointment):
         reply = QMessageBox.question(

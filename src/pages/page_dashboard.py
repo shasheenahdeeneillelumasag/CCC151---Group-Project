@@ -65,7 +65,6 @@ class PageDashboard(QWidget):
         self.btnViewAppt.clicked.connect(self._view_flagged_appt)
         self.btnDismissReminder.clicked.connect(self._dismiss_reminder)
         self.btnViewVacc.clicked.connect(lambda: self.navigate_requested.emit(3))
-        self.btnViewAllAppt.clicked.connect(lambda: self.navigate_requested.emit(4))
 
         self._make_stat_cards_clickable()
 
@@ -416,22 +415,10 @@ class PageDashboard(QWidget):
                 lbl_name.setStyleSheet("font-size: 12px; font-weight: bold; color: #1C2B25;")
                 meta_text = f"{'Single dose' if total == 1 else f'{total}-dose series'}  ·  {'Complete' if complete else f'Dose {done} done'}"
 
-                pip_row = QHBoxLayout()
-                pip_row.setSpacing(3)
-                for p in range(total):
-                    pip = QFrame()
-                    pip.setFixedSize(20, 6)
-                    pip.setStyleSheet(
-                        f"QFrame {{ background: {'#1A9E78' if p < done else '#C8D9D2'}; border-radius: 3px; }}"
-                    )
-                    pip_row.addWidget(pip)
-                pip_row.addStretch()
-
                 info.addWidget(lbl_name)
                 meta_label = QLabel(meta_text)
                 meta_label.setStyleSheet("font-size: 10px; color: #546860;")
                 info.addWidget(meta_label)
-                info.addLayout(pip_row)
                 row.addLayout(info)
 
                 row_widget = QWidget()
@@ -459,19 +446,9 @@ class PageDashboard(QWidget):
     def _view_flagged_appt(self):
         if not hasattr(self, "_flagged_appt") or not self._flagged_appt:
             return
-        appt = self._flagged_appt
-        remind_on = compute_remind_on(appt.appt_date)
-        QMessageBox.information(
-            self,
-            "Appointment Details",
-            f"Purpose:    {appt.purpose}\n"
-            f"Clinic:     {appt.clinic_name}\n"
-            f"Date:       {_fmt_short(appt.appt_date)}\n"
-            f"Time:       {appt.appt_time}\n"
-            f"Status:     {appt.status}\n"
-            f"Remind on:  {_fmt_short(remind_on)}\n"
-            f"Code:       {appt.appointment_code}"
-        )
+        from dialogs.dialog_add_appointment import DialogAddAppointment
+        dialog = DialogAddAppointment(patient_id=self._flagged_appt.patient_id, appointment=self._flagged_appt)
+        dialog.exec()
 
     def _dismiss_reminder(self):
         if not hasattr(self, "_flagged_appt") or not self._flagged_appt:
