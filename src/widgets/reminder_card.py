@@ -65,15 +65,10 @@ class ReminderCard(QFrame):
         obj_name = f"remCard_{id(self)}"
         self.setObjectName(obj_name)
 
-        if status == "flagged":
-            row_bg = "#FFFBF0"
-        else:
-            row_bg = "transparent"
-
         border = "border-bottom: 1px solid #DDE8E3;" if show_divider else ""
         self.setStyleSheet(f"""
             QFrame#{obj_name} {{
-                background: {row_bg};
+                background: transparent;
                 {border}
             }}
             QFrame#{obj_name}:hover {{
@@ -95,20 +90,6 @@ class ReminderCard(QFrame):
         lbl_meta = QLabel(f"{appt.clinic_name}  ·  {appt.appt_time}")
         lbl_meta.setStyleSheet("font-size: 11px; color: #546860;")
         info.addWidget(lbl_meta)
-
-        if status == "flagged" and days_away is not None:
-            flag_text = (
-                f"[!]  Flagged today — appointment is "
-                f"{'today' if days_away == 0 else f'{days_away} day(s) away'}"
-                f" ({_fmt_date(appt_date)})"
-            )
-            lbl_flag = QLabel(flag_text)
-            lbl_flag.setStyleSheet("font-size: 10px; color: #C47B12; font-weight: 600;")
-            info.addWidget(lbl_flag)
-        elif status == "upcoming" and remind_on:
-            lbl_flag = QLabel(f"Reminder will flag on {_fmt_date(remind_on)}")
-            lbl_flag.setStyleSheet("font-size: 10px; color: #8FA89F;")
-            info.addWidget(lbl_flag)
 
         lbl_dates = QLabel(
             f"remind_on: {_fmt_date(remind_on)}   ·   "

@@ -243,6 +243,7 @@ class PageDocuments(QWidget):
         scroll_layout = self.scrollContent.layout()
         scroll_layout.insertLayout(1, self.doc_grid)
 
+        self._all_docs = []
         self._all_rendered_docs = []
 
         self.pagination = PaginationBar()
@@ -255,6 +256,7 @@ class PageDocuments(QWidget):
 
         self.tabBar.currentChanged.connect(self._on_tab_changed)        
 
+        self.searchInput.textChanged.connect(self.search_documents)
         self.doc_service.changed.connect(self.load_documents)
         self.vaccine_service.changed.connect(self.load_documents)
         self.diagnosis_service.changed.connect(self.load_documents)
@@ -340,11 +342,32 @@ class PageDocuments(QWidget):
 
     def load_documents(self):
         all_docs = self._get_patient_docs()
-        self._heal_all_docs(all_docs)      
-        self._all_rendered_docs = self._filter_docs(all_docs)
+        self._heal_all_docs(all_docs)
+        self._all_docs = all_docs
+        self._apply_search_and_render()
+
+    def _apply_search_and_render(self):
+        keyword = self.searchInput.text().strip().lower() if hasattr(self, 'searchInput') else ""
+
+        tab_filtered = self._filter_docs(self._all_docs)
+
+        if keyword:
+            searched = [
+                d for d in tab_filtered
+                if keyword in (
+                    f"{d.doc_filename} {d.date_uploaded or ''}"
+                ).lower()
+            ]
+        else:
+            searched = tab_filtered
+
+        self._all_rendered_docs = searched
         self.pagination.set_total_items(len(self._all_rendered_docs))
         self._show_page(0)
-        self._update_tab_counts(all_docs)
+        self._update_tab_counts(self._all_docs)
+
+    def search_documents(self):
+        self._apply_search_and_render()
 
     def _on_page_changed(self, page: int):
         self._show_page(page)

@@ -102,57 +102,47 @@
       <property name="minimumHeight"><number>48</number></property>
       <property name="maximumHeight"><number>48</number></property>
       <layout class="QHBoxLayout">
-       <property name="leftMargin"><number>28</number></property>
-       <property name="topMargin"><number>10</number></property>
-       <property name="rightMargin"><number>28</number></property>
-       <property name="bottomMargin"><number>0</number></property>
-       <item>
-        <widget class="QPushButton" name="btnEdit">
-         <property name="cursor">
-          <cursorShape>PointingHandCursor</cursorShape>
-         </property>
-         <property name="styleSheet">
-          <string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 20px; } QPushButton:hover { background: #0D6B52; }</string>
-         </property>
-         <property name="text">
-          <string>Edit</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnDiscard">
-         <property name="styleSheet">
-          <string>QPushButton { background: transparent; color: #546860; font-size: 12px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #E3F5EE; }</string>
-         </property>
-         <property name="text">
-          <string>Discard</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnSaveProfile">
-         <property name="styleSheet">
-          <string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 20px; } QPushButton:hover { background: #0D6B52; }</string>
-         </property>
-         <property name="text">
-          <string>Save Changes</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>0</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+        <property name="leftMargin"><number>28</number></property>
+        <property name="topMargin"><number>10</number></property>
+        <property name="rightMargin"><number>28</number></property>
+        <property name="bottomMargin"><number>0</number></property>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnEdit">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 20px; } QPushButton:hover { background: #0D6B52; }</string>
+          </property>
+           <property name="text">
+            <string>Edit Profile</string>
+           </property>
+          </widget>
+         </item>
+        <item>
+         <widget class="QPushButton" name="btnSaveProfile">
+          <property name="styleSheet">
+           <string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 20px; } QPushButton:hover { background: #0D6B52; }</string>
+          </property>
+          <property name="text">
+           <string>Save Changes</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
      </widget>
     </item>
     <item>

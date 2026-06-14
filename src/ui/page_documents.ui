@@ -3,7 +3,7 @@
  <class>PageDocuments</class>
  <widget class="QWidget" name="PageDocuments">
   <property name="styleSheet">
-   <string>QWidget { background-color: #F2F7F5; font-family: "Segoe UI", sans-serif; } QLabel { background: transparent; }</string>
+   <string>QWidget { background-color: #F2F7F5; font-family: "Segoe UI", sans-serif; } QLabel { background: transparent; } QLineEdit { border: 1px solid #C8D9D2; border-radius: 9px; padding: 8px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF; } QLineEdit:focus { border-color: #1A9E78; }</string>
   </property>
   <layout class="QVBoxLayout" name="docLayout">
    <property name="spacing"><number>0</number></property>
@@ -47,9 +47,44 @@
 
       </layout>
     </widget>
-   </item>
-   <item>
-    <widget class="QScrollArea" name="scrollArea">
+    </item>
+    <item>
+     <widget class="QFrame" name="toolbar">
+      <property name="styleSheet">
+       <string>QFrame#toolbar { background: #F8FBFA; border-bottom: 1px solid #DDE8E3; border-top: 1px solid #E4EDE9; }</string>
+      </property>
+      <property name="minimumHeight"><number>48</number></property>
+      <property name="maximumHeight"><number>48</number></property>
+      <layout class="QHBoxLayout">
+       <property name="leftMargin"><number>28</number></property>
+       <property name="topMargin"><number>10</number></property>
+       <property name="rightMargin"><number>28</number></property>
+       <property name="bottomMargin"><number>0</number></property>
+       <item>
+        <widget class="QLineEdit" name="searchInput">
+         <property name="placeholderText"><string> Search documents...</string></property>
+         <property name="minimumWidth"><number>200</number></property>
+         <property name="maximumWidth"><number>240</number></property>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QScrollArea" name="scrollArea">
      <property name="widgetResizable"><bool>true</bool></property>
      <property name="frameShape"><enum>QFrame::NoFrame</enum></property>
      <property name="styleSheet"><string>QScrollArea { background: #F2F7F5; border: none; }</string></property>

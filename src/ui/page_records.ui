@@ -36,49 +36,50 @@
       <property name="minimumHeight"><number>48</number></property>
       <property name="maximumHeight"><number>48</number></property>
       <layout class="QHBoxLayout">
-       <property name="leftMargin"><number>28</number></property>
-       <property name="topMargin"><number>10</number></property>
-       <property name="rightMargin"><number>28</number></property>
-       <property name="bottomMargin"><number>0</number></property>
-       <item>
-        <widget class="QPushButton" name="btnNewRecord">
-         <property name="text"><string>New Record</string></property>
-         <property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnEditRecord">
-         <property name="text"><string>Edit Record</string></property>
-         <property name="styleSheet"><string>QPushButton { background: #FFFFFF; color: #1A9E78; font-size: 12px; font-weight: 600; border: 1px solid #1A9E78; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #E3F5EE; }</string></property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnDeleteRecord">
-         <property name="text"><string>Delete Record</string></property>
-         <property name="styleSheet"><string>QPushButton { background: #FFFFFF; color: #C0392B; font-size: 12px; font-weight: 600; border: 1px solid #C0392B; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #FDECEB; }</string></property>
-        </widget>
-       </item>
-       <item>
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="searchInput">
-         <property name="placeholderText"><string> Search records...</string></property>
-         <property name="minimumWidth"><number>200</number></property>
-         <property name="maximumWidth"><number>240</number></property>
-        </widget>
-       </item>
-      </layout>
+        <property name="leftMargin"><number>28</number></property>
+        <property name="topMargin"><number>10</number></property>
+        <property name="rightMargin"><number>28</number></property>
+        <property name="bottomMargin"><number>0</number></property>
+        <item>
+         <widget class="QLineEdit" name="searchInput">
+          <property name="placeholderText"><string> Search records...</string></property>
+          <property name="minimumWidth"><number>200</number></property>
+          <property name="maximumWidth"><number>240</number></property>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnNewRecord">
+          <property name="text"><string>New Record</string></property>
+          <property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnEditRecord">
+          <property name="text"><string>Edit Record</string></property>
+          <property name="styleSheet"><string>QPushButton { background: #FFFFFF; color: #1A9E78; font-size: 12px; font-weight: 600; border: 1px solid #1A9E78; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #E3F5EE; }</string></property>
+         </widget>
+        </item>
+        <item>
+          <widget class="QPushButton" name="btnDeleteRecord">
+           <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+           <property name="text"><string>Delete Record</string></property>
+           <property name="styleSheet"><string>QPushButton { background: #C0392B; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #A93226; }</string></property>
+          </widget>
+        </item>
+       </layout>
      </widget>
     </item>
     <item>

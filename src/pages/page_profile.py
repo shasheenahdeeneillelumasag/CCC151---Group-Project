@@ -31,27 +31,11 @@ class PageProfile(QWidget):
 
         self.btnEdit.clicked.connect(self._toggle_edit)
         self.btnSaveProfile.clicked.connect(self.save_profile)
-        self.btnDiscard.clicked.connect(self._discard_changes)
         self._editing = False
         self._set_editable(False)
 
     def _init_dob_pickers(self):
         init_date_picker(self.inputDobMonth, self.inputDobDay, self.inputDobYear)
-
-    def _discard_changes(self):
-        reply = QMessageBox.question(
-            self,
-            "Discard Changes",
-            "Are you sure you want to discard all unsaved changes?",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
-        )
-        if reply == QMessageBox.StandardButton.Yes:
-            self.load_patient()
-            self._set_editable(False)
-            self._editing = False
-            self.btnEdit.show()
-            self.btnSaveProfile.hide()
-            self.btnDiscard.hide()
 
     def load_patient(self):
         if not self.patient_id:
@@ -193,14 +177,12 @@ class PageProfile(QWidget):
         self._editing = False
         self.btnEdit.show()
         self.btnSaveProfile.hide()
-        self.btnDiscard.hide()
 
     def _toggle_edit(self):
         self._set_editable(True)
         self._editing = True
         self.btnEdit.hide()
         self.btnSaveProfile.show()
-        self.btnDiscard.show()
 
     def _set_editable(self, editable: bool):
         self.inputFirstName.setReadOnly(not editable)

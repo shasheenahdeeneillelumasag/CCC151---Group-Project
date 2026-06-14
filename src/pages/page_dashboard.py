@@ -61,9 +61,6 @@ class PageDashboard(QWidget):
             self.settings.get_active_patient_code()
         ) if self.settings.get_active_patient_code() else None
         self.patient_id = self.active_patient.patient_id if self.active_patient else None
-        self.btnCloseBanner.clicked.connect(self._close_banner)
-        self.btnViewAppt.clicked.connect(self._view_flagged_appt)
-        self.btnDismissReminder.clicked.connect(self._dismiss_reminder)
         self.btnViewVacc.clicked.connect(lambda: self.navigate_requested.emit(3))
 
         self._make_stat_cards_clickable()
@@ -116,14 +113,12 @@ class PageDashboard(QWidget):
         )
 
         self._load_stats()
-        self._load_reminder_banner()
         self._load_activity()
         self._load_vitals()
         self._load_upcoming_appt()
         self._load_vaccine_progress()
 
     def _get_icon_path(self, icon_name: str) -> str:
-        """Helper to safely point to your project's root assets folder."""
         return os.path.join(os.path.dirname(__file__), '..', 'assets', icon_name)
 
     def _load_stats(self):
@@ -203,40 +198,6 @@ class PageDashboard(QWidget):
         self.stat4Sub.setText(
             f"{this_month} linked this month" if this_month else "No new this month"
         )
-
-    def _load_reminder_banner(self):
-        today        = date.today()
-        appointments = self.appointment_service.get_appointments_by_patient_id(self.patient_id)
-        flagged      = [a for a in appointments if reminder_status(a) == "flagged"]
-
-        if not flagged:
-            self.reminderBanner.hide()
-            self._flagged_appt = None
-            return
-
-        appt      = sorted(flagged, key=lambda a: _parse_date(a.appt_date) or today)[0]
-        self._flagged_appt = appt
-
-        appt_date = _parse_date(appt.appt_date)
-        days_away = (appt_date - today).days if appt_date else None
-
-        self.bannerEyebrow.setText(
-            f"APPOINTMENT REMINDER — FLAGGED TODAY"
-        )
-
-        if days_away == 0:
-            title = f"Your appointment at {appt.clinic_name} is today"
-        elif days_away == 1:
-            title = f"Your appointment at {appt.clinic_name} is tomorrow"
-        else:
-            title = f"Your appointment at {appt.clinic_name} is in {days_away} days"
-
-        self.bannerTitle.setText(title)
-        self.bannerSub.setText(
-            f"{_fmt_short(appt.appt_date)}  ·  {appt.appt_time}  ·  "
-            f"{appt.clinic_name} — {appt.purpose}"
-        )
-        self.reminderBanner.show()
 
     def _load_activity(self):
         self.activityList.clear()
@@ -353,7 +314,6 @@ class PageDashboard(QWidget):
             self.apptDoctor.setStyleSheet("font-size: 12px; color: #8FA89F; padding: 14px 20px;")
             self.apptDoctor.setText("No upcoming appointments")
             self.apptNote.setText("")
-            self.apptRemind.setText("")
             self.apptTime.setText("")
             return
         self.apptDay.show()
@@ -362,15 +322,11 @@ class PageDashboard(QWidget):
 
         appt      = upcoming[0]
         appt_date = _parse_date(appt.appt_date)
-        remind_on = compute_remind_on(appt_date)
 
         self.apptDay.setText(appt_date.strftime("%d") if appt_date else "—")
         self.apptMonth.setText(appt_date.strftime("%b %Y").upper() if appt_date else "")
         self.apptDoctor.setText(appt.clinic_name)
         self.apptNote.setText(f"{appt.purpose}")
-        self.apptRemind.setText(
-            f"Reminder set: {remind_on.strftime('%b %d') if remind_on else '—'}"
-        )
         self.apptTime.setText(str(appt.appt_time))
 
     def _load_vaccine_progress(self):
@@ -440,37 +396,4 @@ class PageDashboard(QWidget):
         card_layout.addWidget(container)
         self._vacc_container = container
 
-    def _close_banner(self):
-        self.reminderBanner.hide()
 
-    def _view_flagged_appt(self):
-        if not hasattr(self, "_flagged_appt") or not self._flagged_appt:
-            return
-        from dialogs.dialog_add_appointment import DialogAddAppointment
-        dialog = DialogAddAppointment(patient_id=self._flagged_appt.patient_id, appointment=self._flagged_appt)
-        dialog.exec()
-
-    def _dismiss_reminder(self):
-        if not hasattr(self, "_flagged_appt") or not self._flagged_appt:
-            return
-        appt = self._flagged_appt
-        reply = QMessageBox.question(
-            self,
-            "Mark as Prepared",
-            f"Mark the appointment for '{appt.purpose}' as prepared?\n\n"
-            "This will mark the appointment as Completed.",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
-        )
-        if reply != QMessageBox.StandardButton.Yes:
-            return
-
-        self.appointment_service.update_appointment(
-            appointment_id=appt.appointment_id,
-            appt_date=appt.appt_date,
-            appt_time=appt.appt_time,
-            purpose=appt.purpose,
-            clinic_name=appt.clinic_name,
-            status="Completed",
-            patient_id=appt.patient_id
-        )
-        self.load()

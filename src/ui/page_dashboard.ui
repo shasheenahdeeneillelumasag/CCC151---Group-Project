@@ -144,163 +144,7 @@
        <property name="bottomMargin">
         <number>28</number>
        </property>
-       <item>
-        <widget class="QFrame" name="reminderBanner">
-         <property name="styleSheet">
-          <string>
-           QFrame#reminderBanner { background: #FEF3DC; border: 1.5px solid #FBDF9E; border-radius: 14px; }
-          </string>
-         </property>
-         <layout class="QHBoxLayout" name="bannerLayout">
-          <property name="spacing">
-           <number>14</number>
-          </property>
-          <property name="leftMargin">
-           <number>20</number>
-          </property>
-          <property name="topMargin">
-           <number>16</number>
-          </property>
-          <property name="rightMargin">
-           <number>20</number>
-          </property>
-          <property name="bottomMargin">
-           <number>16</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="bannerIcon">
-            <property name="minimumSize">
-             <size>
-              <width>42</width>
-              <height>42</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>42</width>
-              <height>42</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string>QLabel { background: #FBDF9E; border-radius: 11px;
-    }</string>
-            </property>
-            <property name="pixmap"><pixmap><normaloff>../assets/ic_bell.svg</normaloff>../assets/ic_bell.svg</pixmap></property>
-     <property name="scaledContents"><bool>true</bool></property>
-            <property name="alignment">
-             <set>Qt::AlignmentFlag::AlignCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QVBoxLayout">
-            <property name="spacing">
-             <number>3</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="bannerEyebrow">
-              <property name="styleSheet">
-               <string>QLabel { font-size: 9px; font-weight: bold; color: #C47B12; letter-spacing: 1px; }</string>
-              </property>
-              <property name="text">
-               <string>APPOINTMENT REMINDER — FLAGGED TODAY</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="bannerTitle">
-              <property name="styleSheet">
-               <string>QLabel { font-size: 14px; font-weight: bold; color: #3D2800; }</string>
-              </property>
-              <property name="text">
-               <string>Your follow-up with Dr. Ramon Santos is in 2 days</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="bannerSub">
-              <property name="styleSheet">
-               <string>QLabel { font-size: 11px; color: #7A4D0A; }</string>
-              </property>
-              <property name="text">
-               <string>April 18, 2024  ·  10:00 AM  ·  City Health Clinic — URTI Follow-up</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout">
-              <property name="spacing">
-               <number>8</number>
-              </property>
-              <item>
-               <widget class="QPushButton" name="btnViewAppt">
-                <property name="cursor">
-                 <cursorShape>PointingHandCursor</cursorShape>
-                </property>
-                <property name="styleSheet">
-                 <string>QPushButton { background: #C47B12; color: #FFF; font-size: 11px; font-weight: 600; border: none; border-radius: 6px; padding: 6px 14px; } QPushButton:hover { background: #7A4D0A; }</string>
-                </property>
-                <property name="text">
-                 <string>View Appointment</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="btnDismissReminder">
-                <property name="cursor">
-                 <cursorShape>PointingHandCursor</cursorShape>
-                </property>
-                <property name="styleSheet">
-                 <string>QPushButton { background: rgba(196,123,18,0.12); color: #7A4D0A; font-size: 11px; font-weight: 600; border: none; border-radius: 6px; padding: 6px 14px; } QPushButton:hover { background: rgba(196,123,18,0.22); }</string>
-                </property>
-                <property name="text">
-                 <string>Mark as Prepared</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btnCloseBanner">
-            <property name="minimumSize">
-             <size>
-              <width>26</width>
-              <height>26</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>26</width>
-              <height>26</height>
-             </size>
-            </property>
-            <property name="cursor">
-             <cursorShape>PointingHandCursor</cursorShape>
-            </property>
-            <property name="styleSheet">
-             <string>QPushButton { background: rgba(196,123,18,0.12); color: #C47B12; border: none; border-radius: 13px; font-size: 13px; font-weight: bold; } QPushButton:hover { background: rgba(196,123,18,0.25); }</string>
-            </property>
-            <property name="text"><string></string></property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
+
        <item>
         <layout class="QHBoxLayout" name="statsRow">
          <property name="spacing">
@@ -751,17 +595,17 @@
               <property name="bottomMargin">
                <number>14</number>
               </property>
-              <item>
-               <widget class="QLabel" name="vitalsTitle">
-                <property name="styleSheet">
-                 <string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string>
-                </property>
-                <property name="text">
-                 <string>Latest Vitals</string>
-                </property>
-               </widget>
-              </item>
-                </layout>
+               <item>
+                <widget class="QLabel" name="vitalsTitle">
+                 <property name="styleSheet">
+                  <string>QLabel { font-size: 13px; font-weight: bold; color: #1C2B25; }</string>
+                 </property>
+                 <property name="text">
+                  <string>Latest Vitals</string>
+                 </property>
+                </widget>
+               </item>
+                 </layout>
              </item>
              <item>
               <widget class="QFrame" name="vitalsDivider">
@@ -955,17 +799,7 @@
                </property>
                  </widget>
                 </item>
-                <item>
-                 <widget class="QLabel" name="apptRemind">
-                  <property name="styleSheet">
-                   <string>QLabel { font-size: 10px; color: #C47B12; font-weight: 600; }</string>
-                  </property>
-                  <property name="text">
-                <string></string>
-               </property>
-                 </widget>
-                </item>
-               </layout>
+                </layout>
               </item>
               <item>
                <spacer>

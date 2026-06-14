@@ -3,7 +3,7 @@
  <class>PageAppointments</class>
  <widget class="QWidget" name="PageAppointments">
   <property name="styleSheet">
-   <string>QWidget { background-color: #F2F7F5; font-family: "Segoe UI", sans-serif; } QLabel { background: transparent; }</string>
+   <string>QWidget { background-color: #F2F7F5; font-family: "Segoe UI", sans-serif; } QLabel { background: transparent; } QLineEdit { border: 1px solid #C8D9D2; border-radius: 9px; padding: 8px 13px; font-size: 13px; color: #1C2B25; background: #FFFFFF; } QLineEdit:focus { border-color: #1A9E78; }</string>
   </property>
   <layout class="QVBoxLayout" name="apptLayout">
    <property name="spacing"><number>0</number></property>
@@ -28,42 +28,51 @@
       <property name="minimumHeight"><number>48</number></property>
       <property name="maximumHeight"><number>48</number></property>
       <layout class="QHBoxLayout">
-       <property name="leftMargin"><number>28</number></property>
-       <property name="topMargin"><number>10</number></property>
-       <property name="rightMargin"><number>28</number></property>
-       <property name="bottomMargin"><number>0</number></property>
-       <item>
-        <widget class="QPushButton" name="btnAddAppt">
-         <property name="text"><string>Add Appointment</string></property>
-         <property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnEditAppt">
-         <property name="text"><string>Edit</string></property>
-         <property name="styleSheet"><string>QPushButton { background: transparent; color: #1C2B25; font-size: 12px; font-weight: 600; border: 1px solid #C8D9D2; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #F2F7F5; border-color: #1A9E78; color: #1A9E78; }</string></property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnDeleteAppt">
-         <property name="text"><string>Delete</string></property>
-         <property name="styleSheet"><string>QPushButton { background: transparent; color: #B91C1C; font-size: 12px; font-weight: 600; border: 1px solid #FECACA; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #FEE2E2; border-color: #F87171; }</string></property>
-        </widget>
-       </item>
-       <item>
-        <spacer>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+        <property name="leftMargin"><number>28</number></property>
+        <property name="topMargin"><number>10</number></property>
+        <property name="rightMargin"><number>28</number></property>
+        <property name="bottomMargin"><number>0</number></property>
+        <item>
+         <widget class="QLineEdit" name="searchInput">
+          <property name="placeholderText"><string> Search appointments...</string></property>
+          <property name="minimumWidth"><number>200</number></property>
+          <property name="maximumWidth"><number>240</number></property>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnAddAppt">
+          <property name="text"><string>Add Appointment</string></property>
+          <property name="styleSheet"><string>QPushButton { background: #1A9E78; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #0D6B52; }</string></property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnEditAppt">
+          <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+          <property name="text"><string>Edit Appointment</string></property>
+          <property name="styleSheet"><string>QPushButton { background: #FFFFFF; color: #1A9E78; font-size: 12px; font-weight: 600; border: 1px solid #1A9E78; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #E3F5EE; }</string></property>
+         </widget>
+        </item>
+        <item>
+          <widget class="QPushButton" name="btnDeleteAppt">
+           <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+           <property name="text"><string>Delete Appointment</string></property>
+           <property name="styleSheet"><string>QPushButton { background: #C0392B; color: #FFF; font-size: 12px; font-weight: 600; border: none; border-radius: 9px; padding: 8px 18px; } QPushButton:hover { background: #A93226; }</string></property>
+          </widget>
+        </item>
+       </layout>
      </widget>
     </item>
     <item>

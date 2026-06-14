@@ -50,12 +50,14 @@ class PageVaccinations(QWidget):
         )
 
         self._all_shots = []
+        self._filtered_shots = []
 
         self.pagination = PaginationBar()
         self.pagination.page_changed.connect(self._on_page_changed)
         scroll_layout = self.scrollContent.layout()
         scroll_layout.addWidget(self.pagination)
 
+        self.searchInput.textChanged.connect(self.search_vaccinations)
         self.btnLogVax.clicked.connect(self._open_add_dialog)
         self.btnDeleteVax.clicked.connect(self.delete_vaccination)
         self.btnEditVax.clicked.connect(self._edit_selected_vaccination)
@@ -82,7 +84,25 @@ class PageVaccinations(QWidget):
             reverse=True
         )
 
-        self.pagination.set_total_items(len(self._all_shots))
+        self._filtered_shots = list(self._all_shots)
+        self.pagination.set_total_items(len(self._filtered_shots))
+        self._show_page(0)
+
+    def search_vaccinations(self):
+        keyword = self.searchInput.text().strip().lower()
+
+        if not keyword:
+            self._filtered_shots = list(self._all_shots)
+        else:
+            self._filtered_shots = [
+                s for s in self._all_shots
+                if keyword in (
+                    f"{s.vaccination_name} {s.vaccine_code or ''} {s.vaccination_for or ''} "
+                    f"{s.manufacturer or ''} {s.display_dose or ''} {s.display_date or ''}"
+                ).lower()
+            ]
+
+        self.pagination.set_total_items(len(self._filtered_shots))
         self._show_page(0)
 
     def _on_page_changed(self, page: int):
@@ -109,7 +129,7 @@ class PageVaccinations(QWidget):
         layout.setSpacing(12)
 
         start = page * self.pagination.page_size()
-        shots = self._all_shots[start:start + self.pagination.page_size()]
+        shots = self._filtered_shots[start:start + self.pagination.page_size()]
 
         if not shots:
 

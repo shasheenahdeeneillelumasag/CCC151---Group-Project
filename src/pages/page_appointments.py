@@ -129,6 +129,8 @@ class PageAppointments(QWidget):
         self.btnAddAppt.clicked.connect(self._open_add_dialog)
         self.btnEditAppt.clicked.connect(self._edit_selected)
         self.btnDeleteAppt.clicked.connect(self._delete_selected)
+
+        self.searchInput.textChanged.connect(self.search_appointments)
         self.load_appointments()
 
     def load_appointments(self):
@@ -136,20 +138,35 @@ class PageAppointments(QWidget):
         self.selected_appt = None
         if not self.patient_id:
             return
-        appointments = self.appointment_service.get_appointments_by_patient_id(
+        self._all_appointments = self.appointment_service.get_appointments_by_patient_id(
             self.patient_id
         )
+        self._filter_appointments()
+
+    def _filter_appointments(self):
+        keyword = self.searchInput.text().strip().lower() if hasattr(self, 'searchInput') else ""
+
+        if keyword:
+            filtered = [
+                a for a in self._all_appointments
+                if keyword in (
+                    f"{a.clinic_name} {a.purpose} {a.appt_time} "
+                    f"{a.appt_date} {a.status} {a.consultant or ''} {a.notes or ''}"
+                ).lower()
+            ]
+        else:
+            filtered = self._all_appointments
 
         today = date.today()
 
         upcoming = sorted(
-            [a for a in appointments
+            [a for a in filtered
              if a.status == "Scheduled" and _parse_date(a.appt_date) and _parse_date(a.appt_date) >= today],
             key=lambda a: _parse_date(a.appt_date)
         )
 
         past = sorted(
-            [a for a in appointments
+            [a for a in filtered
              if a.status != "Scheduled" or (_parse_date(a.appt_date) and _parse_date(a.appt_date) < today)],
             key=lambda a: _parse_date(a.appt_date),
             reverse=True
@@ -157,6 +174,9 @@ class PageAppointments(QWidget):
 
         self._populate_section("UPCOMING", upcoming, 1, past=False)
         self._populate_section("PAST APPOINTMENTS", past, 3, past=True)
+
+    def search_appointments(self):
+        self._filter_appointments()
 
     def _populate_section(self, title: str, appointments: list[Appointment], insert_pos: int, past: bool = False):
         if hasattr(self, f"_container_{title}"):
