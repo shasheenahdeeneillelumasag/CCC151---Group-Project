@@ -17,8 +17,7 @@
       <layout class="QHBoxLayout"><property name="leftMargin"><number>28</number></property><property name="topMargin"><number>10</number></property><property name="rightMargin"><number>28</number></property><property name="bottomMargin"><number>0</number></property>
        <item><layout class="QVBoxLayout"><property name="spacing"><number>1</number></property>
         <item><widget class="QLabel"><property name="text"><string>Reminders</string></property><property name="styleSheet"><string>QLabel { font-size: 22px; font-weight: bold; color: #0D1B16; }</string></property></widget></item>
-        <item><widget class="QLabel"><property name="text"><string>Auto-generated appointment reminders</string></property><property name="styleSheet"><string>QLabel { font-size: 13px; color: #5A7A6A; }</string></property></widget></item>
-      </layout></item>
+       </layout></item>
       <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
      </layout>
     </widget>
