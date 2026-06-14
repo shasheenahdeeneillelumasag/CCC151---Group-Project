@@ -7,7 +7,7 @@
   </property>
   <layout class="QVBoxLayout" name="apptLayout">
    <property name="spacing"><number>0</number></property>
-   <property name="leftMargin"><number>0</number></property><property name="topMargin"><number>10</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property>
+   <property name="leftMargin"><number>0</number></property><property name="topMargin"><number>0</number></property><property name="rightMargin"><number>0</number></property><property name="bottomMargin"><number>0</number></property>
    <item>
     <widget class="QFrame" name="topbar">
       <property name="styleSheet"><string>QFrame#topbar { background: #FFFFFF; border-bottom: 1px solid #1A9E78; }</string></property>
